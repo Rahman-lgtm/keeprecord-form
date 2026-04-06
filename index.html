@@ -311,7 +311,7 @@
     </div>
 
     <script>
-       const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV5suO2d2hb7ahw95fbO4ftwzyoaImknOI23Uvzjv4aeXdBA/exec";
+       const API_URL = "https://script.google.com/macros/s/AKfycbw02vDrYaKFL3hA3XZBBf978uh5KrGuwKMbdSYAVPNbT5b6wFgM1EyV4RE_zHV0PRSQqQ/exec";
 
 let fpsData = [];
 let checkedAppNums = new Set();
@@ -378,7 +378,12 @@ document.getElementById("applicationNumber").addEventListener("input", function 
 
     if (!value) return;
 
-    // Pattern check
+    // ✅ Allow typing first
+    const minLength = currentAppType === "NEW" ? 20 : 21;
+
+    if (value.length < minLength) return;
+
+    // ✅ Final pattern check
     const pattern = currentAppType === "NEW"
         ? /^RC\d{18}$/
         : /^RC\d{19}$/;
@@ -409,9 +414,8 @@ document.getElementById("applicationNumber").addEventListener("input", function 
                 status.className = "status-dup";
             });
 
-    }, 400); // ⚡ faster
+    }, 400);
 });
-
 // ✅ VALIDATION
 function validateForm() {
 
