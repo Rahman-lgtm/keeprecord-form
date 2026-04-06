@@ -1,217 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Data Entry Form</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry Form - DEO Work Record</title>
+    <style>
+        /* Fixed CSS - Removed duplicates, consistent styling, complete rules */
+        body {
+            font-family: "Bookman Old Style", serif;
+            background: #dcdcdc;
+            margin: 0;
+        }
+
+        .top-title {
+            width: 600px;
+            margin: 25px auto 10px;
+            background: #bfbfbf;
+            text-align: center;
+            padding: 8px;
+            font-style: italic;
+            box-shadow: 2px 3px 6px gray;
+        }
+
+        .title {
+            width: 70%;
+            max-width: 800px;
+            margin: 10px auto;
+            padding: 5px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(to right, red, #ffc107);
+            color: white;
+            box-shadow: 2px 3px 6px gray;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .container {
+            width: 800px;
+            margin: 25px auto;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input, select {
+            border: 1px solid #cfcfcf;
+            padding: 6px;
+            border-radius: 3px;
+            outline: none;
+            background: #fff;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        input:hover, select:hover {
+            border-color: #b5b5b5;
+        }
+
+        input:focus, select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 3px rgba(13,110,253,.2);
+        }
+
+        .locked {
+            background: #e6e6e6;
+            color: #666;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .row {
+            margin: 14px 0;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .half {
+            width: 48%;
+        }
+
+        .yellow-bar {
+            background: #ffc107;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin: 25px 0 15px;
+            box-shadow: 2px 3px 6px gray;
+        }
+
+        .note {
+            margin-bottom: 10px;
+        }
+
+        .button-area {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .submit-btn, #submitBtn {
+            background: red;
+            color: white;
+            padding: 8px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 2px 3px 6px gray;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover, #submitBtn:hover {
+            background: #218838;
+        }
+
+        .reset-btn {
+            background: #ffc107;
+            padding: 8px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 2px 3px 6px gray;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #e0a800;
+        }
+
+        .caution-bar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 15px auto;
+            padding: 10px;
+            color: #842029;
+            text-align: left;
+        }
+
+        #appStatus {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status-checking { 
+            color: orange; 
+        }
+
+        .status-ok { 
+            color: green; 
+        }
+
+        .status-dup { 
+            color: red; 
+        }
+
+        .spinner {
+            margin-left: 6px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            from { 
+                transform: rotate(0deg); 
+            }
+            to { 
+                transform: rotate(360deg); 
+            }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 10000;
+            min-width: 250px;
+        }
+
+        .toast.show { 
+            opacity: 1; 
+        }
+
+        .toast-success { 
+            background: green; 
+            color: white; 
+        }
+
+        .toast-error { 
+            background: red; 
+            color: white; 
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 960px) {
+            .container {
+                width: 95%;
+            }
+            
+            .flex {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .half {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-
-<div id="toast" class="toast" style="display: none;">
-  <span class="toast-message">Success</span>
-</div>
-
-<div class="top-title">
-  This form is only for maintaining the DEO work record<br>
-  It is not a SmartPDS portal data entry page
-</div>
-
-<div class="title">
-  Please complete the data entry process in the SmartPDS portal first<br>
-  <span class="subtitle">
-    After generating the application number, enter it here and submit it
-  </span>
-</div>
-
-<div class="container">
-
-<form id="dataForm">
-
-  <div class="row">
-    <label>Name of Inspector:</label>
-    <select id="inspector" required style="width:350px;">
-      <option value="">Select</option>
-      <option>Abhijit Bora</option>
-      <option>Durga Bodo</option>
-      <option>Mausam Zinnat</option>
-      <option>Mausumi Bora</option>
-      <option>Sanjiv Sarma</option>
-      <option>Santonu Bordoloi</option>
-    </select>
-  </div>
-
-  <div class="row">
-    <label>Application Type:</label>
-    <select id="appTypeDropdown" required style="width:350px;">
-      <option value="">Select</option>
-      <option value="new">New</option>
-      <option value="add">ADD</option>
-    </select>
-  </div>
-
-  <div class="row">
-    <label>Application Number:</label>
-    <input
-      type="text"
-      id="applicationNumber"
-      placeholder="RC202500000007638358"     
-    >
-  </div>
-
-  <div class="row flex">
-    <div>
-      <label>Name of Data Entry Operator:</label>
-      <input type="text" id="deo" required style="width:200px;">
-    </div>
-    <div>
-      <label>Date:</label>
-      <input
-        type="date"
-        id="date"
-        class="form-control"
-        value=""
-        min=""
-        max=""
-        required
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <label>Mobile Number</label>
-    <input type="text" id="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
-  </div>
-
-  <div class="row flex">
-    <div class="half">
-      <label>Name of Head of the Family:</label>
-      <input type="text" id="hof" required style="width:80%;">
-    </div>
-    <div>
-      <div class="row flex">
-    <div>
-      <label>Name of GP/Ward No</label>
-      <input type="text" id="gp" required style="width:250px;">
-    </div>
-    <div>
-      <label>Total Members</label>
-      <input type="number" id="totalMembers" required style="width:150px;" min="1">
-    </div>
-  </div>
-
-  <div class="yellow-bar">
-    Fair Price Shop Detail
-  </div>
-
-  <div class="note">
-    <b>N.B.:</b> You can fill only FPS Code
-  </div>
-
-  <div class="row flex">
-    <div>
-      <label>F.P.S Code</label>
-      <input type="text" id="fpsCode" placeholder="130500500001" required style="width:200px;">
-    </div>
-    <div>
-      <label>FPS Name</label>
-      <input type="text" id="fpsName" readonly class="locked" style="width:250px;">
-    </div>
-  </div>
-
-  <div class="row flex">
-    <div>
-      <label>Name of GPSS</label>
-      <input type="text" id="gpss" readonly class="locked" style="width:390px;">
-    </div>
-    <div>
-      <label>Area Officer</label>
-      <input type="text" id="areaOfficer" readonly class="locked" style="width:280px;">
-    </div>
-  </div>
-
-  <div class="row">
-    <label>LAC Name</label>
-    <input type="text" id="lacManual" readonly class="locked" style="width:300px;">
-  </div>
-
-  <div class="button-area">
-
-    <button id="submitBtn" type="submit" class="btn btn-primary">
-      <span class="btn-text">Submit</span>
-      <span class="spinner" style="display: none;">↻</span>
-    </button>
-
-    <button class="reset-btn" type="reset">
-      Reset
-    </button>
-
-    <div class="caution-bar">
-      📌 IMPORTANT<br>
-      ✔ All details must be verified before submission.<br>
-      ⚠ Incorrect data entry will be responsibility of the DEO.
+    <div class="top-title">
+        This form is only for maintaining the DEO work record<br>
+        It is not a SmartPDS portal data entry page
     </div>
 
-  </div>
+    <div class="title">
+        Please complete the data entry process in the SmartPDS portal first<br>
+        <span class="subtitle">
+            After generating the application number, enter it here and submit it
+        </span>
+    </div>
 
-</form>
+    <div class="container">
+        <form id="dataForm">
+            <div class="row">
+                <label>Name of Inspector:</label>
+                <select id="inspector" name="inspector" required style="width:350px;">
+                    <option value="">Select</option>
+                    <option>Abhijit Bora</option>
+                    <option>Durga Bodo</option>
+                    <option>Mausam Zinnat</option>
+                    <option>Mausumi Bora</option>
+                    <option>Sanjiv Sarma</option>
+                    <option>Santonu Bordoloi</option>
+                </select>
+            </div>
 
-</div>
+            <div class="row">
+                <label>Application Number:</label>
+                <div style="position: relative; display: inline-block; width: 350px;">
+                    <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxxxxxx" style="width:100%;">
+                    <span id="appStatus"></span>
+                </div>
+            </div>
 
-<script src="script.js"></script>
+            <div class="row flex">
+                <div>
+                    <label>Name of Data Entry Operator:</label>
+                    <input type="text" id="deo" name="deo" required style="width:200px;">
+                </div>
+                <div>
+                    <label>Date :</label>
+                    <input type="date" id="date" name="date" required style="width:170px;">
+                </div>
+            </div>
 
-<script>
-  function showToast(message, type = "success") {
-    const toast = document.getElementById("toast");
+            <div class="row">
+                <label>Mobile Number</label>
+                <input type="text" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
+            </div>
 
-    let icon = "✔";
-    if (type === "error") icon = "❌";
-    if (type === "warning") icon = "⚠";
+            <div class="row flex">
+                <div class="half">
+                    <label>Name of Head of the Family:</label>
+                    <input type="text" id="hof" name="hof" required style="width:80%;">
+                </div>
+                <div>
+                    <label>Application type</label>
+                    <select id="appType" name="appType" required style="width:150px;">
+                        <option value="">Select</option>
+                        <option>NEW</option>
+                        <option>ADD</option>
+                    </select>
+                </div>
+            </div>
 
-    toast.className = "";
-    toast.classList.add("show", `toast-${type}`);
-    toast.style.display = "block";
-    toast.innerHTML = `<span style="margin-right:8px;">${icon}</span> ${message}`;
+            <div class="row flex">
+                <div>
+                    <label>Name of GP/Ward No</label>
+                    <input type="text" id="gp" name="gp" required style="width:250px;">
+                </div>
+                <div>
+                    <label>Total Members</label>
+                    <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
+                </div>
+            </div>
 
-    setTimeout(() => {
-      toast.classList.remove("show");
-      setTimeout(() => { toast.style.display = "none"; }, 300);
-    }, 3500);
-  }
+            <div class="yellow-bar">Fair Price Shop Detail</div>
 
-  // Application type dropdown → auto fill application number
-  const appTypeDropdown = document.getElementById("appTypeDropdown");
-  const applicationNumber = document.getElementById("applicationNumber");
+            <div class="note">
+                <b>N.B.:</b> You can fill only FPS Code
+            </div>
 
-  appTypeDropdown?.addEventListener("change", function () {
-    const val = this.value.trim();
+            <div class="row flex">
+                <div>
+                    <label>F.P.S Code</label>
+                    <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
+                </div>
+                <div>
+                    <label>FPS Name</label>
+                    <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
+                </div>
+            </div>
 
-    if (val === "new") {
-      applicationNumber.value = "RC202500000007638358";
-    } else if (val === "add") {
-      applicationNumber.value = "RC2025061100001187378";
-    } else {
-      applicationNumber.value = "";
-    }
+            <div class="row flex">
+                <div>
+                    <label>Name of GPSS</label>
+                    <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
+                </div>
+                <div>
+                    <label>Area Officer</label>
+                    <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:280px;">
+                </div>
+            </div>
 
-    // Trigger input so validation + duplicate check runs
-    const inputEvent = new Event("input", { bubbles: true });
-    applicationNumber.dispatchEvent(inputEvent);
-  });
+            <div class="row">
+                <label>LAC Name</label>
+                <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
+            </div>
 
-  // Set today only in date field
-  function setToday() {
-    const dt = new Date();
-    const y = dt.getFullYear();
-    const m = String(dt.getMonth() + 1).padStart(2, "0");
-    const d = String(dt.getDate()).padStart(2, "0");
-    const today = `${y}-${m}-${d}`;
-    dateInput.value = today;
-    dateInput.min = today;
-    dateInput.max = today;
-  }
+            <div class="button-area">
+                <button id="submitBtn" class="submit-btn" type="submit">
+                    <span class="btn-text">Submit</span>
+                    <span class="spinner"></span>
+                </button>
+                <button class="reset-btn" type="reset">Reset</button>
+            </div>
 
-  setToday();
-</script>
+            <div class="caution-bar">
+                📌 IMPORTANT<br>
+                ✔ All details must be verified before submission.<br>
+                ⚠ Incorrect data entry will be responsibility of the DEO.
+            </div>
+        </form>
+    </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-message"></div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV5suO2d2hb7ahw95fbO4ftwzyoaImknOI23Uvzjv4aeXdBA/exec";
+
+        let fpsData = [];
+        let checkedAppNums = new Set();
+        let debounceTimer;
+
+        // Toast
+        function showToast(msg, ok=true){
+            const t = document.getElementById("toast");
+            t.querySelector(".toast-message").textContent = msg;
+            t.className = "toast show " + (ok ? "toast-success" : "toast-error");
+            setTimeout(()=>t.classList.remove("show"),3000);
+        }
+
+        // Validation
+        function isValid(val){
+            return /^RC\d{18,19}$/.test(val);
+        }
+
+        // Loader
+        function toggle(btn,load){
+            btn.disabled=load;
+            btn.querySelector(".btn-text").style.display=load?"none":"inline";
+            btn.querySelector(".spinner").style.display=load?"inline":"none";
+        }
+
+        // FPS Load
+        fetch(API_URL+"?action=getFPS")
+        .then(r=>r.json()).then(d=>{
+            fpsData=d;
+            // Auto-fill FPS details when FPS Code changes
+            document.getElementById("fpsCode").addEventListener("input", function(){
+                const code = this.value.trim();
+                if(code && fpsData.length){
+                    const fps = fpsData.find(f=>f[0]===code);
+                    if(fps){
+                        document.getElementById("fpsName").value = fps[1] || '';
+                        document.getElementById("gpss").value = fps[2] || '';
+                        document.getElementById("areaOfficer").value = fps[3] || '';
+                        document.getElementById("lacManual").value = fps[4] || '';
+                    } else {
+                        // Clear if no match
+                        document.getElementById("fpsName").value = '';
+                        document.getElementById("gpss").value = '';
+                        document.getElementById("areaOfficer").value = '';
+                        document.getElementById("lacManual").value = '';
+                    }
+                }
+            });
+        }).catch(()=>console.log("FPS data load failed"));
+
+        // Elements
+        const app = document.getElementById("applicationNumber");
+        const status = document.getElementById("appStatus");
+
+        // LIVE CHECK
+        app.addEventListener("input",function(){
+            const v=this.value.trim();
+            clearTimeout(debounceTimer);
+
+            if(!isValid(v)){
+                status.textContent="";
+                status.className="";
+                return;
+            }
+
+            status.textContent="Checking...";
+            status.className="status-checking";
+
+            debounceTimer=setTimeout(()=>{
+                fetch(API_URL+`?action=checkDuplicate&appNum=${v}`)
+                .then(r=>r.json())
+                .then(d=>{
+                    if(d.exists){
+                        status.textContent="Duplicate ❌";
+                        status.className="status-dup";
+                        checkedAppNums.add(v);
+                    } else {
+                        status.textContent="Available ✅";
+                        status.className="status-ok";
+                    }
+                }).catch(()=>{
+                    status.textContent="Error";
+                    status.className="status-dup";
+                });
+            },400);
+        });
+
+        // Set today's date as default
+        document.getElementById("date").valueAsDate = new Date();
+
+        // Submit
+        document.getElementById("dataForm").addEventListener("submit",function(e){
+            e.preventDefault();
+
+            const btn=document.getElementById("submitBtn");
+            const appNum=app.value.trim();
+            const mobile=document.getElementById("mobile").value;
+
+            if(!/^\d{10}$/.test(mobile)) return showToast("Invalid Mobile",false);
+            if(!isValid(appNum)) return showToast("Invalid App No",false);
+            if(checkedAppNums.has(appNum)) return showToast("Duplicate",false);
+
+            toggle(btn,true);
+
+            const fd=new FormData(this);
+            fd.append("action","submit");
+
+            fetch(API_URL,{method:"POST",body:fd})
+            .then(r=>r.json())
+            .then(res=>{
+                if(res.status==="Success"){
+                    showToast("Saved ✅",true);
+                    this.reset();
+                    status.textContent="";
+                    checkedAppNums.clear();
+                    // Reset FPS fields
+                    document.getElementById("fpsName").value='';
+                    document.getElementById("gpss").value='';
+                    document.getElementById("areaOfficer").value='';
+                    document.getElementById("lacManual").value='';
+                } else {
+                    showToast("Duplicate ❌",false);
+                    checkedAppNums.add(appNum);
+                }
+            })
+            .catch(()=>showToast("Error ❌",false))
+            .finally(()=>toggle(btn,false));
+        });
+
+        // Reset button enhanced
+        document.querySelector('.reset-btn').addEventListener('click', function(){
+            setTimeout(()=>{
+                status.textContent="";
+                status.className="";
+                checkedAppNums.clear();
+                // Reset FPS fields
+                document.getElementById("fpsName").value='';
+                document.getElementById("gpss").value='';
+                document.getElementById("areaOfficer").value='';
+                document.getElementById("lacManual").value='';
+                // Reset date to today
+                document.getElementById("date").valueAsDate = new Date();
+            }, 100);
+        });
+    </script>
 </body>
 </html>
