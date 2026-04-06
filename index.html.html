@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Data Entry Form</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="top-title">
+This form is only for maintaining the DEO work record<br>
+It is not a SmartPDS portal data entry page</div>
+
+<div class="title">
+Please complete the data entry process in the SmartPDS portal first<br>
+<span class="subtitle">
+After generating the application number, enter it here and submit it
+</span>
+</div>
+
+<div class="container">
+<form id="dataForm">
+
+<div class="row">
+<label>Name of Inspector:</label>
+
+<select id="inspector" required style="width:350px;">
+<option value="">Select</option>
+<option>Abhijit Bora</option>
+<option>Durga Bodo</option>
+<option>Mausam Zinnat</option>
+<option>Mausumi Bora</option>
+<option>Sanjiv Sarma</option>
+<option>Santonu Bordoloi</option>
+</select>
+
+</div>
+
+<div class="row">
+
+<label>Application Number:</label>
+
+<input type="text" id="applicationNumber" placeholder="RCxxxxxxxxxxxxxxxxxxx" style="width:350px;">
+
+</div>
+
+<div class="row flex">
+
+<div>
+
+<label>Name of Data Entry Operator:</label>
+
+<input type="text" id="deo" required style="width:200px;">
+
+</div>
+
+<div>
+
+<label>Date :</label>
+
+<input type="date" id="date" required style="width:170px;">
+
+</div>
+
+</div>
+
+<div class="row">
+
+<label>Mobile Number</label>
+
+<input type="text" id="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
+
+</div>
+
+<div class="row flex">
+
+<div class="half">
+
+<label>Name of Head of the Family:</label>
+
+<input type="text" id="hof" required style="width:80%;">
+
+</div>
+
+<div>
+
+<label>Application type</label>
+
+<select id="appType" required style="width:150px;">
+<option value="">Select</option>
+<option>NEW</option>
+<option>ADD</option>
+</select>
+
+</div>
+
+</div>
+
+<div class="row flex">
+
+<div>
+
+<label>Name of GP/Ward No</label>
+
+<input type="text" id="gp" required style="width:250px;">
+
+</div>
+
+<div>
+
+<label>Total Members</label>
+
+<input type="number" id="totalMembers" required style="width:150px;" min="1">
+
+</div>
+
+</div>
+
+<div class="yellow-bar">
+
+Fair Price Shop Detail
+
+</div>
+
+<div class="note">
+
+<b>N.B.:</b> You can fill only FPS Code
+
+</div>
+
+<div class="row flex">
+
+<div>
+
+<label>F.P.S Code</label>
+
+<input type="text" id="fpsCode" placeholder="130500500001" required style="width:200px;">
+
+</div>
+
+<div>
+
+<label>FPS Name</label>
+
+<input type="text" id="fpsName" readonly class="locked" style="width:250px;">
+
+</div>
+
+</div>
+
+<div class="row flex">
+
+<div>
+
+<label>Name of GPSS</label>
+
+<input type="text" id="gpss" readonly class="locked" style="width:390px;">
+
+</div>
+
+<div>
+
+<label>Area Officer</label>
+
+<input type="text" id="areaOfficer" readonly class="locked" style="width:280px;">
+
+</div>
+
+</div>
+
+<div class="row">
+
+<label>LAC Name</label>
+
+<input type="text" id="lacManual" readonly class="locked" style="width:300px;">
+
+</div>
+
+<div class="button-area">
+
+<button class="submit-btn" type="submit">
+
+Submit
+
+</button>
+
+<button class="reset-btn" type="reset">
+
+Reset
+
+</button>
+
+<div class="caution-bar">
+
+📌 IMPORTANT<br>
+✔ All details must be verified before submission.<br>
+⚠ Incorrect data entry will be responsibility of the DEO.
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
