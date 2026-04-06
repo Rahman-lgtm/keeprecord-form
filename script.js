@@ -90,7 +90,7 @@ function initAppNumValidation() {
 
         if (!value.startsWith("RC")) {
             if (status) {
-                status.textContent = "RC से शुरू होना चाहिए";
+                status.textContent = "It should start with RC";
                 status.className = "status-dup";
             }
             this.style.borderColor = "red";
@@ -106,7 +106,7 @@ function initAppNumValidation() {
         const pattern = currentAppType === "NEW" ? /^RC\d{18}$/ : /^RC\d{19}$/;
         if (!pattern.test(value)) {
             if (status) {
-                status.textContent = "गलत format";
+                status.textContent = "Wrong format";
                 status.className = "status-dup";
             }
             this.style.borderColor = "red";
@@ -124,7 +124,7 @@ function initAppNumValidation() {
                 .then(data => {
                     if (data && data.exists) {
                         if (status) {
-                            status.textContent = "이미 submit हुआ";
+                            status.textContent = "이미 Submitted";
                             status.className = "status-dup";
                         }
                         this.style.borderColor = "red";
@@ -170,7 +170,7 @@ if (fpsCodeField) {
             if (gpss) gpss.value = f.gpss || '';
             if (areaOfficer) areaOfficer.value = f.areaOfficer || '';
             if (lacManual) lacManual.value = f.lac || '';
-            showToast("FPS details loaded ✅", true);
+            showToast("FPS details are now displayed", true);
         }
     });
 }
@@ -210,7 +210,7 @@ if (dataForm) {
         });
 
         if (hasError) {
-            showToast("सभी * वाले fields भरें ❌", false);
+            showToast("All fields marked with * are mandatory", false);
             return;
         }
 
@@ -231,13 +231,13 @@ if (dataForm) {
                         (submitCounts.get(appNum) || 0) + 1 : 0;
                     
                     submitCounts.set(appNum, count);
-                    showToast(`Saved! ${currentAppType === "ADD" ? `(${count}/3)` : ''} ✅`, true);
+                    showToast(`Saved! ${currentAppType === "ADD" ? `(${count}/3)` : ''} `, true);
                     resetForm();
                 } else {
                     showToast(res.message || "Duplicate!", false);
                 }
             })
-            .catch(() => showToast("Server error ❌", false))
+            .catch(() => showToast("Server error plz try after sometime", false))
             .finally(() => toggle(btn, false));
     });
 }
