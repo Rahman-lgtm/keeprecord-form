@@ -370,7 +370,6 @@ function toggle(btn, load) {
 
 // ✅ App Type Change
 document.getElementById("appType").addEventListener("change", function () {
-
     currentAppType = this.value;
 
     const mainForm = document.getElementById("mainForm");
@@ -379,7 +378,6 @@ document.getElementById("appType").addEventListener("change", function () {
 
     if (this.value) {
         mainForm.style.display = "block";
-
         appNumField.value = "";
         status.textContent = "";
         checkedAppNums.clear();
@@ -400,12 +398,10 @@ document.getElementById("appType").addEventListener("change", function () {
 
 // ✅ LIVE CHECK (PRO LEVEL)
 document.getElementById("applicationNumber").addEventListener("input", function () {
-
     const value = this.value.trim();
     const status = document.getElementById("appStatus");
 
     clearTimeout(debounceTimer);
-
     status.textContent = "";
     status.className = "";
     this.style.borderColor = "";
@@ -423,7 +419,6 @@ document.getElementById("applicationNumber").addEventListener("input", function 
     }
 
     const expectedLength = currentAppType === "NEW" ? 20 : 21;
-
     if (value.length < expectedLength) {
         status.textContent = `Incomplete (${value.length}/${expectedLength})`;
         return;
@@ -436,10 +431,7 @@ document.getElementById("applicationNumber").addEventListener("input", function 
         return;
     }
 
-    const pattern = currentAppType === "NEW"
-        ? /^RC\d{18}$/
-        : /^RC\d{19}$/;
-
+    const pattern = currentAppType === "NEW" ? /^RC\d{18}$/ : /^RC\d{19}$/;
     if (!pattern.test(value)) {
         status.textContent = "Invalid format";
         status.className = "status-dup";
@@ -451,11 +443,9 @@ document.getElementById("applicationNumber").addEventListener("input", function 
     status.className = "status-checking";
 
     debounceTimer = setTimeout(() => {
-
         fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
             .then(res => res.json())
             .then(data => {
-
                 if (data.exists) {
                     status.textContent = "Duplicate ❌";
                     status.className = "status-dup";
@@ -466,63 +456,61 @@ document.getElementById("applicationNumber").addEventListener("input", function 
                     status.className = "status-ok";
                     this.style.borderColor = "green";
                 }
-
             })
             .catch(() => {
                 status.textContent = "Server error!";
                 status.className = "status-dup";
             });
-
     }, 300);
 });
 
-// ✅ FPS Load
+// ✅ FPS Load & Autofill
 fetch(API_URL + "?action=getFPS")
     .then(r => r.json())
     .then(d => fpsData = d);
 
-// ✅ FPS Autofill
-fetch(API_URL+"?action=getFPS")
-.then(r=>r.json())
-.then(d=>fpsData=d);
-
-fpsCode.oninput=function(){
- let f=fpsData.find(x=>x.code==this.value);
- if(f){
-  fpsName.value=f.fpsName;
-  gpss.value=f.gpss;
-  areaOfficer.value=f.areaOfficer;
-  lacManual.value=f.lac;
- }
+document.getElementById("fpsCode").oninput = function() {
+    let f = fpsData.find(x => x.code == this.value);
+    if (f) {
+        document.getElementById("fpsName").value = f.fpsName;
+        document.getElementById("gpss").value = f.gpss;
+        document.getElementById("areaOfficer").value = f.areaOfficer;
+        document.getElementById("lacManual").value = f.lac;
+    }
 }
+
 // ✅ Date Auto
 document.getElementById("date").valueAsDate = new Date();
 
-// ✅ Submit
-// ✅ नया Submit handler: empty field वाले को रोकेगा
+// 🔥 UPDATED SUBMIT - Required fields + AppType fix
 document.getElementById("dataForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const btn = document.getElementById("submitBtn");
-    const appNum = applicationNumber.value.trim();
+    const appNum = document.getElementById("applicationNumber").value.trim();
 
-    // पहले सभी required फील्ड्स को चेक करो
+    // ✅ Required fields validation
     const requiredFields = this.querySelectorAll("[required]");
     let hasError = false;
 
     requiredFields.forEach(input => {
         if (!input.value.trim()) {
             input.style.borderColor = "red";
+            input.style.boxShadow = "0 0 5px rgba(255,0,0,0.5)";
             hasError = true;
         } else {
-            input.style.borderColor = ""; // normal
+            input.style.borderColor = "";
+            input.style.boxShadow = "";
         }
     });
 
     if (hasError) {
-        showToast("Please fill all required fields ❌", false);
+        showToast("सभी required fields भरें ❌", false);
         return;
     }
+
+    // 🔥 FIX: Application Type hidden field में भरो
+    document.getElementById("hiddenAppType").value = currentAppType; // "NEW" या "ADD"
 
     toggle(btn, true);
 
@@ -532,9 +520,7 @@ document.getElementById("dataForm").addEventListener("submit", function (e) {
     fetch(API_URL, { method: "POST", body: fd })
         .then(r => r.json())
         .then(res => {
-
             if (res.status === "Success") {
-
                 if (currentAppType === "ADD") {
                     const count = (submitCounts.get(appNum) || 0) + 1;
                     submitCounts.set(appNum, count);
@@ -542,17 +528,15 @@ document.getElementById("dataForm").addEventListener("submit", function (e) {
                 } else {
                     showToast("Saved Successfully ✅", true);
                 }
-
                 resetForm();
-
             } else {
                 showToast("Duplicate ❌", false);
             }
-
         })
         .catch(() => showToast("Server Error ❌", false))
         .finally(() => toggle(btn, false));
 });
+
 // ✅ Reset
 function resetForm() {
     document.getElementById("dataForm").reset();
@@ -562,6 +546,12 @@ function resetForm() {
     currentAppType = "";
     checkedAppNums.clear();
     document.getElementById("date").valueAsDate = new Date();
+    
+    // सभी fields को normal border दो
+    document.querySelectorAll("[required]").forEach(input => {
+        input.style.borderColor = "";
+        input.style.boxShadow = "";
+    });
 }
 
 document.querySelector(".reset-btn").addEventListener("click", resetForm);
