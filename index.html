@@ -373,23 +373,54 @@ document.getElementById("applicationNumber").addEventListener("input", function 
 
     clearTimeout(debounceTimer);
 
+    // Reset UI
     status.textContent = "";
     status.className = "";
+    this.style.borderColor = "";
 
     if (!value) return;
 
-    // ✅ Allow typing first
-    const minLength = currentAppType === "NEW" ? 20 : 21;
+    // 🧠 Step 1: Typing state
+    status.textContent = "Typing...";
+    status.className = "status-checking";
 
-    if (value.length < minLength) return;
+    // 🧠 Step 2: Basic format check (RC prefix)
+    if (!value.startsWith("RC")) {
+        status.textContent = "Must start with RC";
+        status.className = "status-dup";
+        this.style.borderColor = "red";
+        return;
+    }
 
-    // ✅ Final pattern check
+    // 🧠 Step 3: Length logic
+    const expectedLength = currentAppType === "NEW" ? 20 : 21;
+
+    if (value.length < expectedLength) {
+        status.textContent = `Incomplete (${value.length}/${expectedLength})`;
+        status.className = "status-checking";
+        return;
+    }
+
+    if (value.length > expectedLength) {
+        status.textContent = "Too long!";
+        status.className = "status-dup";
+        this.style.borderColor = "red";
+        return;
+    }
+
+    // 🧠 Step 4: Final regex validation
     const pattern = currentAppType === "NEW"
         ? /^RC\d{18}$/
         : /^RC\d{19}$/;
 
-    if (!pattern.test(value)) return;
+    if (!pattern.test(value)) {
+        status.textContent = "Invalid format";
+        status.className = "status-dup";
+        this.style.borderColor = "red";
+        return;
+    }
 
+    // 🧠 Step 5: Server check
     status.textContent = "Checking...";
     status.className = "status-checking";
 
@@ -402,19 +433,21 @@ document.getElementById("applicationNumber").addEventListener("input", function 
                 if (data.exists) {
                     status.textContent = "Duplicate ❌";
                     status.className = "status-dup";
+                    this.style.borderColor = "red";
                     checkedAppNums.add(value);
                 } else {
                     status.textContent = "Available ✅";
                     status.className = "status-ok";
+                    this.style.borderColor = "green";
                 }
 
             })
             .catch(() => {
-                status.textContent = "Error!";
+                status.textContent = "Server error!";
                 status.className = "status-dup";
             });
 
-    }, 400);
+    }, 350); // ⚡ ultra fast
 });
 // ✅ VALIDATION
 function validateForm() {
