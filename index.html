@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Entry Form - DEO Work Record</title>
     <style>
-        /* सभी CSS same हैं - कोई बदलाव नहीं */
         body {
             font-family: "Bookman Old Style", serif;
             background: #dcdcdc;
@@ -158,17 +157,9 @@
             font-weight: bold;
         }
 
-        .status-checking { 
-            color: orange; 
-        }
-
-        .status-ok { 
-            color: green; 
-        }
-
-        .status-dup { 
-            color: red; 
-        }
+        .status-checking { color: orange; }
+        .status-ok { color: green; }
+        .status-dup { color: red; }
 
         .spinner {
             margin-left: 6px;
@@ -177,12 +168,8 @@
         }
 
         @keyframes spin {
-            from { 
-                transform: rotate(0deg); 
-            }
-            to { 
-                transform: rotate(360deg); 
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .toast {
@@ -197,19 +184,9 @@
             min-width: 250px;
         }
 
-        .toast.show { 
-            opacity: 1; 
-        }
-
-        .toast-success { 
-            background: green; 
-            color: white; 
-        }
-
-        .toast-error { 
-            background: red; 
-            color: white; 
-        }
+        .toast.show { opacity: 1; }
+        .toast-success { background: green; color: white; }
+        .toast-error { background: red; color: white; }
 
         .warning-bar {
             background: #fff3cd;
@@ -221,20 +198,51 @@
             font-weight: bold;
         }
 
-        /* Responsive */
+        /* 🔥 HIDDEN FORM SECTIONS */
+        .form-section {
+            display: none;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .form-section.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* SIMPLE APP TYPE SELECTOR */
+        .app-type-selector {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .app-type-selector select {
+            font-size: 24px;
+            padding: 15px 20px;
+            width: 400px;
+            max-width: 90%;
+            border-radius: 10px;
+            border: none;
+            background: white;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .app-type-hint {
+            margin-top: 15px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
         @media screen and (max-width: 960px) {
-            .container {
-                width: 95%;
-            }
-            
-            .flex {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .half {
-                width: 100%;
-            }
+            .container { width: 95%; }
+            .flex { flex-direction: column; gap: 20px; }
+            .half { width: 100%; }
         }
     </style>
 </head>
@@ -247,22 +255,24 @@
 
     <div class="title">
         Please complete the data entry process in the SmartPDS portal first<br>
-        <span class="subtitle">
-            After generating the application number, enter it here and submit it
-        </span>
+        <span class="subtitle">After generating the application number, enter it here and submit it</span>
     </div>
 
     <div class="container">
-        <form id="dataForm" novalidate>
-            <!-- 🔥 MAIN CHANGE: Application Type FIRST -->
-            <div class="row" style="background: #e7f3ff; padding: 15px; border-radius: 8px; border: 2px solid #0d6efd;">
-                <label style="font-size: 20px; color: #0d6efd; font-weight: bold;">Application Type <span style="color:red;">*</span>:</label>
-                <select id="appType" name="appType" required style="width:350px; font-size: 18px; padding: 10px;">
-                    <option value="">--- Select Type First ---</option>
-                    <option value="NEW">🆕 NEW (20 digits: RC202500000007634117)</option>
-                    <option value="ADD">➕ ADD (21 digits: RC2025061100001187008)</option>
-                </select>
-            </div>
+        <!-- 🔥 SIMPLE APP TYPE SELECTOR - ONLY VISIBLE FIRST -->
+        <div class="app-type-selector">
+            <label style="font-size: 28px; margin-bottom: 20px; display: block;">Application Type चुनें:</label>
+            <select id="appType" name="appType" required>
+                <option value="">--- पहले Type Select करें ---</option>
+                <option value="NEW">🆕 NEW (20 digits)</option>
+                <option value="ADD">➕ ADD (21 digits)</option>
+            </select>
+            <div class="app-type-hint" id="appTypeHint"></div>
+        </div>
+
+        <!-- 🔥 HIDDEN FORM - SHOW ONLY AFTER APP TYPE SELECT -->
+        <form id="dataForm" novalidate style="display:none;">
+            <input type="hidden" name="appType" id="hiddenAppType">
 
             <div class="row">
                 <label>Application Number <span style="color:red;">*</span> <span id="appFormat" style="font-size:14px;color:#666;"></span>:</label>
@@ -320,12 +330,12 @@
             <div class="yellow-bar">Fair Price Shop Detail</div>
 
             <div class="note">
-                <b>N.B.:</b> fill only FPS ID - the remaining fields will be auto-filled.
+                <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
             </div>
 
             <div class="row flex">
                 <div>
-                    <label>F.P.S ID <span style="color:red;">*</span>:</label>
+                    <label>F.P.S Code <span style="color:red;">*</span>:</label>
                     <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
                 </div>
                 <div>
@@ -350,7 +360,6 @@
                 <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
             </div>
 
-            <!-- 🔥 SUBMIT COUNT WARNING -->
             <div id="submitWarning" class="warning-bar" style="display:none;">
                 ⚠️ <strong>ADD Application:</strong> यह पहले submit हो चुका है! अधिकतम 3 बार ही submit हो सकता है।
             </div>
@@ -367,27 +376,23 @@
                 📌 <strong>IMPORTANT:</strong><br>
                 ✔ NEW: 20 digits (RC202500000007634117)<br>
                 ✔ ADD: 21 digits (RC2025061100001187008)<br>
-                ✔ ADD max 3 submits per application<br>
-                ⚠ सभी fields भरें और format check करें!
+                ✔ ADD max 3 submits per application
             </div>
         </form>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="toast">
         <div class="toast-message"></div>
     </div>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV5suO2d2hb7ahw95fbO4ftwzyoaImknOI23Uvzjv4aeXdBA/exec";
-
         let fpsData = [];
         let checkedAppNums = new Set();
-        let submitCounts = new Map(); // Track ADD submits
+        let submitCounts = new Map();
         let debounceTimer;
         let currentAppType = '';
 
-        // Toast
         function showToast(msg, ok=true){
             const t = document.getElementById("toast");
             t.querySelector(".toast-message").textContent = msg;
@@ -395,19 +400,55 @@
             setTimeout(()=>t.classList.remove("show"),4000);
         }
 
-        // 🔥 DYNAMIC VALIDATION BASED ON APP TYPE
+        // 🔥 SHOW/HIDE FORM ON APP TYPE SELECT
+        document.getElementById("appType").addEventListener("change", function(){
+            if(this.value){
+                currentAppType = this.value;
+                document.getElementById("hiddenAppType").value = this.value;
+                
+                const form = document.getElementById("dataForm");
+                const appNumField = document.getElementById("applicationNumber");
+                const appStatus = document.getElementById("appStatus");
+                const appFormat = document.getElementById("appFormat");
+                const submitWarning = document.getElementById("submitWarning");
+                const hint = document.getElementById("appTypeHint");
+
+                // Clear previous data
+                appNumField.value = '';
+                appStatus.textContent = '';
+                checkedAppNums.clear();
+
+                // Set format
+                if(this.value === 'NEW'){
+                    appFormat.textContent = '(RC + 20 digits)';
+                    appNumField.maxLength = 22;
+                    submitWarning.style.display = 'none';
+                    hint.textContent = 'अब NEW form भरें (20 digits)';
+                } else {
+                    appFormat.textContent = '(RC + 21 digits)';
+                    appNumField.maxLength = 23;
+                    submitWarning.style.display = 'block';
+                    hint.textContent = 'अब ADD form भरें (21 digits, max 3 submits)';
+                }
+
+                // Show form with animation
+                form.classList.add('form-section', 'show');
+                form.style.display = 'block';
+                setTimeout(() => appNumField.focus(), 300);
+                showToast("Form खुल गया! Application Number भरें 👇", true);
+            }
+        });
+
         function getAppNumberPattern(){
-            const appType = document.getElementById('appType').value;
-            if(appType === 'NEW') return /^RC\d{20}$/;  // 20 digits
-            if(appType === 'ADD') return /^RC\d{21}$/;  // 21 digits
-            return /^RC\d{0,}$/; // Default
+            if(currentAppType === 'NEW') return /^RC\d{20}$/;
+            if(currentAppType === 'ADD') return /^RC\d{21}$/;
+            return /^RC\d{0,}$/;
         }
 
-        // Strict Validation
         function validateForm(){
             const requiredFields = [
-                'appType', 'applicationNumber', 'inspector', 'deo', 'date', 
-                'mobile', 'hof', 'gp', 'totalMembers', 'fpsCode'
+                'applicationNumber', 'inspector', 'deo', 'date', 'mobile', 
+                'hof', 'gp', 'totalMembers', 'fpsCode'
             ];
 
             for(let id of requiredFields){
@@ -419,38 +460,32 @@
                 }
             }
 
-            // Mobile validation
             const mobile = document.getElementById('mobile').value;
             if(!/^\d{10}$/.test(mobile)){
                 document.getElementById('mobile').focus();
-                showToast("10 digit mobile number!", false);
+                showToast("10 digit mobile!", false);
                 return false;
             }
 
-            // 🔥 DYNAMIC APP NUMBER VALIDATION
             const appNum = document.getElementById('applicationNumber').value.trim();
             const pattern = getAppNumberPattern();
             if(!pattern.test(appNum)){
                 document.getElementById('applicationNumber').focus();
-                const type = document.getElementById('appType').value;
-                showToast(type === 'NEW' ? "NEW: RC + 20 digits!" : "ADD: RC + 21 digits!", false);
+                showToast(currentAppType === 'NEW' ? "NEW: RC + 20 digits!" : "ADD: RC + 21 digits!", false);
                 return false;
             }
 
-            // FPS Code validation
             const fpsCode = document.getElementById('fpsCode').value.trim();
             if(fpsData.length && !fpsData.some(f=>f[0].toString().trim() === fpsCode)){
                 document.getElementById('fpsCode').focus();
-                showToast("Valid FPS Code डालें!", false);
+                showToast("Valid FPS Code!", false);
                 return false;
             }
 
-            // 🔥 ADD SUBMIT LIMIT CHECK
             if(currentAppType === 'ADD'){
-                const appNum = document.getElementById('applicationNumber').value.trim();
                 const count = submitCounts.get(appNum) || 0;
                 if(count >= 3){
-                    showToast("❌ ADD max 3 submits! Contact Admin", false);
+                    showToast("❌ ADD max 3 submits!", false);
                     return false;
                 }
             }
@@ -458,7 +493,6 @@
             return true;
         }
 
-        // Loader
         function toggle(btn,load){
             btn.disabled=load;
             btn.querySelector(".btn-text").style.display=load?"none":"inline";
@@ -470,58 +504,21 @@
         .then(r=>r.json())
         .then(data=>{
             fpsData = data;
-            console.log("FPS data loaded:", fpsData.length);
-        })
-        .catch(err=>console.error("FPS load failed:", err));
+            console.log("FPS loaded:", fpsData.length);
+        }).catch(console.error);
 
-        // 🔥 APPLICATION TYPE CHANGE HANDLER
-        document.getElementById("appType").addEventListener("change", function(){
-            currentAppType = this.value;
-            const appNumField = document.getElementById("applicationNumber");
-            const appStatus = document.getElementById("appStatus");
-            const appFormat = document.getElementById("appFormat");
-            const submitWarning = document.getElementById("submitWarning");
-
-            // Clear app number
-            appNumField.value = '';
-            appStatus.textContent = '';
-            appStatus.className = '';
-            checkedAppNums.clear();
-
-            if(this.value === 'NEW'){
-                appFormat.textContent = '(RC + 20 digits)';
-                appNumField.maxLength = 22; // RC + 20
-                submitWarning.style.display = 'none';
-            } else if(this.value === 'ADD'){
-                appFormat.textContent = '(RC + 21 digits)';
-                appNumField.maxLength = 23; // RC + 21
-                submitWarning.style.display = 'block';
-            } else {
-                appFormat.textContent = '';
-                appNumField.maxLength = 50;
-                submitWarning.style.display = 'none';
-            }
-
-            // Focus app number
-            appNumField.focus();
-        });
-
-        // Elements
-        const app = document.getElementById("applicationNumber");
-        const status = document.getElementById("appStatus");
-
-        // LIVE CHECK
-        app.addEventListener("input",function(){
+        // App Number Live Check
+        document.getElementById("applicationNumber").addEventListener("input",function(){
             const v = this.value.trim();
             clearTimeout(debounceTimer);
 
             const pattern = getAppNumberPattern();
             if(!pattern.test(v)){
-                status.textContent = "";
-                status.className = "";
+                document.getElementById("appStatus").textContent = "";
                 return;
             }
 
+            const status = document.getElementById("appStatus");
             status.innerHTML="Checking... <span class='spinner'></span>";
             status.className="status-checking";
 
@@ -537,8 +534,7 @@
                         status.textContent="Available ✅";
                         status.className="status-ok";
                     }
-                })
-                .catch(()=>{
+                }).catch(()=>{
                     status.textContent="Error!";
                     status.className="status-dup";
                 });
@@ -557,88 +553,73 @@
 
             if(code && fpsData.length){
                 const fps = fpsData.find(f=>f[0].toString().trim() === code);
-                if(fps && fps.length >= 5){
+                if(fps?.length >= 5){
                     fields.fpsName.value = fps[1] || '';
                     fields.gpss.value = fps[2] || '';
                     fields.areaOfficer.value = fps[3] || '';
                     fields.lacManual.value = fps[4] || '';
                 } else {
-                    Object.values(fields).forEach(field => field.value = '');
+                    Object.values(fields).forEach(f=>f.value='');
                 }
             } else {
-                Object.values(fields).forEach(field => field.value = '');
+                Object.values(fields).forEach(f=>f.value='');
             }
         });
 
-        // Set today's date
         document.getElementById("date").valueAsDate = new Date();
 
-        // Submit Handler
+        // Submit
         document.getElementById("dataForm").addEventListener("submit",function(e){
             e.preventDefault();
-            
             if(!validateForm()) return;
 
             const btn = document.getElementById("submitBtn");
             const appNum = document.getElementById('applicationNumber').value.trim();
-            toggle(btn, true);
+            toggle(btn,true);
 
             const fd = new FormData(this);
             fd.append("action","submit");
 
-            fetch(API_URL, {method:"POST", body:fd})
+            fetch(API_URL,{method:"POST",body:fd})
             .then(r=>r.json())
             .then(res=>{
                 if(res.status==="Success"){
-                    // Track ADD submits
                     if(currentAppType === 'ADD'){
                         const count = (submitCounts.get(appNum) || 0) + 1;
                         submitCounts.set(appNum, count);
-                        showToast(`✅ Saved! ADD Submit ${count}/3`, true);
+                        showToast(`✅ ADD Saved! ${count}/3`,true);
                     } else {
-                        showToast("✅ NEW Saved Successfully!", true);
+                        showToast("✅ NEW Saved!",true);
                     }
-                    
-                    this.reset();
                     resetForm();
                 } else {
-                    showToast("❌ Duplicate Found!", false);
+                    showToast("❌ Duplicate!",false);
                     checkedAppNums.add(appNum);
                 }
             })
-            .catch(err=>{
-                console.error(err);
-                showToast("❌ Network Error!", false);
-            })
-            .finally(()=>{
-                toggle(btn, false);
-            });
+            .catch(()=>showToast("❌ Error!",false))
+            .finally(()=>toggle(btn,false));
         });
 
-        // Reset Form
         function resetForm(){
-            const status = document.getElementById("appStatus");
-            const submitWarning = document.getElementById("submitWarning");
-            status.textContent = "";
-            status.className = "";
-            submitWarning.style.display = 'none';
+            document.getElementById("dataForm").reset();
+            document.querySelector('.form-section').classList.remove('show');
+            document.getElementById("dataForm").style.display = 'none';
+            document.getElementById("appStatus").textContent = '';
+            document.getElementById("submitWarning").style.display = 'none';
+            document.getElementById("appFormat").textContent = '';
             checkedAppNums.clear();
             currentAppType = '';
-            document.getElementById("appFormat").textContent = '';
-            document.getElementById("date").valueAsDate = new Date();
             document.getElementById("appType").focus();
+            document.getElementById("date").valueAsDate = new Date();
         }
 
-        document.querySelector('.reset-btn').addEventListener('click', function(){
-            document.getElementById("dataForm").reset();
-            resetForm();
-            showToast("Form Reset ✅", true);
-        });
+        document.querySelector('.reset-btn').addEventListener('click', resetForm);
 
-        // Page load - Focus on App Type
+        // Page Load
         window.addEventListener('load', ()=>{
             document.getElementById("appType").focus();
-            showToast("Application Type select करें 👆", true);
+            showToast("Application Type select करें!", true);
         });
     </script>
 </body>
