@@ -6,15 +6,15 @@ let submitCounts = new Map();
 let debounceTimer;
 let currentAppType = '';
 
-// ✅ Toast
+// ✅ Toast Function
 function showToast(msg, ok = true) {
     const t = document.getElementById("toast");
     t.querySelector(".toast-message").textContent = msg;
-    t.className = "toast show " + (ok ? "toast-success" : "toast-error");
-    setTimeout(() => t.classList.remove("show"), 2500);
+    t.className = `toast show ${ok ? 'toast-success' : 'toast-error'}`;
+    setTimeout(() => t.classList.remove("show"), 3000);
 }
 
-// ✅ Spinner Toggle (FINAL)
+// ✅ Spinner Toggle
 function toggle(btn, load) {
     if (load) {
         btn.classList.add("loading");
@@ -25,10 +25,9 @@ function toggle(btn, load) {
     }
 }
 
-// ✅ App Type Change
+// ✅ App Type Change Handler
 document.getElementById("appType").addEventListener("change", function () {
     currentAppType = this.value;
-
     const mainForm = document.getElementById("mainForm");
     const appNumField = document.getElementById("applicationNumber");
     const status = document.getElementById("appStatus");
@@ -41,19 +40,23 @@ document.getElementById("appType").addEventListener("change", function () {
 
         if (this.value === "NEW") {
             appNumField.maxLength = 20;
-            appNumField.placeholder = "RC + 18 digits";
+            appNumField.placeholder = "RCxxxxxxxxxxxxxxx (20 chars)";
+            document.getElementById("appFormat").textContent = "(20 chars)";
         } else {
             appNumField.maxLength = 21;
-            appNumField.placeholder = "RC + 19 digits";
+            appNumField.placeholder = "RCxxxxxxxxxxxxxxxxx (21 chars)";
+            document.getElementById("appFormat").textContent = "(21 chars)";
+            document.getElementById("submitWarning").style.display = "block";
         }
 
         appNumField.focus();
     } else {
         mainForm.style.display = "none";
+        document.getElementById("submitWarning").style.display = "none";
     }
 });
 
-// ✅ LIVE CHECK (PRO LEVEL)
+// ✅ Real-time Application Number Validation
 document.getElementById("applicationNumber").addEventListener("input", function () {
     const value = this.value.trim();
     const status = document.getElementById("appStatus");
@@ -65,11 +68,8 @@ document.getElementById("applicationNumber").addEventListener("input", function 
 
     if (!value) return;
 
-    status.textContent = "Typing...";
-    status.className = "status-checking";
-
     if (!value.startsWith("RC")) {
-        status.textContent = "Must start with RC";
+        status.textContent = "RC से शुरू होना चाहिए";
         status.className = "status-dup";
         this.style.borderColor = "red";
         return;
@@ -77,20 +77,13 @@ document.getElementById("applicationNumber").addEventListener("input", function 
 
     const expectedLength = currentAppType === "NEW" ? 20 : 21;
     if (value.length < expectedLength) {
-        status.textContent = `Incomplete (${value.length}/${expectedLength})`;
-        return;
-    }
-
-    if (value.length > expectedLength) {
-        status.textContent = "Too long!";
-        status.className = "status-dup";
-        this.style.borderColor = "red";
+        status.textContent = `${value.length}/${expectedLength}`;
         return;
     }
 
     const pattern = currentAppType === "NEW" ? /^RC\d{18}$/ : /^RC\d{19}$/;
     if (!pattern.test(value)) {
-        status.textContent = "Invalid format";
+        status.textContent = "गलत format";
         status.className = "status-dup";
         this.style.borderColor = "red";
         return;
@@ -104,112 +97,139 @@ document.getElementById("applicationNumber").addEventListener("input", function 
             .then(res => res.json())
             .then(data => {
                 if (data.exists) {
-                    status.textContent = "already been submitted";
+                    status.textContent = "이미 submit हुआ";
                     status.className = "status-dup";
                     this.style.borderColor = "red";
                     checkedAppNums.add(value);
                 } else {
                     status.textContent = "Available ✅";
                     status.className = "status-ok";
-                    this.style.borderColor = "green";
+                    this.style.borderColor = "#28a745";
                 }
             })
             .catch(() => {
-                status.textContent = "Server error!";
+                status.textContent = "Network error!";
                 status.className = "status-dup";
             });
-    }, 300);
+    }, 500);
 });
 
-// ✅ FPS Load & Autofill
-fetch(API_URL + "?action=getFPS")
+// ✅ FPS Auto-fill
+fetch(`${API_URL}?action=getFPS`)
     .then(r => r.json())
-    .then(d => fpsData = d);
+    .then(d => fpsData = d)
+    .catch(console.error);
 
-document.getElementById("fpsCode").oninput = function() {
-    let f = fpsData.find(x => x.code == this.value);
+document.getElementById("fpsCode").addEventListener("input", function() {
+    const code = this.value.trim();
+    if (code.length !== 12) return;
+
+    const f = fpsData.find(x => x.code === code);
     if (f) {
-        document.getElementById("fpsName").value = f.fpsName;
-        document.getElementById("gpss").value = f.gpss;
-        document.getElementById("areaOfficer").value = f.areaOfficer;
-        document.getElementById("lacManual").value = f.lac;
+        document.getElementById("fpsName").value = f.fpsName || '';
+        document.getElementById("gpss").value = f.gpss || '';
+        document.getElementById("areaOfficer").value = f.areaOfficer || '';
+        document.getElementById("lacManual").value = f.lac || '';
+        showToast("FPS details loaded ✅", true);
     }
-}
+});
 
-// ✅ Date Auto
-document.getElementById("date").valueAsDate = new Date();
+// ✅ Today's Date Only
+const today = new Date().toISOString().split('T')[0];
+const dateInput = document.getElementById("date");
+dateInput.value = today;
+dateInput.min = today;
+dateInput.max = today;
 
-// 🔥 UPDATED SUBMIT - Required fields + AppType fix
+// 🔥 Form Submit with Validation
 document.getElementById("dataForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const btn = document.getElementById("submitBtn");
     const appNum = document.getElementById("applicationNumber").value.trim();
 
-    // ✅ Required fields validation
-    const requiredFields = this.querySelectorAll("[required]");
-    let hasError = false;
+    // ✅ All required fields check
+    const required = this.querySelectorAll("[required]");
+    let emptyFields = [];
 
-    requiredFields.forEach(input => {
-        if (!input.value.trim()) {
-            input.style.borderColor = "red";
-            input.style.boxShadow = "0 0 5px rgba(255,0,0,0.5)";
-            hasError = true;
+    required.forEach(field => {
+        if (!field.value.trim()) {
+            emptyFields.push(field);
+            field.style.borderColor = "#dc3545";
+            field.style.boxShadow = "0 0 5px rgba(220,53,69,0.3)";
         } else {
-            input.style.borderColor = "";
-            input.style.boxShadow = "";
+            field.style.borderColor = "";
+            field.style.boxShadow = "";
         }
     });
 
-    if (hasError) {
-        showToast("सभी required fields भरें ❌", false);
+    if (emptyFields.length > 0) {
+        showToast("सभी * वाले fields भरें ❌", false);
+        emptyFields[0].focus();
         return;
     }
 
-    // 🔥 FIX: Application Type hidden field में भरो
-    document.getElementById("hiddenAppType").value = currentAppType; // "NEW" या "ADD"
+    // ✅ AppType hidden field set
+    document.getElementById("hiddenAppType").value = currentAppType;
 
     toggle(btn, true);
+    showToast("Submitting...", true);
 
-    const fd = new FormData(this);
-    fd.append("action", "submit");
+    const formData = new FormData(this);
+    formData.append("action", "submit");
 
-    fetch(API_URL, { method: "POST", body: fd })
-        .then(r => r.json())
-        .then(res => {
-            if (res.status === "Success") {
-                if (currentAppType === "ADD") {
-                    const count = (submitCounts.get(appNum) || 0) + 1;
-                    submitCounts.set(appNum, count);
-                    showToast(`Saved (${count}/3) ✅`, true);
-                } else {
-                    showToast("Submitted Successfully ✅", true);
-                }
-                resetForm();
+    fetch(API_URL, { 
+        method: "POST", 
+        body: formData 
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.status === "Success") {
+            const count = currentAppType === "ADD" ? 
+                (submitCounts.get(appNum) || 0) + 1 : 0;
+            
+            if (currentAppType === "ADD" && count >= 3) {
+                showToast(`ADD limit reached (3/3) ❌`, false);
             } else {
-                showToast("this application number has already been submitted", false);
+                submitCounts.set(appNum, count);
+                showToast(`Saved successfully! ${currentAppType === "ADD" ? `(${count}/3)` : ''} ✅`, true);
+                resetForm();
             }
-        })
-        .catch(() => showToast("Server Error ❌", false))
-        .finally(() => toggle(btn, false));
+        } else {
+            showToast(res.message || "Duplicate application!", false);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        showToast("Network/Server error ❌", false);
+    })
+    .finally(() => toggle(btn, false));
 });
 
-// ✅ Reset
+// ✅ Reset Form
 function resetForm() {
     document.getElementById("dataForm").reset();
     document.getElementById("mainForm").style.display = "none";
     document.getElementById("appStatus").textContent = "";
     document.getElementById("appType").value = "";
+    document.getElementById("submitWarning").style.display = "none";
+    
     currentAppType = "";
     checkedAppNums.clear();
-    document.getElementById("date").valueAsDate = new Date();
     
-    // सभी fields को normal border दो
-    document.querySelectorAll("[required]").forEach(input => {
-        input.style.borderColor = "";
-        input.style.boxShadow = "";
+    // Reset styles
+    document.querySelectorAll("input, select").forEach(el => {
+        el.style.borderColor = "";
+        el.style.boxShadow = "";
     });
+    
+    dateInput.value = today;
+    document.getElementById("applicationNumber").focus();
 }
 
 document.querySelector(".reset-btn").addEventListener("click", resetForm);
-    
+
+// ✅ Page Load - Inspector focus
+window.addEventListener("load", () => {
+    document.getElementById("appType").focus();
+});
