@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbycMuof0Ip2ZMZeZQjn1bPk8_B_HeM6EvUpNGNF7u21UH69Tk9v0lZLnT9tH_qSMgINlA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV5suO2d2hb7ahw95fbO4ftwzyoaImknOI23Uvzjv4aeXdBA/exec";
 
 let fpsData = [];
 let checkedAppNums = new Set(); // already submitted app numbers
@@ -34,11 +34,11 @@ function showToast(message, success = true) {
   }, 3500);
 }
 
-// RC नंबर की लंबाई और फॉर्मेट check
+// RC validation for NEW (20 chars) / ADD (21 chars)
 function isValidAppNum(value) {
   const trimmed = value?.trim() || "";
-  // RC202500000007638358 → 20 chars, RC2025061100001187378 → 21 chars
-  return /^RC\d{18,20}$/.test(trimmed) && trimmed.length <= 21;
+  return /^RC\d{18,19}$/.test(trimmed) && 
+         (trimmed.length === 20 || trimmed.length === 21);
 }
 
 // Application number की दोहराव check API call
