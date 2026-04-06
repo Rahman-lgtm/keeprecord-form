@@ -1,533 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry Form - DEO Work Record</title>
-    <style>
-        /* सभी original CSS same */
-        body {
-            font-family: "Bookman Old Style", serif;
-            background: #dcdcdc;
-            margin: 0;
-        }
+<meta charset="UTF-8">
+<title>DEO Data Entry</title>
 
-        .top-title {
-            width: 600px;
-            margin: 25px auto 10px;
-            background: #bfbfbf;
-            text-align: center;
-            padding: 8px;
-            font-style: italic;
-            box-shadow: 2px 3px 6px gray;
-        }
+<style>
+body { font-family:"Bookman Old Style"; background:#dcdcdc; margin:0; }
 
-        .title {
-            width: 70%;
-            max-width: 800px;
-            margin: 10px auto;
-            padding: 5px;
-            font-size: 22px;
-            font-weight: bold;
-            text-align: center;
-            background: linear-gradient(to right, red, #ffc107);
-            color: white;
-            box-shadow: 2px 3px 6px gray;
-        }
+.container { width:800px; margin:30px auto; }
+.row { margin:12px 0; }
+.flex { display:flex; gap:20px; }
+label { font-size:17px; }
 
-        .subtitle { font-size: 16px; font-weight: normal; }
-
-        .container { width: 800px; margin: 25px auto; }
-
-        label { font-size: 18px; }
-
-        input, select {
-            border: 1px solid #cfcfcf;
-            padding: 6px;
-            border-radius: 3px;
-            outline: none;
-            background: #fff;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-            transition: border-color .2s ease, box-shadow .2s ease;
-        }
-
-        input:hover, select:hover { border-color: #b5b5b5; }
-        input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 3px rgba(13,110,253,.2); }
-
-        .locked {
-            background: #e6e6e6;
-            color: #666;
-            pointer-events: none;
-            cursor: not-allowed;
-        }
-
-        .row { margin: 14px 0; }
-        .flex { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-        .half { width: 48%; }
-
-        .yellow-bar {
-            background: #ffc107;
-            padding: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin: 25px 0 15px;
-            box-shadow: 2px 3px 6px gray;
-        }
-
-        .note { margin-bottom: 10px; }
-        .button-area { text-align: center; margin-top: 30px; }
-
-        .submit-btn, #submitBtn {
-            background: red;
-            color: white;
-            padding: 8px 30px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 2px 3px 6px gray;
-            margin-right: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .submit-btn:hover, #submitBtn:hover { background: #218838; }
-        .reset-btn {
-            background: #ffc107;
-            padding: 8px 30px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 2px 3px 6px gray;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .reset-btn:hover { background: #e0a800; }
-
-        .caution-bar {
-            width: 100%;
-            max-width: 1000px;
-            margin: 15px auto;
-            padding: 10px;
-            color: #842029;
-            text-align: left;
-        }
-
-        #appStatus {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .status-checking { color: orange; }
-        .status-ok { color: green; }
-        .status-dup { color: red; }
-
-.spinner {
-  display: none;
-  margin-left: 6px;
-  font-size: 16px;
-  animation: spin 1s linear infinite;
+input,select{
+  padding:6px;
+  border:1px solid #ccc;
+  border-radius:4px;
 }
 
-#submitBtn.loading .spinner {
-  display: inline-block;
+.locked{ background:#eee; pointer-events:none; }
+
+.yellow-bar{
+  background:#ffc107;
+  padding:8px;
+  text-align:center;
+  font-weight:bold;
+  margin:20px 0;
 }
 
-#submitBtn.loading .btn-text {
-  display: none;
+/* ✅ BUTTON */
+#submitBtn{
+  background:#28a745;
+  color:white;
+  padding:8px 30px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  position:relative;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#submitBtn.loading{
+  pointer-events:none;
+  opacity:0.7;
 }
 
-          .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: 0.3s;
-            z-index: 10000;
-            min-width: 250px;
-        }
+/* ✅ REAL SPINNER */
+#submitBtn.loading::after{
+  content:"";
+  width:18px;
+  height:18px;
+  border:3px solid white;
+  border-top:3px solid transparent;
+  border-radius:50%;
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  animation:spin 0.7s linear infinite;
+}
 
-        .toast.show { opacity: 1; }
-        .toast-success { background: green; color: white; }
-        .toast-error { background: red; color: white; }
+@keyframes spin{
+  100%{transform:translateY(-50%) rotate(360deg);}
+}
 
-        .warning-bar {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            font-weight: bold;
-        }
+/* STATUS */
+#appStatus{ font-size:13px; font-weight:bold; margin-left:10px; }
+.status-checking{color:orange;}
+.status-ok{color:green;}
+.status-dup{color:red;}
 
-        /* 🔥 HIDDEN BY DEFAULT */
-        .main-form { display: none; }
+/* TOAST */
+.toast{
+ position:fixed; top:15px; right:15px;
+ padding:10px 15px;
+ border-radius:5px;
+ opacity:0;
+ transition:.3s;
+}
+.toast.show{opacity:1;}
+.toast-success{background:green;color:#fff;}
+.toast-error{background:red;color:#fff;}
 
-        @media screen and (max-width: 960px) {
-            .container { width: 95%; }
-            .flex { flex-direction: column; gap: 20px; }
-            .half { width: 100%; }
-        }
-    </style>
+.main-form{display:none;}
+</style>
 </head>
 
 <body>
-    <div class="top-title">
-        This form is only for maintaining the DEO work record<br>
-        It is not a SmartPDS portal data entry page
-    </div>
 
-    <div class="title">
-        Please complete the data entry process in the SmartPDS portal first<br>
-        <span class="subtitle">After generating the application number, enter it here and submit it</span>
-    </div>
+<div class="container">
 
-    <div class="container">
-        <!-- 🔥 SIMPLE APP TYPE - SAME AS OTHER INPUTS -->
-        <div class="row">
-            <label>Application Type <span style="color:red;">*</span>:</label>
-            <select id="appType" name="appType" required style="width:350px;">
-                <option value="">Select</option>
-                <option value="NEW">NEW (20 digits)</option>
-                <option value="ADD">ADD (21 digits)</option>
-            </select>
-        </div>
+<div class="row">
+<label>Application Type *</label><br>
+<select id="appType">
+<option value="">Select</option>
+<option value="NEW">NEW (20)</option>
+<option value="ADD">ADD (21)</option>
+</select>
+</div>
 
-        <!-- 🔥 MAIN FORM - HIDDEN TILL APP TYPE SELECTED -->
-        <div id="mainForm" class="main-form">
-            <form id="dataForm" novalidate>
-                <input type="hidden" name="appType" id="hiddenAppType">
+<div id="mainForm" class="main-form">
 
-                <div class="row">
-                    <label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
-                    <div style="position: relative; display: inline-block; width: 350px;">
-                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
-                        <span id="appStatus"></span>
-                    </div>
-                </div>
+<form id="dataForm">
 
-                <div class="row">
-                    <label>Name of Inspector <span style="color:red;">*</span>:</label>
-                    <select id="inspector" name="inspector" required style="width:350px;">
-                        <option value="">Select</option>
-                        <option>Abhijit Bora</option>
-                        <option>Durga Bodo</option>
-                        <option>Mausam Zinnat</option>
-                        <option>Mausumi Bora</option>
-                        <option>Sanjiv Sarma</option>
-                        <option>Santonu Bordoloi</option>
-                    </select>
-                </div>
+<div class="row">
+<label>Application Number *</label><br>
+<input id="applicationNumber">
+<span id="appStatus"></span>
+</div>
 
-                <div class="row flex">
-                    <div>
-                        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
-                        <input type="text" id="deo" name="deo" required style="width:200px;">
-                    </div>
-                    <div>
-                        <label>Date <span style="color:red;">*</span>:</label>
-                        <input type="date" id="date" name="date" required style="width:170px;">
-                    </div>
-                </div>
+<div class="row">
+<label>Inspector *</label><br>
+<select id="inspector">
+<option value="">Select</option>
+<option>Abhijit Bora</option>
+</select>
+</div>
 
-                <div class="row">
-                    <label>Mobile Number <span style="color:red;">*</span>:</label>
-                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
-                </div>
+<div class="row flex">
+<input id="deo" placeholder="DEO Name">
+<input type="date" id="date">
+</div>
 
-                <div class="row flex">
-                    <div class="half">
-                        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
-                        <input type="text" id="hof" name="hof" required style="width:80%;">
-                    </div>
-                    <div class="half">
-                        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
-                        <input type="text" id="gp" name="gp" required style="width:80%;">
-                    </div>
-                </div>
+<div class="row">
+<input id="mobile" placeholder="Mobile">
+</div>
 
-                <div class="row">
-                    <label>Total Members <span style="color:red;">*</span>:</label>
-                    <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
-                </div>
+<div class="row flex">
+<input id="hof" placeholder="HOF">
+<input id="gp" placeholder="GP">
+</div>
 
-                <div class="yellow-bar">Fair Price Shop Detail</div>
+<div class="row">
+<input id="totalMembers" type="number">
+</div>
 
-                <div class="note">
-                    <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
-                </div>
+<div class="yellow-bar">FPS</div>
 
-                <div class="row flex">
-                    <div>
-                        <label>F.P.S Code <span style="color:red;">*</span>:</label>
-                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
-                    </div>
-                    <div>
-                        <label>FPS Name:</label>
-                        <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
-                    </div>
-                </div>
+<div class="row flex">
+<input id="fpsCode" placeholder="Code">
+<input id="fpsName" class="locked">
+</div>
 
-                <div class="row flex">
-                    <div>
-                        <label>Name of GPSS:</label>
-                        <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
-                    </div>
-                    <div>
-                        <label>Area Officer:</label>
-                        <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:280px;">
-                    </div>
-                </div>
+<div class="row flex">
+<input id="gpss" class="locked">
+<input id="areaOfficer" class="locked">
+</div>
 
-                <div class="row">
-                    <label>LAC Name:</label>
-                    <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
-                </div>
+<div class="row">
+<input id="lacManual" class="locked">
+</div>
 
-                <div id="submitWarning" class="warning-bar" style="display:none;">
-                    ⚠️ ADD Application: अधिकतम 3 बार ही submit हो सकता है।
-                </div>
+<button id="submitBtn">Submit</button>
+<button type="button" id="resetBtn">Reset</button>
 
-                <div class="button-area">
-                    <button id="submitBtn" type="submit">
-                    <span class="btn-text">Submit</span>
-                 <span class="spinner">↻</span>
-                 </button>
-                    <button class="reset-btn" type="button">Reset</button>
-                </div>
+</form>
+</div>
+</div>
 
-                <div class="caution-bar">
-                    📌 NEW: 20 digits | ADD: 21 digits | ADD max 3 submits
-                </div>
-            </form>
-        </div>
-    </div>
+<div id="toast" class="toast"><span class="toast-message"></span></div>
 
-    <div id="toast" class="toast">
-        <div class="toast-message"></div>
-    </div>
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbw02vDrYaKFL3hA3XZBBf978uh5KrGuwKMbdSYAVPNbT5b6wFgM1EyV4RE_zHV0PRSQqQ/exec";
 
-    <script>
-       const API_URL = "https://script.google.com/macros/s/AKfycbw02vDrYaKFL3hA3XZBBf978uh5KrGuwKMbdSYAVPNbT5b6wFgM1EyV4RE_zHV0PRSQqQ/exec";
-
-let fpsData = [];
-let checkedAppNums = new Set();
-let submitCounts = new Map();
+let fpsData=[];
 let debounceTimer;
-let currentAppType = '';
+let currentAppType="";
 
-// ✅ Toast
-function showToast(msg, ok = true) {
-    const t = document.getElementById("toast");
-    t.querySelector(".toast-message").textContent = msg;
-    t.className = "toast show " + (ok ? "toast-success" : "toast-error");
-    setTimeout(() => t.classList.remove("show"), 2500);
+// TOAST
+function showToast(msg,ok=true){
+ const t=document.getElementById("toast");
+ t.querySelector(".toast-message").textContent=msg;
+ t.className="toast show "+(ok?"toast-success":"toast-error");
+ setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-// ✅ Spinner Toggle (FINAL)
-function toggle(btn, load) {
-    if (load) {
-        btn.classList.add("loading");
-        btn.disabled = true;
-    } else {
-        btn.classList.remove("loading");
-        btn.disabled = false;
-    }
+// APP TYPE
+appType.onchange=function(){
+ currentAppType=this.value;
+ mainForm.style.display=this.value?"block":"none";
+ applicationNumber.value="";
 }
 
-// ✅ App Type Change
-document.getElementById("appType").addEventListener("change", function () {
+// LIVE CHECK
+applicationNumber.oninput=function(){
 
-    currentAppType = this.value;
+ let v=this.value.trim();
+ let status=appStatus;
 
-    const mainForm = document.getElementById("mainForm");
-    const appNumField = document.getElementById("applicationNumber");
-    const status = document.getElementById("appStatus");
+ clearTimeout(debounceTimer);
 
-    if (this.value) {
-        mainForm.style.display = "block";
+ if(!v) return;
 
-        appNumField.value = "";
-        status.textContent = "";
-        checkedAppNums.clear();
+ if(!v.startsWith("RC")){
+  status.textContent="Start with RC";
+  status.className="status-dup";
+  return;
+ }
 
-        if (this.value === "NEW") {
-            appNumField.maxLength = 20;
-            appNumField.placeholder = "RC + 18 digits";
-        } else {
-            appNumField.maxLength = 21;
-            appNumField.placeholder = "RC + 19 digits";
-        }
+ let len=currentAppType==="NEW"?20:21;
 
-        appNumField.focus();
-    } else {
-        mainForm.style.display = "none";
-    }
-});
+ if(v.length<len){
+  status.textContent="Typing...";
+  status.className="status-checking";
+  return;
+ }
 
-// ✅ LIVE CHECK (PRO LEVEL)
-document.getElementById("applicationNumber").addEventListener("input", function () {
+ status.textContent="Checking...";
+ status.className="status-checking";
 
-    const value = this.value.trim();
-    const status = document.getElementById("appStatus");
-
-    clearTimeout(debounceTimer);
-
-    status.textContent = "";
-    status.className = "";
-    this.style.borderColor = "";
-
-    if (!value) return;
-
-    status.textContent = "Typing...";
-    status.className = "status-checking";
-
-    if (!value.startsWith("RC")) {
-        status.textContent = "Must start with RC";
-        status.className = "status-dup";
-        this.style.borderColor = "red";
-        return;
-    }
-
-    const expectedLength = currentAppType === "NEW" ? 20 : 21;
-
-    if (value.length < expectedLength) {
-        status.textContent = `Incomplete (${value.length}/${expectedLength})`;
-        return;
-    }
-
-    if (value.length > expectedLength) {
-        status.textContent = "Too long!";
-        status.className = "status-dup";
-        this.style.borderColor = "red";
-        return;
-    }
-
-    const pattern = currentAppType === "NEW"
-        ? /^RC\d{18}$/
-        : /^RC\d{19}$/;
-
-    if (!pattern.test(value)) {
-        status.textContent = "Invalid format";
-        status.className = "status-dup";
-        this.style.borderColor = "red";
-        return;
-    }
-
-    status.textContent = "Checking...";
-    status.className = "status-checking";
-
-    debounceTimer = setTimeout(() => {
-
-        fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
-            .then(res => res.json())
-            .then(data => {
-
-                if (data.exists) {
-                    status.textContent = "Duplicate ❌";
-                    status.className = "status-dup";
-                    this.style.borderColor = "red";
-                    checkedAppNums.add(value);
-                } else {
-                    status.textContent = "Available ✅";
-                    status.className = "status-ok";
-                    this.style.borderColor = "green";
-                }
-
-            })
-            .catch(() => {
-                status.textContent = "Server error!";
-                status.className = "status-dup";
-            });
-
-    }, 300);
-});
-
-// ✅ FPS Load
-fetch(API_URL + "?action=getFPS")
-    .then(r => r.json())
-    .then(d => fpsData = d);
-
-// ✅ FPS Autofill
-document.getElementById("fpsCode").addEventListener("input", function () {
-    const code = this.value.trim();
-    const fps = fpsData.find(f => f.code == code);
-
-    if (fps) {
-        fpsName.value = fps.fpsName;
-        gpss.value = fps.gpss;
-        areaOfficer.value = fps.areaOfficer;
-        lacManual.value = fps.lac;
-    } else {
-        ["fpsName","gpss","areaOfficer","lacManual"].forEach(id => document.getElementById(id).value = "");
-    }
-});
-
-// ✅ Date Auto
-document.getElementById("date").valueAsDate = new Date();
-
-// ✅ Submit
-document.getElementById("dataForm").addEventListener("submit", e => {
-
-    e.preventDefault();
-
-    const btn = document.getElementById("submitBtn");
-    const appNum = applicationNumber.value.trim();
-
-    toggle(btn, true);
-
-    const fd = new FormData(e.target);
-    fd.append("action", "submit");
-
-    fetch(API_URL, { method: "POST", body: fd })
-        .then(r => r.json())
-        .then(res => {
-
-            if (res.status === "Success") {
-
-                if (currentAppType === "ADD") {
-                    const count = (submitCounts.get(appNum) || 0) + 1;
-                    submitCounts.set(appNum, count);
-                    showToast(`Saved (${count}/3) ✅`, true);
-                } else {
-                    showToast("Saved Successfully ✅", true);
-                }
-
-                resetForm();
-
-            } else {
-                showToast("Duplicate ❌", false);
-            }
-
-        })
-        .catch(() => showToast("Server Error ❌", false))
-        .finally(() => toggle(btn, false));
-});
-
-// ✅ Reset
-function resetForm() {
-    document.getElementById("dataForm").reset();
-    document.getElementById("mainForm").style.display = "none";
-    document.getElementById("appStatus").textContent = "";
-    document.getElementById("appType").value = "";
-    currentAppType = "";
-    checkedAppNums.clear();
-    document.getElementById("date").valueAsDate = new Date();
+ debounceTimer=setTimeout(()=>{
+ fetch(API_URL+"?action=checkDuplicate&appNum="+v)
+ .then(r=>r.json())
+ .then(d=>{
+  if(d.exists){
+    status.textContent="Duplicate ❌";
+    status.className="status-dup";
+  }else{
+    status.textContent="Available ✅";
+    status.className="status-ok";
+  }
+ })
+ },300);
 }
 
-document.querySelector(".reset-btn").addEventListener("click", resetForm);
-    </script>
+// FPS FAST
+fetch(API_URL+"?action=getFPS")
+.then(r=>r.json())
+.then(d=>fpsData=d);
+
+fpsCode.oninput=function(){
+ let f=fpsData.find(x=>x.code==this.value);
+ if(f){
+  fpsName.value=f.fpsName;
+  gpss.value=f.gpss;
+  areaOfficer.value=f.areaOfficer;
+  lacManual.value=f.lac;
+ }
+}
+
+// VALIDATION
+function validate(){
+ const fields=["applicationNumber","inspector","deo","date","mobile","hof","gp","totalMembers","fpsCode"];
+ for(let f of fields){
+  if(!document.getElementById(f).value.trim()){
+    showToast("All fields required!",false);
+    return false;
+  }
+ }
+ if(!/^\d{10}$/.test(mobile.value)){
+  showToast("Invalid mobile",false);
+  return false;
+ }
+ return true;
+}
+
+// SUBMIT
+dataForm.onsubmit=e=>{
+ e.preventDefault();
+ if(!validate()) return;
+
+ submitBtn.classList.add("loading");
+
+ fetch(API_URL,{
+  method:"POST",
+  body:new FormData(dataForm)
+ })
+ .then(r=>r.json())
+ .then(res=>{
+  if(res.status==="Success"){
+    showToast("Saved ✅",true);
+    dataForm.reset();
+    mainForm.style.display="none";
+  }else{
+    showToast("Duplicate ❌",false);
+  }
+ })
+ .catch(()=>showToast("Error ❌",false))
+ .finally(()=>submitBtn.classList.remove("loading"));
+};
+
+// RESET
+resetBtn.onclick=()=>{
+ dataForm.reset();
+ mainForm.style.display="none";
+}
+</script>
+
 </body>
 </html>
