@@ -9,13 +9,17 @@ let currentAppType = '';
 // ✅ Toast Function
 function showToast(msg, ok = true) {
     const t = document.getElementById("toast");
+    if (!t) return;
     t.querySelector(".toast-message").textContent = msg;
     t.className = `toast show ${ok ? 'toast-success' : 'toast-error'}`;
-    setTimeout(() => t.classList.remove("show"), 3000);
+    setTimeout(() => {
+        if (t) t.classList.remove("show");
+    }, 3000);
 }
 
 // ✅ Spinner Toggle
 function toggle(btn, load) {
+    if (!btn) return;
     if (load) {
         btn.classList.add("loading");
         btn.disabled = true;
@@ -26,93 +30,122 @@ function toggle(btn, load) {
 }
 
 // ✅ App Type Change Handler
-document.getElementById("appType").addEventListener("change", function () {
-    currentAppType = this.value;
-    const mainForm = document.getElementById("mainForm");
-    const appNumField = document.getElementById("applicationNumber");
-    const status = document.getElementById("appStatus");
+document.addEventListener("DOMContentLoaded", function() {
+    const appTypeSelect = document.getElementById("appType");
+    if (!appTypeSelect) return;
 
-    if (this.value) {
-        mainForm.style.display = "block";
-        appNumField.value = "";
-        status.textContent = "";
-        checkedAppNums.clear();
+    appTypeSelect.addEventListener("change", function () {
+        currentAppType = this.value;
+        const mainForm = document.getElementById("mainForm");
+        const appNumField = document.getElementById("applicationNumber");
+        const status = document.getElementById("appStatus");
+        const appFormat = document.getElementById("appFormat");
+        const submitWarning = document.getElementById("submitWarning");
 
-        if (this.value === "NEW") {
-            appNumField.maxLength = 20;
-            appNumField.placeholder = "RCxxxxxxxxxxxxxxx (20 chars)";
-            document.getElementById("appFormat").textContent = "(20 chars)";
+        if (!mainForm || !appNumField) return;
+
+        if (this.value) {
+            mainForm.style.display = "block";
+            appNumField.value = "";
+            if (status) status.textContent = "";
+            checkedAppNums.clear();
+
+            if (this.value === "NEW") {
+                appNumField.maxLength = 20;
+                appNumField.placeholder = "RCxxxxxxxxxxxxxxx (20 chars)";
+                if (appFormat) appFormat.textContent = "(20 chars)";
+                if (submitWarning) submitWarning.style.display = "none";
+            } else {
+                appNumField.maxLength = 21;
+                appNumField.placeholder = "RCxxxxxxxxxxxxxxxxx (21 chars)";
+                if (appFormat) appFormat.textContent = "(21 chars)";
+                if (submitWarning) submitWarning.style.display = "block";
+            }
+
+            appNumField.focus();
         } else {
-            appNumField.maxLength = 21;
-            appNumField.placeholder = "RCxxxxxxxxxxxxxxxxx (21 chars)";
-            document.getElementById("appFormat").textContent = "(21 chars)";
-            document.getElementById("submitWarning").style.display = "block";
+            mainForm.style.display = "none";
+            if (submitWarning) submitWarning.style.display = "none";
         }
-
-        appNumField.focus();
-    } else {
-        mainForm.style.display = "none";
-        document.getElementById("submitWarning").style.display = "none";
-    }
+    });
 });
 
 // ✅ Real-time Application Number Validation
-document.getElementById("applicationNumber").addEventListener("input", function () {
-    const value = this.value.trim();
-    const status = document.getElementById("appStatus");
+function initAppNumValidation() {
+    const appNumField = document.getElementById("applicationNumber");
+    if (!appNumField) return;
 
-    clearTimeout(debounceTimer);
-    status.textContent = "";
-    status.className = "";
-    this.style.borderColor = "";
+    appNumField.addEventListener("input", function () {
+        const value = this.value.trim();
+        const status = document.getElementById("appStatus");
 
-    if (!value) return;
+        clearTimeout(debounceTimer);
+        if (status) {
+            status.textContent = "";
+            status.className = "";
+        }
+        this.style.borderColor = "";
 
-    if (!value.startsWith("RC")) {
-        status.textContent = "RC से शुरू होना चाहिए";
-        status.className = "status-dup";
-        this.style.borderColor = "red";
-        return;
-    }
+        if (!value) return;
 
-    const expectedLength = currentAppType === "NEW" ? 20 : 21;
-    if (value.length < expectedLength) {
-        status.textContent = `${value.length}/${expectedLength}`;
-        return;
-    }
-
-    const pattern = currentAppType === "NEW" ? /^RC\d{18}$/ : /^RC\d{19}$/;
-    if (!pattern.test(value)) {
-        status.textContent = "गलत format";
-        status.className = "status-dup";
-        this.style.borderColor = "red";
-        return;
-    }
-
-    status.textContent = "Checking...";
-    status.className = "status-checking";
-
-    debounceTimer = setTimeout(() => {
-        fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.exists) {
-                    status.textContent = "이미 submit हुआ";
-                    status.className = "status-dup";
-                    this.style.borderColor = "red";
-                    checkedAppNums.add(value);
-                } else {
-                    status.textContent = "Available ✅";
-                    status.className = "status-ok";
-                    this.style.borderColor = "#28a745";
-                }
-            })
-            .catch(() => {
-                status.textContent = "Network error!";
+        if (!value.startsWith("RC")) {
+            if (status) {
+                status.textContent = "RC से शुरू होना चाहिए";
                 status.className = "status-dup";
-            });
-    }, 500);
-});
+            }
+            this.style.borderColor = "red";
+            return;
+        }
+
+        const expectedLength = currentAppType === "NEW" ? 20 : 21;
+        if (value.length < expectedLength) {
+            if (status) status.textContent = `${value.length}/${expectedLength}`;
+            return;
+        }
+
+        const pattern = currentAppType === "NEW" ? /^RC\d{18}$/ : /^RC\d{19}$/;
+        if (!pattern.test(value)) {
+            if (status) {
+                status.textContent = "गलत format";
+                status.className = "status-dup";
+            }
+            this.style.borderColor = "red";
+            return;
+        }
+
+        if (status) {
+            status.textContent = "Checking...";
+            status.className = "status-checking";
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.exists) {
+                        if (status) {
+                            status.textContent = "이미 submit हुआ";
+                            status.className = "status-dup";
+                        }
+                        this.style.borderColor = "red";
+                        checkedAppNums.add(value);
+                    } else {
+                        if (status) {
+                            status.textContent = "Available ✅";
+                            status.className = "status-ok";
+                        }
+                        this.style.borderColor = "#28a745";
+                    }
+                })
+                .catch(() => {
+                    if (status) {
+                        status.textContent = "Network error!";
+                        status.className = "status-dup";
+                    }
+                });
+        }, 500);
+    });
+}
 
 // ✅ FPS Auto-fill
 fetch(`${API_URL}?action=getFPS`)
@@ -120,116 +153,125 @@ fetch(`${API_URL}?action=getFPS`)
     .then(d => fpsData = d)
     .catch(console.error);
 
-document.getElementById("fpsCode").addEventListener("input", function() {
-    const code = this.value.trim();
-    if (code.length !== 12) return;
+const fpsCodeField = document.getElementById("fpsCode");
+if (fpsCodeField) {
+    fpsCodeField.addEventListener("input", function() {
+        const code = this.value.trim();
+        if (code.length !== 12) return;
 
-    const f = fpsData.find(x => x.code === code);
-    if (f) {
-        document.getElementById("fpsName").value = f.fpsName || '';
-        document.getElementById("gpss").value = f.gpss || '';
-        document.getElementById("areaOfficer").value = f.areaOfficer || '';
-        document.getElementById("lacManual").value = f.lac || '';
-        showToast("FPS details loaded ✅", true);
-    }
-});
-
-// ✅ Today's Date Only
-const today = new Date().toISOString().split('T')[0];
-const dateInput = document.getElementById("date");
-dateInput.value = today;
-dateInput.min = today;
-dateInput.max = today;
-
-// 🔥 Form Submit with Validation
-document.getElementById("dataForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const btn = document.getElementById("submitBtn");
-    const appNum = document.getElementById("applicationNumber").value.trim();
-
-    // ✅ All required fields check
-    const required = this.querySelectorAll("[required]");
-    let emptyFields = [];
-
-    required.forEach(field => {
-        if (!field.value.trim()) {
-            emptyFields.push(field);
-            field.style.borderColor = "#dc3545";
-            field.style.boxShadow = "0 0 5px rgba(220,53,69,0.3)";
-        } else {
-            field.style.borderColor = "";
-            field.style.boxShadow = "";
+        const f = fpsData.find(x => x.code === code);
+        if (f) {
+            const fpsName = document.getElementById("fpsName");
+            const gpss = document.getElementById("gpss");
+            const areaOfficer = document.getElementById("areaOfficer");
+            const lacManual = document.getElementById("lacManual");
+            
+            if (fpsName) fpsName.value = f.fpsName || '';
+            if (gpss) gpss.value = f.gpss || '';
+            if (areaOfficer) areaOfficer.value = f.areaOfficer || '';
+            if (lacManual) lacManual.value = f.lac || '';
+            showToast("FPS details loaded ✅", true);
         }
     });
+}
 
-    if (emptyFields.length > 0) {
-        showToast("सभी * वाले fields भरें ❌", false);
-        emptyFields[0].focus();
-        return;
-    }
+// ✅ Today's Date
+const today = new Date().toISOString().split('T')[0];
+const dateInput = document.getElementById("date");
+if (dateInput) {
+    dateInput.value = today;
+    dateInput.min = today;
+    dateInput.max = today;
+}
 
-    // ✅ AppType hidden field set
-    document.getElementById("hiddenAppType").value = currentAppType;
+// 🔥 Form Submit
+const dataForm = document.getElementById("dataForm");
+if (dataForm) {
+    dataForm.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    toggle(btn, true);
-    showToast("Submitting...", true);
+        const btn = document.getElementById("submitBtn");
+        const appNumField = document.getElementById("applicationNumber");
+        const appNum = appNumField ? appNumField.value.trim() : '';
 
-    const formData = new FormData(this);
-    formData.append("action", "submit");
+        // Required validation
+        const requiredFields = this.querySelectorAll("[required]");
+        let hasError = false;
 
-    fetch(API_URL, { 
-        method: "POST", 
-        body: formData 
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.status === "Success") {
-            const count = currentAppType === "ADD" ? 
-                (submitCounts.get(appNum) || 0) + 1 : 0;
-            
-            if (currentAppType === "ADD" && count >= 3) {
-                showToast(`ADD limit reached (3/3) ❌`, false);
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                hasError = true;
+                field.style.borderColor = "#dc3545";
+                field.style.boxShadow = "0 0 5px rgba(220,53,69,0.3)";
             } else {
-                submitCounts.set(appNum, count);
-                showToast(`Saved successfully! ${currentAppType === "ADD" ? `(${count}/3)` : ''} ✅`, true);
-                resetForm();
+                field.style.borderColor = "";
+                field.style.boxShadow = "";
             }
-        } else {
-            showToast(res.message || "Duplicate application!", false);
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        showToast("Network/Server error ❌", false);
-    })
-    .finally(() => toggle(btn, false));
-});
+        });
 
-// ✅ Reset Form
+        if (hasError) {
+            showToast("सभी * वाले fields भरें ❌", false);
+            return;
+        }
+
+        const hiddenAppType = document.getElementById("hiddenAppType");
+        if (hiddenAppType) hiddenAppType.value = currentAppType;
+
+        toggle(btn, true);
+        showToast("Submitting...", true);
+
+        const formData = new FormData(this);
+        formData.append("action", "submit");
+
+        fetch(API_URL, { method: "POST", body: formData })
+            .then(r => r.json())
+            .then(res => {
+                if (res.status === "Success") {
+                    const count = currentAppType === "ADD" ? 
+                        (submitCounts.get(appNum) || 0) + 1 : 0;
+                    
+                    submitCounts.set(appNum, count);
+                    showToast(`Saved! ${currentAppType === "ADD" ? `(${count}/3)` : ''} ✅`, true);
+                    resetForm();
+                } else {
+                    showToast(res.message || "Duplicate!", false);
+                }
+            })
+            .catch(() => showToast("Server error ❌", false))
+            .finally(() => toggle(btn, false));
+    });
+}
+
+// ✅ Reset
 function resetForm() {
-    document.getElementById("dataForm").reset();
-    document.getElementById("mainForm").style.display = "none";
-    document.getElementById("appStatus").textContent = "";
-    document.getElementById("appType").value = "";
-    document.getElementById("submitWarning").style.display = "none";
+    const form = document.getElementById("dataForm");
+    const mainForm = document.getElementById("mainForm");
+    const appStatus = document.getElementById("appStatus");
+    const appType = document.getElementById("appType");
+    const submitWarning = document.getElementById("submitWarning");
+    
+    if (form) form.reset();
+    if (mainForm) mainForm.style.display = "none";
+    if (appStatus) appStatus.textContent = "";
+    if (appType) appType.value = "";
+    if (submitWarning) submitWarning.style.display = "none";
     
     currentAppType = "";
     checkedAppNums.clear();
     
-    // Reset styles
     document.querySelectorAll("input, select").forEach(el => {
         el.style.borderColor = "";
         el.style.boxShadow = "";
     });
     
-    dateInput.value = today;
-    document.getElementById("applicationNumber").focus();
+    if (dateInput) dateInput.value = today;
 }
 
-document.querySelector(".reset-btn").addEventListener("click", resetForm);
+const resetBtn = document.querySelector(".reset-btn");
+if (resetBtn) {
+    resetBtn.addEventListener("click", resetForm);
+}
 
-// ✅ Page Load - Inspector focus
-window.addEventListener("load", () => {
-    document.getElementById("appType").focus();
-});
+// ✅ Initialize
+initAppNumValidation();
+document.getElementById("appType")?.focus();
