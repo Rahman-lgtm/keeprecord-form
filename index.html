@@ -7,6 +7,9 @@
 <body>
 <div id="toast"></div>
 <div class="top-title">
+<div id="toast" class="toast" style="display: none;">
+<span class="toast-message">Success</span>
+</div>
 This form is only for maintaining the DEO work record<br>
 It is not a SmartPDS portal data entry page</div>
 
@@ -57,7 +60,15 @@ After generating the application number, enter it here and submit it
 
 <label>Date :</label>
 
-<input type="date" id="date" required style="width:170px;">
+<input
+  type="date"
+  id="date"
+  class="form-control"
+  value=""
+  min="today"
+  max="today"
+  required
+/>
 
 </div>
 
@@ -177,10 +188,13 @@ Fair Price Shop Detail
 
 <div class="button-area">
 
-<button class="submit-btn" type="submit">
-
-Submit
-
+<button
+  id="submitBtn"
+  type="submit"
+  class="btn btn-primary"
+>
+  <span class="btn-text">Submit</span>
+  <span class="spinner" style="display: none;">↻</span>
 </button>
 
 <button class="reset-btn" type="reset">
