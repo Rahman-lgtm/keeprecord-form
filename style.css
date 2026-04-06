@@ -86,20 +86,12 @@ input, select {
     transition: all 0.25s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-
-/* Hover */
-input:hover, select:hover {
-    border-color: #9ec5fe;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-}
-
 /* ✅ FIXED Focus Effect */
 input:focus, select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
     transform: translateY(-1px);
 }
-
 /* Placeholder */
 input::placeholder {
     color: #999;
@@ -119,17 +111,6 @@ input::placeholder {
 input:active, select:active {
     transform: scale(0.99);
 }
-
-/* ✅ Section Bar */
-.yellow-bar {
-    background: #ffc107;
-    padding: 8px;
-    text-align: center;
-    font-weight: bold;
-    margin: 15px 0;
-    box-shadow: 2px 3px 6px gray;
-}
-
 /* ✅ Buttons */
 .button-area {
     text-align: center;
@@ -173,7 +154,7 @@ input:active, select:active {
 /* ✅ Loading Spinner */
 #submitBtn.loading {
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 1.5;
 }
 
 #submitBtn.loading .btn-text {
