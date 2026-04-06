@@ -187,3 +187,18 @@ select:focus {
     width: 100%;
   }
 }
+#appStatus {
+  color: #999;
+}
+
+.status-checking {
+  color: orange;
+}
+
+.status-ok {
+  color: green;
+}
+
+.status-dup {
+  color: red;
+}
