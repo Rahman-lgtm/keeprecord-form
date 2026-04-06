@@ -127,30 +127,51 @@
         .status-dup { color: red; }
 
 /* ✅ Button Loading State */
-#submitBtn.loading {
+/* ✅ Submit Button - SIZE FIXED */
+#submitBtn {
+    background: #28a745;
+    color: white;
+    padding: 8px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
     position: relative;
-    padding-right: 50px !important; /* spinner के लिए space */
+    min-width: 90px; /* SIZE LOCK */
+    font-weight: bold;
+    transition: opacity 0.2s;
 }
 
+#submitBtn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+    /* SIZE NO CHANGE - सिर्फ ये */
+}
+
+/* ✅ TEXT HIDE - Size same रहे */
 #submitBtn.loading .btn-text {
     opacity: 0;
     visibility: hidden;
     position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 0;
+    height: 0;
     margin: 0;
     padding: 0;
     overflow: hidden;
+    transition: all 0.2s ease;
 }
 
-/* ✅ CSS ONLY SPINNER - बिना icon के */
+/* ✅ SPINNER - Center में */
 #submitBtn.loading::after {
     content: "";
     position: absolute;
-    right: 15px;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top: 2px solid white;
     border-radius: 50%;
@@ -158,8 +179,8 @@
 }
 
 @keyframes spin {
-    0% { transform: translateY(-50%) rotate(0deg); }
-    100% { transform: translateY(-50%) rotate(360deg); }
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
           .toast {
             position: fixed;
@@ -317,8 +338,8 @@
 
                 <div class="button-area">
                    <button id="submitBtn" type="submit">
-                    <span class="btn-text">Submit</span>
-                    </button>
+    <span class="btn-text">Submit</span>
+</button>
                     <button class="reset-btn" type="button">Reset</button>
                 </div>
 
