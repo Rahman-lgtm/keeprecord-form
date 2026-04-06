@@ -499,16 +499,34 @@ fpsCode.oninput=function(){
 document.getElementById("date").valueAsDate = new Date();
 
 // ✅ Submit
-document.getElementById("dataForm").addEventListener("submit", e => {
-
+// ✅ नया Submit handler: empty field वाले को रोकेगा
+document.getElementById("dataForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const btn = document.getElementById("submitBtn");
     const appNum = applicationNumber.value.trim();
 
+    // पहले सभी required फील्ड्स को चेक करो
+    const requiredFields = this.querySelectorAll("[required]");
+    let hasError = false;
+
+    requiredFields.forEach(input => {
+        if (!input.value.trim()) {
+            input.style.borderColor = "red";
+            hasError = true;
+        } else {
+            input.style.borderColor = ""; // normal
+        }
+    });
+
+    if (hasError) {
+        showToast("Please fill all required fields ❌", false);
+        return;
+    }
+
     toggle(btn, true);
 
-    const fd = new FormData(e.target);
+    const fd = new FormData(this);
     fd.append("action", "submit");
 
     fetch(API_URL, { method: "POST", body: fd })
@@ -535,7 +553,6 @@ document.getElementById("dataForm").addEventListener("submit", e => {
         .catch(() => showToast("Server Error ❌", false))
         .finally(() => toggle(btn, false));
 });
-
 // ✅ Reset
 function resetForm() {
     document.getElementById("dataForm").reset();
