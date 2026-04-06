@@ -87,68 +87,119 @@ input,select{
 
 <body>
 
-<div class="container">
+<div class="top-title">
+        This form is only for maintaining the DEO work record<br>
+        It is not a SmartPDS portal data entry page
+    </div>
 
-<div class="row">
-<label>Application Type *</label><br>
-<select id="appType">
-<option value="">Select</option>
-<option value="NEW">NEW (20)</option>
-<option value="ADD">ADD (21)</option>
-</select>
-</div>
+    <div class="title">
+        Please complete the data entry process in the SmartPDS portal first<br>
+        <span class="subtitle">After generating the application number, enter it here and submit it</span>
+    </div>
 
-<div id="mainForm" class="main-form">
+    <div class="container">
+        <!-- 🔥 SIMPLE APP TYPE - SAME AS OTHER INPUTS -->
+        <div class="row">
+            <label>Application Type <span style="color:red;">*</span>:</label>
+            <select id="appType" name="appType" required style="width:350px;">
+                <option value="">Select</option>
+                <option value="NEW">NEW (20 digits)</option>
+                <option value="ADD">ADD (21 digits)</option>
+            </select>
+        </div>
 
-<form id="dataForm">
+        <!-- 🔥 MAIN FORM - HIDDEN TILL APP TYPE SELECTED -->
+        <div id="mainForm" class="main-form">
+            <form id="dataForm" novalidate>
+                <input type="hidden" name="appType" id="hiddenAppType">
 
-<div class="row">
-<label>Application Number *</label><br>
-<input id="applicationNumber">
-<span id="appStatus"></span>
-</div>
+                <div class="row">
+                    <label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
+                    <div style="position: relative; display: inline-block; width: 350px;">
+                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
+                        <span id="appStatus"></span>
+                    </div>
+                </div>
 
-<div class="row">
-<label>Inspector *</label><br>
-<select id="inspector">
-<option value="">Select</option>
-<option>Abhijit Bora</option>
-</select>
-</div>
+                <div class="row">
+                    <label>Name of Inspector <span style="color:red;">*</span>:</label>
+                    <select id="inspector" name="inspector" required style="width:350px;">
+                        <option value="">Select</option>
+                        <option>Abhijit Bora</option>
+                        <option>Durga Bodo</option>
+                        <option>Mausam Zinnat</option>
+                        <option>Mausumi Bora</option>
+                        <option>Sanjiv Sarma</option>
+                        <option>Santonu Bordoloi</option>
+                    </select>
+                </div>
 
-<div class="row flex">
-<input id="deo" placeholder="DEO Name">
-<input type="date" id="date">
-</div>
+                <div class="row flex">
+                    <div>
+                        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
+                        <input type="text" id="deo" name="deo" required style="width:200px;">
+                    </div>
+                    <div>
+                        <label>Date <span style="color:red;">*</span>:</label>
+                        <input type="date" id="date" name="date" required style="width:170px;">
+                    </div>
+                </div>
 
-<div class="row">
-<input id="mobile" placeholder="Mobile">
-</div>
+                <div class="row">
+                    <label>Mobile Number <span style="color:red;">*</span>:</label>
+                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
+                </div>
 
-<div class="row flex">
-<input id="hof" placeholder="HOF">
-<input id="gp" placeholder="GP">
-</div>
+                <div class="row flex">
+                    <div class="half">
+                        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
+                        <input type="text" id="hof" name="hof" required style="width:80%;">
+                    </div>
+                    <div class="half">
+                        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
+                        <input type="text" id="gp" name="gp" required style="width:80%;">
+                    </div>
+                </div>
 
-<div class="row">
-<input id="totalMembers" type="number">
-</div>
+                <div class="row">
+                    <label>Total Members <span style="color:red;">*</span>:</label>
+                    <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
+                </div>
 
-<div class="yellow-bar">FPS</div>
+                <div class="yellow-bar">Fair Price Shop Detail</div>
 
-<div class="row flex">
-<input id="fpsCode" placeholder="Code">
-<input id="fpsName" class="locked">
-</div>
+                <div class="note">
+                    <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
+                </div>
 
-<div class="row flex">
-<input id="gpss" class="locked">
-<input id="areaOfficer" class="locked">
-</div>
+                <div class="row flex">
+                    <div>
+                        <label>F.P.S Code <span style="color:red;">*</span>:</label>
+                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
+                    </div>
+                    <div>
+                        <label>FPS Name:</label>
+                        <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
+                    </div>
+                </div>
 
-<div class="row">
-<input id="lacManual" class="locked">
-</div>
+                <div class="row flex">
+                    <div>
+                        <label>Name of GPSS:</label>
+                        <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
+                    </div>
+                    <div>
+                        <label>Area Officer:</label>
+                        <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:280px;">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label>LAC Name:</label>
+                    <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
+                </div>
+
+               
 
 <button id="submitBtn">Submit</button>
 <button type="button" id="resetBtn">Reset</button>
