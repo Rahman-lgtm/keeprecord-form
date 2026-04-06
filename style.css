@@ -1,4 +1,4 @@
-/* सभी original CSS same */
+/* ===== RESET & BODY ===== */
 html, body {
     height: 100%;
     margin: 0;
@@ -10,13 +10,13 @@ body {
     justify-content: center;
     align-items: center;
     background: #dcdcdc;
-}body {
     font-family: "Bookman Old Style", serif;
-   }
+}
 
+/* ===== TOP TITLES ===== */
 .top-title {
-    width: 600px;
-    margin: 25px auto 10px;
+    width: 100%;
+    margin: 0 0 10px;
     background: #bfbfbf;
     text-align: center;
     padding: 8px;
@@ -25,11 +25,10 @@ body {
 }
 
 .title {
-    width: 70%;
-    max-width: 800px;
-    margin: 10px auto;
-    padding: 5px;
-    font-size: 22px;
+    width: 100%;
+    margin: 10px 0;
+    padding: 6px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
     background: linear-gradient(to right, red, #ffc107);
@@ -37,23 +36,29 @@ body {
     box-shadow: 2px 3px 6px gray;
 }
 
-.subtitle { font-size: 16px; font-weight: normal; }
+.subtitle { font-size: 14px; font-weight: normal; }
 
+/* ===== CONTAINER ===== */
 .container {
     width: 900px;
     max-width: 95%;
-    height: 95vh; /* 🔥 screen ke andar fit */
-    
+    height: 95vh;
+
     background: #efefef;
     padding: 20px 25px;
     border-radius: 10px;
 
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 
-    overflow: hidden; /* andar bhi scroll band */
+    overflow: hidden;
 }
-label { font-size: 18px; }
 
+/* ===== FORM ===== */
+label {
+    font-size: 16px;
+}
+
+/* 🔥 MODERN INPUT */
 input, select {
     width: 100%;
     border: 1px solid #d0d7de;
@@ -61,10 +66,8 @@ input, select {
     border-radius: 8px;
     outline: none;
     background: #ffffff;
-    font-size: 15px;
+    font-size: 14px;
     transition: all 0.25s ease;
-    
-    /* Modern soft shadow */
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
@@ -74,21 +77,19 @@ input:hover, select:hover {
     box-shadow: 0 3px 6px rgba(0,0,0,0.08);
 }
 
-/* Focus (🔥 main modern effect) */
-input, select {
-    padding: 8px 10px;
+/* ✅ FIXED FOCUS (your mistake corrected here) */
+input:focus, select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
     transform: translateY(-1px);
 }
 
-/* Placeholder style */
+/* Placeholder */
 input::placeholder {
     color: #999;
-    font-size: 14px;
 }
 
-/* Disabled / Locked */
+/* Disabled */
 .locked {
     background: #f1f3f5;
     color: #888;
@@ -97,48 +98,71 @@ input::placeholder {
     box-shadow: none;
 }
 
-/* Optional: Smooth click feel */
+/* Click feel */
 input:active, select:active {
     transform: scale(0.99);
 }
 
+/* ===== LAYOUT ===== */
 .row { margin: 10px 0; }
 
-label {
-    font-size: 16px;
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
-.flex { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+
 .half { width: 48%; }
 
+/* ===== BARS ===== */
 .yellow-bar {
     background: #ffc107;
     padding: 8px;
     text-align: center;
     font-weight: bold;
-    margin: 25px 0 15px;
+    margin: 15px 0;
     box-shadow: 2px 3px 6px gray;
 }
 
+.warning-bar {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
 .note { margin-bottom: 10px; }
-.button-area { text-align: center; margin-top: 30px; }
+
+/* ===== BUTTONS ===== */
+.button-area {
+    text-align: center;
+    margin-top: 20px;
+}
 
 .submit-btn, #submitBtn {
     background: #28a745;
     color: white;
-    padding: 8px 30px;
+    padding: 8px 25px;
     border: none;
     border-radius: 8px;
     font-weight: bold;
     box-shadow: 2px 3px 6px gray;
-    margin-right: 15px;
+    margin-right: 10px;
     cursor: pointer;
     transition: 0.3s;
     position: relative;
     min-width: 90px;
 }
 
-.submit-btn:hover, #submitBtn:hover { background: #218838; }
+.submit-btn:hover, #submitBtn:hover {
+    background: #218838;
+}
 
+/* Loading */
 #submitBtn.loading {
     pointer-events: none;
     opacity: 0.8;
@@ -146,16 +170,6 @@ label {
 
 #submitBtn.loading .btn-text {
     opacity: 0;
-    visibility: hidden;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
 }
 
 #submitBtn.loading::after {
@@ -164,41 +178,36 @@ label {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top: 2px solid white;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
 
+/* Animation */
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+/* Reset Button */
 .reset-btn {
     background: #ffc107;
-    padding: 8px 30px;
+    padding: 8px 25px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: bold;
     box-shadow: 2px 3px 6px gray;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-.reset-btn:hover { background: #e0a800; }
-
-.caution-bar {
-    width: 100%;
-    max-width: 1000px;
-    margin: 15px auto;
-    padding: 10px;
-    color: #842029;
-    text-align: left;
+.reset-btn:hover {
+    background: #e0a800;
 }
 
+/* ===== STATUS ===== */
 #appStatus {
     position: absolute;
     right: 10px;
@@ -212,6 +221,7 @@ label {
 .status-ok { color: green; }
 .status-dup { color: red; }
 
+/* ===== TOAST ===== */
 .toast {
     position: fixed;
     top: 20px;
@@ -224,25 +234,41 @@ label {
     min-width: 250px;
 }
 
-.toast.show { opacity: 1; transform: translateX(0); }
-.toast-success { background: #28a745; color: white; }
-.toast-error { background: #dc3545; color: white; }
-
-.warning-bar {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    color: #856404;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-    font-weight: bold;
+.toast.show {
+    opacity: 1;
 }
 
-/* 🔥 HIDDEN BY DEFAULT */
-.main-form { display: none; }
+.toast-success {
+    background: #28a745;
+    color: white;
+}
 
+.toast-error {
+    background: #dc3545;
+    color: white;
+}
+
+/* ===== HIDDEN FORM ===== */
+.main-form {
+    display: none;
+}
+
+/* ===== RESPONSIVE ===== */
 @media screen and (max-width: 960px) {
-    .container { width: 95%; }
-    .flex { flex-direction: column; gap: 20px; }
-    .half { width: 100%; }
+    body {
+        overflow: auto; /* 🔥 mobile me scroll allow */
+    }
+
+    .container {
+        height: auto;
+    }
+
+    .flex {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .half {
+        width: 100%;
+    }
 }
