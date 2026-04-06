@@ -51,12 +51,20 @@
   </div>
 
   <div class="row">
-    <label>Application Number:</label>
-    <input type="text" id="applicationNumber" placeholder="Type RC number here" style="width:350px;" maxlength="21">
+    <div class="row">
+  <label>Application Number:</label>
+  <div style="position:relative; width:350px;">    
+    <input type="text" id="applicationNumber" maxlength="21" style="width:100%; padding-right:120px;">    
+    <span id="appStatus" style="
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:13px;
+      font-weight:bold;
+    "></span>
   </div>
-
-  <div class="row flex">
-    <div>
+</div>
       <label>Name of Data Entry Operator:</label>
       <input type="text" id="deo" required style="width:200px;">
     </div>
