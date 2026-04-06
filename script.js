@@ -18,8 +18,11 @@ function setToday() {
 // Toast show करने का function
 function showToast(message, success = true) {
   const toast = document.getElementById("toast");
+  if (!toast) return;
+
   const msg = toast.querySelector(".toast-message");
-  msg.textContent = message;
+  if (msg) msg.textContent = message;
+
   toast.classList.remove("error", "success");
   toast.classList.add(success ? "success" : "error");
   toast.style.display = "block";
@@ -33,46 +36,53 @@ function showToast(message, success = true) {
 
 // RC नंबर की लंबाई और फॉर्मेट check
 function isValidAppNum(value) {
-  const trimmed = value.trim();
-  return /^RC\d{18,19}$/.test(trimmed) && trimmed.length === 20;
+  const trimmed = value?.trim() || "";
+  // RC202500000007638358 → 20 chars, RC2025061100001187378 → 21 chars
+  return /^RC\d{18,20}$/.test(trimmed) && trimmed.length <= 21;
 }
 
 // Application number की दोहराव check API call
 function checkDuplicateAppNum(appNum, callback) {
   fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(appNum)}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error("Network error");
+      return res.json();
+    })
     .then(data => {
-      if (data.exists) {
-        callback(true);
-      } else {
-        callback(false);
-      }
+      callback(Boolean(data && data.exists));
     })
     .catch(() => {
-      callback(false); // error न हो तो भी submit allow कर दो
+      callback(false); // error हो तो भी allow (fallback)
     });
 }
 
 // लोडर दिखाओ / छुपाओ
 function toggleLoader(btn, loading = true) {
+  if (!btn) return;
+
   btn.disabled = loading;
   const text = btn.querySelector(".btn-text");
   const spinner = btn.querySelector(".spinner");
-  text.style.display = loading ? "none" : "inline";
-  spinner.style.display = loading ? "inline" : "none";
+
+  if (text) text.style.display = loading ? "none" : "inline";
+  if (spinner) spinner.style.display = loading ? "inline" : "none";
 }
 
 // FPS data load
 fetch(`${API_URL}?action=getFPS`)
-  .then((res) => res.json())
-  .then((data) => {
-    fpsData = data;
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to fetch FPS data");
+    return res.json();
   })
-  .catch(() => {
-    alert("Unable to load FPS Data");
+  .then(data => {
+    fpsData = Array.isArray(data) ? data : [];
+  })
+  .catch(err => {
+    console.error("Fetch FPS data error:", err);
+    showToast("Unable to load FPS Data", false);
   });
 
-// Elements
+// Elements (ensure they exist before listeners)
 const inspector = document.getElementById("inspector");
 const applicationNumber = document.getElementById("applicationNumber");
 const deo = document.getElementById("deo");
@@ -90,28 +100,28 @@ const mobile = document.getElementById("mobile");
 const submitBtn = document.getElementById("submitBtn");
 
 // FPS Code change → auto fill fields
-fpsCode.addEventListener("change", function () {
+fpsCode?.addEventListener("change", function () {
   const code = this.value.trim();
-  const found = fpsData.find((item) => item.code === code);
+  const found = fpsData.find(item => item.code === code);
 
   if (found) {
-    fpsName.value = found.fpsName;
-    gpss.value = found.gpss;
-    areaOfficer.value = found.areaOfficer;
-    lacManual.value = found.lac;
-    fpsCode.style.border = "1px solid black";
+    fpsName.value = found.fpsName || "";
+    gpss.value = found.gpss || "";
+    areaOfficer.value = found.areaOfficer || "";
+    lacManual.value = found.lac || "";
+    this.style.border = "1px solid black";
   } else {
     fpsName.value = "";
     gpss.value = "";
     areaOfficer.value = "";
     lacManual.value = "";
-    fpsCode.style.border = "2px solid red";
+    this.style.border = "2px solid red";
     alert("FPS Code not found");
   }
 });
 
 // Application number input (right side indicator + validation)
-applicationNumber.addEventListener("input", function () {
+applicationNumber?.addEventListener("input", function () {
   const value = this.value.trim();
   const isValid = isValidAppNum(value);
   const isDuplicate = checkedAppNums.has(value);
@@ -124,10 +134,10 @@ applicationNumber.addEventListener("input", function () {
   this.style.borderColor = borderColor;
   this.style.boxShadow = boxShadow;
 
-  if (isValid && value.length === 20) {
+  if (isValid && value.length >= 20) {
     // Check if already submitted once
     if (!checkedAppNums.has(value)) {
-      checkDuplicateAppNum(value, (exists) => {
+      checkDuplicateAppNum(value, exists => {
         if (exists) {
           checkedAppNums.add(value);
           this.style.borderColor = "#dc3545";
@@ -139,18 +149,18 @@ applicationNumber.addEventListener("input", function () {
 });
 
 // Form submit
-document.getElementById("dataForm").addEventListener("submit", function (e) {
+document.getElementById("dataForm")?.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  if (!/^\d{10}$/.test(mobile.value)) {
-    showToast("Enter valid mobile number", false);
+  if (!mobile || !/^\d{10}$/.test(mobile.value.trim())) {
+    showToast("Enter valid 10‑digit mobile number", false);
     return;
   }
 
   const appNum = applicationNumber.value.trim();
 
   if (!isValidAppNum(appNum)) {
-    showToast("Application number must be 20‑digit RC", false);
+    showToast("Application number must be 20‑digit RC (RC202500000007638358)", false);
     return;
   }
 
@@ -160,7 +170,7 @@ document.getElementById("dataForm").addEventListener("submit", function (e) {
   }
 
   const fps = fpsCode.value.trim();
-  const foundFps = fpsData.find((item) => item.code === fps);
+  const foundFps = fpsData.find(item => item.code === fps);
 
   if (!foundFps) {
     showToast("Invalid FPS Code", false);
@@ -189,18 +199,20 @@ document.getElementById("dataForm").addEventListener("submit", function (e) {
   });
 
   fetch(API_URL, { method: "POST", body: formData })
-    .then((res) => res.text())
-    .then((response) => {
+    .then(res => res.text())
+    .then(response => {
       if (response === "Success") {
         checkedAppNums.add(appNum); // दोबारा submit न हो
         showToast("Data Saved Successfully", true);
         document.getElementById("dataForm").reset();
         setToday(); // date फिर से आज की कर दो
+      } else if (response === "Duplicate") {
+        showToast("Application number already exists in system", false);
       } else {
         showToast("Submission Failed: " + response, false);
       }
     })
-    .catch((err) => {
+    .catch(err => {
       showToast("Submission Failed", false);
       console.error(err);
     })
