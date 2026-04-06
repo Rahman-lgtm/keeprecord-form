@@ -29,7 +29,7 @@ function toggle(btn, load) {
     }
 }
 
-// 🔥 MAIN INITIALIZATION
+// 🔥 MAIN INITIALIZATION - SINGLE DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function() {
     // Today's Date
     const today = new Date().toISOString().split('T')[0];
@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const appNumField = document.getElementById("applicationNumber");
             const status = document.getElementById("appStatus");
             const appFormat = document.getElementById("appFormat");
-            const submitWarning = document.getElementById("submitWarning");
 
             if (!mainForm || !appNumField) return;
 
@@ -63,30 +62,50 @@ document.addEventListener("DOMContentLoaded", function() {
                     appNumField.maxLength = 20;
                     appNumField.placeholder = "RC + 18 digits (20 chars total)";
                     if (appFormat) appFormat.textContent = "(20 digits)";
-                    if (submitWarning) submitWarning.style.display = "none";
                 } else {
                     appNumField.maxLength = 21;
                     appNumField.placeholder = "RC + 19 digits (21 chars total)";
                     if (appFormat) appFormat.textContent = "(21 digits)";
-                    if (submitWarning) submitWarning.style.display = "block";
                 }
 
                 appNumField.focus();
             } else {
                 mainForm.style.display = "none";
-                if (submitWarning) submitWarning.style.display = "none";
             }
         });
         appTypeSelect.focus();
     }
 
-    // FPS Auto-fill
+    // FPS Data Load
     fetch(`${API_URL}?action=getFPS`)
         .then(r => r.json())
         .then(d => fpsData = d)
         .catch(() => console.log("FPS data load failed"));
 
-    // Form Submit
+    // FPS Auto-fill
+    const fpsCodeField = document.getElementById("fpsCode");
+    if (fpsCodeField) {
+        fpsCodeField.addEventListener("input", function() {
+            const code = this.value.trim();
+            if (code.length !== 12) return;
+
+            const f = fpsData.find(x => x.code === code);
+            if (f) {
+                const fpsName = document.getElementById("fpsName");
+                const gpss = document.getElementById("gpss");
+                const areaOfficer = document.getElementById("areaOfficer");
+                const lacManual = document.getElementById("lacManual");
+                
+                if (fpsName) fpsName.value = f.fpsName || '';
+                if (gpss) gpss.value = f.gpss || '';
+                if (areaOfficer) areaOfficer.value = f.areaOfficer || '';
+                if (lacManual) lacManual.value = f.lac || '';
+                showToast("FPS details loaded successfully", true);
+            }
+        });
+    }
+
+    // Form Submit - FIXED SUCCESS CHECK
     const dataForm = document.getElementById("dataForm");
     if (dataForm) {
         dataForm.addEventListener("submit", function(e) {
@@ -128,18 +147,27 @@ document.addEventListener("DOMContentLoaded", function() {
             fetch(API_URL, { method: "POST", body: formData })
                 .then(r => r.json())
                 .then(res => {
-                    if (res.status === "Data Saved successfully ✔") {
+                    console.log("Server response:", res); // DEBUG
+                    // FIXED: Check multiple success conditions
+                    if (res.status === "Data Saved successfully ✔" || 
+                        res.success || 
+                        res.message === "Data saved successfully" ||
+                        res.status === "success") {
+                        
                         const count = currentAppType === "ADD" ? 
                             (submitCounts.get(appNum) || 0) + 1 : 0;
                         
                         submitCounts.set(appNum, count);
                         showToast(`Data saved successfully! ${currentAppType === "ADD" ? `Member ${count}/3` : ''}`, true);
-                        resetForm();
+                        resetForm(); // ✅ AUTO RESET FIXED
                     } else {
-                        showToast(res.message || "Duplicate entry detected!", false);
+                        showToast(res.message || res.error || "Submission failed!", false);
                     }
                 })
-                .catch(() => showToast("Server error. Please try again later.", false))
+                .catch(err => {
+                    console.error("Submit error:", err);
+                    showToast("Server error. Please try again later.", false);
+                })
                 .finally(() => toggle(btn, false));
         });
     }
@@ -151,8 +179,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// ✅ Real-time Application Number Validation
+// ✅ Real-time Application Number Validation - FIXED REGEX & TIMING
+let appNumValidationInitialized = false;
 function initAppNumValidation() {
+    if (appNumValidationInitialized) return;
+    appNumValidationInitialized = true;
+
     const appNumField = document.getElementById("applicationNumber");
     if (!appNumField) return;
 
@@ -167,7 +199,7 @@ function initAppNumValidation() {
         }
         this.style.borderColor = "";
 
-        if (!value) return;
+        if (!value || !currentAppType) return;
 
         if (!value.startsWith("RC")) {
             if (status) {
@@ -184,7 +216,7 @@ function initAppNumValidation() {
             return;
         }
 
-        // Fixed regex pattern
+        // ✅ FIXED REGEX - Single backslash
         const pattern = currentAppType === "NEW" ? /^RC\d{18}$/ : /^RC\d{19}$/;
         if (!pattern.test(value)) {
             if (status) {
@@ -201,10 +233,20 @@ function initAppNumValidation() {
         }
 
         debounceTimer = setTimeout(() => {
+            // Skip if already checked today
+            if (checkedAppNums.has(value)) {
+                if (status) {
+                    status.textContent = "Already checked - duplicate";
+                    status.className = "status-dup";
+                }
+                return;
+            }
+
             fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
                 .then(res => res.json())
                 .then(data => {
-                    if (data && data.exists) {
+                    console.log("Duplicate check:", data);
+                    if (data && (data.exists || data.duplicate)) {
                         if (status) {
                             status.textContent = "Already submitted";
                             status.className = "status-dup";
@@ -225,61 +267,36 @@ function initAppNumValidation() {
                         status.className = "status-dup";
                     }
                 });
-        }, 500);
+        }, 800); // Increased debounce
     });
 }
 
-// ✅ FPS Auto-fill
-document.addEventListener("DOMContentLoaded", function() {
-    const fpsCodeField = document.getElementById("fpsCode");
-    if (fpsCodeField) {
-        fpsCodeField.addEventListener("input", function() {
-            const code = this.value.trim();
-            if (code.length !== 12) return;
-
-            const f = fpsData.find(x => x.code === code);
-            if (f) {
-                const fpsName = document.getElementById("fpsName");
-                const gpss = document.getElementById("gpss");
-                const areaOfficer = document.getElementById("areaOfficer");
-                const lacManual = document.getElementById("lacManual");
-                
-                if (fpsName) fpsName.value = f.fpsName || '';
-                if (gpss) gpss.value = f.gpss || '';
-                if (areaOfficer) areaOfficer.value = f.areaOfficer || '';
-                if (lacManual) lacManual.value = f.lac || '';
-                showToast("FPS details loaded successfully", true);
-            }
-        });
-    }
-});
-
-// ✅ Reset Form
+// ✅ Reset Form - FIXED
 function resetForm() {
     const form = document.getElementById("dataForm");
     const mainForm = document.getElementById("mainForm");
     const appStatus = document.getElementById("appStatus");
     const appType = document.getElementById("appType");
-    const submitWarning = document.getElementById("submitWarning");
-    
+
     if (form) form.reset();
     if (mainForm) mainForm.style.display = "none";
     if (appStatus) appStatus.textContent = "";
     if (appType) appType.value = "";
-    if (submitWarning) submitWarning.style.display = "none";
-    
+
     currentAppType = "";
     checkedAppNums.clear();
-    
+
+    // Clear styles
     document.querySelectorAll("input, select").forEach(el => {
         el.style.borderColor = "";
         el.style.boxShadow = "";
     });
-    
+
+    // Reset date
     const dateInput = document.getElementById("date");
     const today = new Date().toISOString().split('T')[0];
     if (dateInput) dateInput.value = today;
 }
 
-// 🔥 Initialize everything
-initAppNumValidation();
+// 🔥 Initialize validation after short delay
+setTimeout(initAppNumValidation, 100);
