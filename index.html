@@ -3,111 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry Form - DEO Work Record</title>
+    <title>DEO Work Record - Data Entry Form</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- TOP SECTION -->
+    <!-- TOP HEADER -->
     <div class="top-fixed">
         <div class="top-title">
-            This form is only for maintaining the DEO work record<br>
-            It is not a SmartPDS portal data entry page
+            This form is only for maintaining DEO work records<br>
+            <small style="color:#666;">Not a SmartPDS portal data entry page</small>
         </div>
         <div class="title">
-            Please complete the data entry process in the SmartPDS portal first<br>
-            <span class="subtitle">
-                After generating the application number, enter it here and submit it
-            </span>
+            Complete SmartPDS data entry first, then submit Application Number here
+            <span class="subtitle">Generate RC number → Enter here → Submit</span>
         </div>
     </div>
 
-    <!-- MAIN CONTAINER -->
+    <!-- MAIN FORM CONTAINER -->
     <div class="container">
-        <!-- APP TYPE ROW -->
+        <!-- Application Type Selection -->
         <div class="row">
-            <label>Application Type <span style="color:red;">*</span>:</label>
+            <label>Application Type <span class="required">*</span>:</label>
             <select id="appType" name="appType" required>
-                <option value="">Select</option>
-                <option value="NEW">NEW Application</option>
+                <option value="">Select Application Type</option>
+                <option value="NEW">NEW Ration Card Application</option>
                 <option value="ADD">ADD Member Application</option>
             </select>
         </div>
 
-        <!-- MAIN FORM -->
-        <div id="mainForm" class="main-form" style="display: none;">
+        <!-- MAIN FORM - Hidden Initially -->
+        <div id="mainForm" class="main-form">
             <form id="dataForm" novalidate>
                 <input type="hidden" name="appType" id="hiddenAppType">
 
-                <!-- Application Number -->
+                <!-- Application Number with Validation -->
                 <div class="row">
-                    <label>Application Number<span style="color:red;">*</span> <span id="appFormat"></span>:</label>
-                    <div style="position: relative; display: inline-block; width: 350px;">
-                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required>
-                        <span id="appStatus"></span>
+                    <label>Application Number <span class="required">*</span> <span id="appFormat"></span>:</label>
+                    <div class="input-group">
+                        <input type="text" id="applicationNumber" name="applicationNumber" required>
+                        <span id="appStatus" class="status"></span>
                     </div>
                 </div>
 
-                <!-- Inspector -->
+                <!-- Inspector Selection -->
                 <div class="row">
-                    <label>Name of Inspector <span style="color:red;">*</span>:</label>
+                    <label>Name of Inspector <span class="required">*</span>:</label>
                     <select id="inspector" name="inspector" required>
-                        <option value="">Select</option>
-                        <option>Abhijit Bora</option>
-                        <option>Durga Bodo</option>
-                        <option>Mausam Zinnat</option>
-                        <option>Mausumi Bora</option>
-                        <option>Sanjiv Sarma</option>
-                        <option>Santonu Bordoloi</option>
+                        <option value="">Select Inspector</option>
+                        <option value="Abhijit Bora">Abhijit Bora</option>
+                        <option value="Durga Bodo">Durga Bodo</option>
+                        <option value="Mausam Zinnat">Mausam Zinnat</option>
+                        <option value="Mausumi Bora">Mausumi Bora</option>
+                        <option value="Sanjiv Sarma">Sanjiv Sarma</option>
+                        <option value="Santonu Bordoloi">Santonu Bordoloi</option>
                     </select>
                 </div>
 
-                <!-- DEO + Date -->
+                <!-- DEO Name + Date Row -->
                 <div class="row flex">
                     <div class="half">
-                        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
+                        <label>Data Entry Operator <span class="required">*</span>:</label>
                         <input type="text" id="deo" name="deo" required>
                     </div>
                     <div class="half">
-                        <label>Date <span style="color:red;">*</span>:</label>
+                        <label>Date <span class="required">*</span>:</label>
                         <input type="date" id="date" name="date" required>
                     </div>
                 </div>
 
-                <!-- Mobile -->
+                <!-- Mobile Number -->
                 <div class="row">
-                    <label>Mobile Number <span style="color:red;">*</span>:</label>
-                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required>
+                    <label>Mobile Number <span class="required">*</span>:</label>
+                    <input type="tel" id="mobile" name="mobile" maxlength="10" required>
                 </div>
 
-                <!-- HOF + GP -->
+                <!-- Head of Family + GP/Ward -->
                 <div class="row flex">
                     <div class="half">
-                        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
+                        <label>Head of Family <span class="required">*</span>:</label>
                         <input type="text" id="hof" name="hof" required>
                     </div>
                     <div class="half">
-                        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
+                        <label>GP/Ward No <span class="required">*</span>:</label>
                         <input type="text" id="gp" name="gp" required>
                     </div>
                 </div>
 
                 <!-- Total Members -->
                 <div class="row">
-                    <label>Total Members <span style="color:red;">*</span>:</label>
+                    <label>Total Members <span class="required">*</span>:</label>
                     <input type="number" id="totalMembers" name="totalMembers" min="1" required>
                 </div>
 
                 <!-- FPS Section -->
-                <div class="yellow-bar">Fair Price Shop Detail</div>
-                <div class="note">
-                    <b>N.B.:</b> Please enter only the FPS ID; all other fields will be filled automatically
+                <div class="section-header">Fair Price Shop Details</div>
+                <div class="info-note">
+                    <b>Note:</b> Enter FPS ID only - other fields auto-fill
                 </div>
 
                 <div class="row flex">
                     <div class="half">
-                        <label>F.P.S ID <span style="color:red;">*</span>:</label>
-                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001 (12 digits)" required>
+                        <label>FPS ID <span class="required">*</span>:</label>
+                        <input type="text" id="fpsCode" name="fpsCode" maxlength="12" placeholder="12 digits" required>
                     </div>
                     <div class="half">
                         <label>FPS Name:</label>
@@ -117,7 +115,7 @@
 
                 <div class="row flex">
                     <div class="half">
-                        <label>Name of GPSS:</label>
+                        <label>GPSS Name:</label>
                         <input type="text" id="gpss" name="gpss" readonly class="locked">
                     </div>
                     <div class="half">
@@ -131,27 +129,29 @@
                     <input type="text" id="lacManual" name="lacManual" readonly class="locked">
                 </div>
 
-                <!-- Buttons -->
-                <div class="button-area">
-                    <button id="submitBtn" type="submit">
-                        <span class="btn-text">Submit</span>
+                <!-- Action Buttons -->
+                <div class="button-group">
+                    <button id="submitBtn" type="submit" class="btn-primary">
+                        <span class="btn-text">Submit Data</span>
                     </button>
-                    <button class="reset-btn" type="button">Reset</button>
+                    <button type="button" class="btn-secondary reset-btn">Reset Form</button>
                 </div>
 
-                <div class="caution-bar">
-                    📌 Note:<br>NEW entries must contain RC ID 20 digits. <br> ADD entries must contain existing RC ID 21 digits.
+                <!-- Important Note -->
+                <div class="info-bar">
+                    <strong>Important:</strong> NEW = 20 digits RC | ADD = 21 digits RC
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Toast -->
+    <!-- Toast Notification -->
     <div id="toast" class="toast">
-        <div class="toast-message"></div>
+        <div class="toast-content">
+            <span class="toast-message"></span>
+        </div>
     </div>
 
-    <!-- 🔥 SCRIPT LINK ADD -->
     <script src="script.js"></script>
 </body>
 </html>
