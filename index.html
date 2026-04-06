@@ -88,27 +88,60 @@ Please complete the data entry process first<br>
 <input type="number" id="totalMembers" min="1" required>
 </div>
 
-<div class="yellow-bar">FPS Details</div>
+<div class="note">
+
+<b>N.B.:</b> You can fill only FPS Code
+
+</div>
 
 <div class="row flex">
+
 <div>
-<label>FPS Code</label>
-<input type="text" id="fpsCode">
+
+<label>F.P.S Code</label>
+
+<input type="text" id="fpsCode" placeholder="130500500001" required style="width:200px;">
+
 </div>
+
 <div>
+
 <label>FPS Name</label>
-<input type="text" id="fpsName" readonly class="locked">
+
+<input type="text" id="fpsName" readonly class="locked" style="width:250px;">
+
 </div>
+
 </div>
 
 <div class="row flex">
-<input type="text" id="gpss" readonly class="locked" placeholder="GPSS">
-<input type="text" id="areaOfficer" readonly class="locked" placeholder="Area Officer">
+
+<div>
+
+<label>Name of GPSS</label>
+
+<input type="text" id="gpss" readonly class="locked" style="width:390px;">
+
+</div>
+
+<div>
+
+<label>Area Officer</label>
+
+<input type="text" id="areaOfficer" readonly class="locked" style="width:280px;">
+
+</div>
+
 </div>
 
 <div class="row">
-<input type="text" id="lacManual" readonly class="locked" placeholder="LAC">
+
+<label>LAC Name</label>
+
+<input type="text" id="lacManual" readonly class="locked" style="width:300px;">
+
 </div>
+
 
 <div class="button-area">
 <button id="submitBtn" type="submit">
