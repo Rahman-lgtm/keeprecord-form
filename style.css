@@ -1,27 +1,16 @@
-/* ✅ Full Page Setup */
-html, body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden; /* scroll band */
-}
-
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;   /* 🔥 ye main fix hai */
     align-items: center;
     background: #dcdcdc;
     font-family: "Bookman Old Style", serif;
 }
 
 /* ✅ Top Titles */
-.top-title {
+.top-fixed {
     width: 100%;
-    margin: 0 0 10px;
-    background: #bfbfbf;
-    text-align: center;
-    padding: 8px;
-    font-style: italic;
-    box-shadow: 2px 3px 6px gray;
+    max-width: 1000px;
+    margin-top: 10px;
 }
 
 .title {
@@ -45,14 +34,13 @@ body {
 .container {
     width: 900px;
     max-width: 95%;
-    height: 95vh;
+    margin-top: 15px;   /* 🔥 top ke niche space */
 
     background: #efefef;
     padding: 15px 20px;
     border-radius: 10px;
 
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    overflow: hidden;
 }
 
 /* ✅ Form Layout */
