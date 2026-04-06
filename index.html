@@ -126,18 +126,27 @@
         .status-ok { color: green; }
         .status-dup { color: red; }
 
-        .spinner {
-            margin-left: 6px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
+.spinner {
+  display: none;
+  margin-left: 6px;
+  font-size: 16px;
+  animation: spin 1s linear infinite;
+}
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+#submitBtn.loading .spinner {
+  display: inline-block;
+}
 
-        .toast {
+#submitBtn.loading .btn-text {
+  display: none;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+          .toast {
             position: fixed;
             top: 20px;
             right: 20px;
@@ -292,10 +301,10 @@
                 </div>
 
                 <div class="button-area">
-                    <button id="submitBtn" class="submit-btn" type="submit">
-                        <span class="btn-text">Submit</span>
-                        <span class="spinner"></span>
-                    </button>
+                    <button id="submitBtn" type="submit">
+                    <span class="btn-text">Submit</span>
+                 <span class="spinner">↻</span>
+                 </button>
                     <button class="reset-btn" type="button">Reset</button>
                 </div>
 
@@ -327,14 +336,18 @@ function showToast(msg, ok = true) {
     setTimeout(() => t.classList.remove("show"), 2500);
 }
 
-// ✅ Button Loader
+// ✅ Spinner Toggle (FINAL)
 function toggle(btn, load) {
-    btn.disabled = load;
-    btn.querySelector(".btn-text").style.display = load ? "none" : "inline";
-    btn.querySelector(".spinner").style.display = load ? "inline" : "none";
+    if (load) {
+        btn.classList.add("loading");
+        btn.disabled = true;
+    } else {
+        btn.classList.remove("loading");
+        btn.disabled = false;
+    }
 }
 
-// ✅ APP TYPE CHANGE
+// ✅ App Type Change
 document.getElementById("appType").addEventListener("change", function () {
 
     currentAppType = this.value;
@@ -359,13 +372,12 @@ document.getElementById("appType").addEventListener("change", function () {
         }
 
         appNumField.focus();
-
     } else {
         mainForm.style.display = "none";
     }
 });
 
-// ✅ LIVE DUPLICATE CHECK (FAST + CLEAN)
+// ✅ LIVE CHECK (PRO LEVEL)
 document.getElementById("applicationNumber").addEventListener("input", function () {
 
     const value = this.value.trim();
@@ -373,18 +385,15 @@ document.getElementById("applicationNumber").addEventListener("input", function 
 
     clearTimeout(debounceTimer);
 
-    // Reset UI
     status.textContent = "";
     status.className = "";
     this.style.borderColor = "";
 
     if (!value) return;
 
-    // 🧠 Step 1: Typing state
     status.textContent = "Typing...";
     status.className = "status-checking";
 
-    // 🧠 Step 2: Basic format check (RC prefix)
     if (!value.startsWith("RC")) {
         status.textContent = "Must start with RC";
         status.className = "status-dup";
@@ -392,12 +401,10 @@ document.getElementById("applicationNumber").addEventListener("input", function 
         return;
     }
 
-    // 🧠 Step 3: Length logic
     const expectedLength = currentAppType === "NEW" ? 20 : 21;
 
     if (value.length < expectedLength) {
         status.textContent = `Incomplete (${value.length}/${expectedLength})`;
-        status.className = "status-checking";
         return;
     }
 
@@ -408,7 +415,6 @@ document.getElementById("applicationNumber").addEventListener("input", function 
         return;
     }
 
-    // 🧠 Step 4: Final regex validation
     const pattern = currentAppType === "NEW"
         ? /^RC\d{18}$/
         : /^RC\d{19}$/;
@@ -420,7 +426,6 @@ document.getElementById("applicationNumber").addEventListener("input", function 
         return;
     }
 
-    // 🧠 Step 5: Server check
     status.textContent = "Checking...";
     status.className = "status-checking";
 
@@ -447,110 +452,46 @@ document.getElementById("applicationNumber").addEventListener("input", function 
                 status.className = "status-dup";
             });
 
-    }, 350); // ⚡ ultra fast
+    }, 300);
 });
-// ✅ VALIDATION
-function validateForm() {
 
-    if (!currentAppType) {
-        showToast("Select Application Type!", false);
-        return false;
-    }
-
-    const required = [
-        'applicationNumber', 'inspector', 'deo',
-        'date', 'mobile', 'hof', 'gp',
-        'totalMembers', 'fpsCode'
-    ];
-
-    for (let id of required) {
-        if (!document.getElementById(id).value.trim()) {
-            document.getElementById(id).focus();
-            showToast("Fill all required fields!", false);
-            return false;
-        }
-    }
-
-    if (!/^\d{10}$/.test(document.getElementById("mobile").value)) {
-        showToast("Enter valid 10-digit mobile!", false);
-        return false;
-    }
-
-    const appNum = document.getElementById("applicationNumber").value.trim();
-
-    const pattern = currentAppType === "NEW"
-        ? /^RC\d{18}$/
-        : /^RC\d{19}$/;
-
-    if (!pattern.test(appNum)) {
-        showToast(currentAppType === "NEW"
-            ? "Invalid NEW format!"
-            : "Invalid ADD format!", false);
-        return false;
-    }
-
-    if (checkedAppNums.has(appNum)) {
-        showToast("Duplicate Application Number!", false);
-        return false;
-    }
-
-    // ADD limit
-    if (currentAppType === "ADD") {
-        const count = submitCounts.get(appNum) || 0;
-        if (count >= 3) {
-            showToast("Maximum 3 submissions allowed!", false);
-            return false;
-        }
-    }
-
-    return true;
-}
-
-// ✅ FPS LOAD
+// ✅ FPS Load
 fetch(API_URL + "?action=getFPS")
     .then(r => r.json())
     .then(d => fpsData = d);
 
-// ✅ FPS AUTO-FILL (FAST FIXED)
+// ✅ FPS Autofill
 document.getElementById("fpsCode").addEventListener("input", function () {
-
     const code = this.value.trim();
-    if (!code || !fpsData.length) return;
-
     const fps = fpsData.find(f => f.code == code);
 
     if (fps) {
-        document.getElementById("fpsName").value = fps.fpsName || "";
-        document.getElementById("gpss").value = fps.gpss || "";
-        document.getElementById("areaOfficer").value = fps.areaOfficer || "";
-        document.getElementById("lacManual").value = fps.lac || "";
+        fpsName.value = fps.fpsName;
+        gpss.value = fps.gpss;
+        areaOfficer.value = fps.areaOfficer;
+        lacManual.value = fps.lac;
     } else {
-        ["fpsName", "gpss", "areaOfficer", "lacManual"]
-            .forEach(id => document.getElementById(id).value = "");
+        ["fpsName","gpss","areaOfficer","lacManual"].forEach(id => document.getElementById(id).value = "");
     }
 });
 
-// ✅ DATE AUTO
+// ✅ Date Auto
 document.getElementById("date").valueAsDate = new Date();
 
-// ✅ SUBMIT
+// ✅ Submit
 document.getElementById("dataForm").addEventListener("submit", e => {
 
     e.preventDefault();
-    if (!validateForm()) return;
 
     const btn = document.getElementById("submitBtn");
-    const appNum = document.getElementById("applicationNumber").value.trim();
+    const appNum = applicationNumber.value.trim();
 
     toggle(btn, true);
 
     const fd = new FormData(e.target);
     fd.append("action", "submit");
 
-    fetch(API_URL, {
-        method: "POST",
-        body: fd
-    })
+    fetch(API_URL, { method: "POST", body: fd })
         .then(r => r.json())
         .then(res => {
 
@@ -566,10 +507,8 @@ document.getElementById("dataForm").addEventListener("submit", e => {
 
                 resetForm();
 
-            } else if (res.status === "Duplicate") {
-                showToast("Already exists ❌", false);
             } else {
-                showToast("Failed ❌", false);
+                showToast("Duplicate ❌", false);
             }
 
         })
@@ -577,27 +516,18 @@ document.getElementById("dataForm").addEventListener("submit", e => {
         .finally(() => toggle(btn, false));
 });
 
-// ✅ RESET
+// ✅ Reset
 function resetForm() {
-
     document.getElementById("dataForm").reset();
     document.getElementById("mainForm").style.display = "none";
     document.getElementById("appStatus").textContent = "";
     document.getElementById("appType").value = "";
-
-    checkedAppNums.clear();
     currentAppType = "";
-
+    checkedAppNums.clear();
     document.getElementById("date").valueAsDate = new Date();
 }
 
-// RESET BUTTON
 document.querySelector(".reset-btn").addEventListener("click", resetForm);
-
-// AUTO FOCUS
-window.addEventListener("load", () => {
-    document.getElementById("appType").focus();
-});
     </script>
 </body>
 </html>
