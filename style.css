@@ -151,33 +151,36 @@ width:100%;
   position: fixed;
   top: 20px;
   right: 20px;
-  min-width: 250px;
-  max-width: 300px;
+  min-width: 260px;
+  max-width: 320px;
   padding: 14px 18px;
-  border-radius: 10px;
-  color: #fff;
+  border-radius: 12px;
   font-size: 14px;
+  font-weight: 500;
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(-30px);
   transition: all 0.4s ease;
   z-index: 9999;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Types */
+/* types */
 .toast-success {
-  background: #198754;
+  background: linear-gradient(135deg, #28a745, #198754);
+  color: #fff;
 }
 
 .toast-error {
-  background: #dc3545;
+  background: linear-gradient(135deg, #dc3545, #b02a37);
+  color: #fff;
 }
 
 .toast-warning {
-  background: #ffc107;
+  background: linear-gradient(135deg, #ffc107, #ffca2c);
   color: #000;
 }
 
-/* Show animation */
+/* animation */
 #toast.show {
   opacity: 1;
   transform: translateY(0);
