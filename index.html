@@ -39,24 +39,14 @@
     </select>
   </div>
 
-  <!-- Clean dropdowns - सिर्फ NEW/ADD -->
-  <div class="row flex">
-    <div style="width:48%;">
-      <label>Application Type:</label>
-      <select id="appTypeDropdown" required style="width:100%;">
-        <option value="">Select</option>
-        <option value="new">NEW</option>
-        <option value="add">ADD</option>
-      </select>
-    </div>
-    <div style="width:48%;">
-      <label>Application type:</label>
-      <select id="appType" required style="width:100%;">
-        <option value="">Select</option>
-        <option>NEW</option>
-        <option>ADD</option>
-      </select>
-    </div>
+  <!-- Single Application Type dropdown -->
+  <div class="row">
+    <label>Application Type:</label>
+    <select id="appType" required style="width:350px;">
+      <option value="">Select</option>
+      <option>NEW (20 chars: RC + 18 digits)</option>
+      <option>ADD (21 chars: RC + 19 digits)</option>
+    </select>
   </div>
 
   <div class="row">
@@ -64,10 +54,11 @@
     <input
       type="text"
       id="applicationNumber"
-      placeholder="Auto-filled based on type above"
+      placeholder="Type RC number here (20/21 chars)"
       style="width:350px;"
-      readonly
+      maxlength="21"
     >
+    <small style="color:#666; font-size:14px;">NEW: 20 chars | ADD: 21 chars</small>
   </div>
 
   <div class="row flex">
@@ -159,44 +150,29 @@
 </form>
 </div>
 
-<!-- Inline script for dropdown sync + basic functionality -->
+<!-- Inline script for dynamic maxlength + date -->
 <script>
-  // Elements
-  const appTypeDropdown = document.getElementById("appTypeDropdown");
   const appType = document.getElementById("appType");
   const applicationNumber = document.getElementById("applicationNumber");
   const dateInput = document.getElementById("date");
 
-  // Sync dropdowns - Clean NEW/ADD only
-  function syncAppTypes() {
-    const dropdownVal = appTypeDropdown.value;
-    const typeVal = appType.value;
-
-    if (dropdownVal === "new") {
-      appType.value = "NEW";
-      applicationNumber.value = "RC202500000007638358"; // RC + 18 digits = 20 chars
-    } else if (dropdownVal === "add") {
-      appType.value = "ADD";
-      applicationNumber.value = "RC2025061100001187378"; // RC + 19 digits = 21 chars
-    } else if (typeVal === "NEW") {
-      appTypeDropdown.value = "new";
-      applicationNumber.value = "RC202500000007638358";
-    } else if (typeVal === "ADD") {
-      appTypeDropdown.value = "add";
-      applicationNumber.value = "RC2025061100001187378";
+  // Dynamic maxlength based on Application Type
+  function updateAppNumLength() {
+    const type = appType.value;
+    if (type === "NEW") {
+      applicationNumber.maxLength = 20;
+      applicationNumber.placeholder = "RC + 18 digits (20 chars)";
+    } else if (type === "ADD") {
+      applicationNumber.maxLength = 21;
+      applicationNumber.placeholder = "RC + 19 digits (21 chars)";
     } else {
-      appTypeDropdown.value = "";
-      appType.value = "";
-      applicationNumber.value = "";
+      applicationNumber.maxLength = 21;
+      applicationNumber.placeholder = "Type RC number here (20/21 chars)";
     }
-
-    // Trigger input event for validation
-    const inputEvent = new Event("input", { bubbles: true });
-    applicationNumber.dispatchEvent(inputEvent);
+    applicationNumber.value = ""; // Clear on type change
   }
 
-  appTypeDropdown.addEventListener("change", syncAppTypes);
-  appType.addEventListener("change", syncAppTypes);
+  appType.addEventListener("change", updateAppNumLength);
 
   // Set today in date field
   function setToday() {
@@ -212,11 +188,11 @@
   setToday();
 
   // Reset form handler
-  document.querySelector('.reset-btn').addEventListener('click', function() {
+  document.querySelector('.reset-btn')?.addEventListener('click', function() {
     setTimeout(() => {
-      appTypeDropdown.value = "";
       appType.value = "";
       applicationNumber.value = "";
+      applicationNumber.maxLength = 21;
       setToday();
     }, 100);
   });
