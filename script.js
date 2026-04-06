@@ -1,4 +1,4 @@
-const API_URL="https://script.google.com/macros/s/AKfycbygU1kvPdNDa-c0r_iRBNXdMqU1LNTqXhCNEkwSPnanvDqOCTo6JF00Tw0ojHW6LWGC5Q/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbycMuof0Ip2ZMZeZQjn1bPk8_B_HeM6EvUpNGNF7u21UH69Tk9v0lZLnT9tH_qSMgINlA/exec";
 
 let fpsData=[];
 
