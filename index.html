@@ -1,169 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Data Entry Form</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Data Entry Form</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- Toast -->
-<div id="toast" class="toast">
-  <span class="toast-message"></span>
+<div id="toast" class="toast" style="display: none;">
+  <span class="toast-message">Success</span>
 </div>
 
 <div class="top-title">
-This form is only for maintaining the DEO work record<br>
-It is not a SmartPDS portal data entry page
+  This form is only for maintaining the DEO work record<br>
+  It is not a SmartPDS portal data entry page
 </div>
 
 <div class="title">
-Please complete the data entry process first<br>
-<span class="subtitle">Enter application number here</span>
+  Please complete the data entry process in the SmartPDS portal first<br>
+  <span class="subtitle">
+    After generating the application number, enter it here and submit it
+  </span>
 </div>
 
 <div class="container">
+
 <form id="dataForm">
 
-<div class="row">
-<label>Inspector:</label>
-<select id="inspector" required style="width:350px;">
-<option value="">Select</option>
-<option>Abhijit Bora</option>
-<option>Durga Bodo</option>
-<option>Mausam Zinnat</option>
-<option>Mausumi Bora</option>
-<option>Sanjiv Sarma</option>
-<option>Santonu Bordoloi</option>
-</select>
-</div>
+  <div class="row">
+    <label>Name of Inspector:</label>
+    <select id="inspector" required style="width:350px;">
+      <option value="">Select</option>
+      <option>Abhijit Bora</option>
+      <option>Durga Bodo</option>
+      <option>Mausam Zinnat</option>
+      <option>Mausumi Bora</option>
+      <option>Sanjiv Sarma</option>
+      <option>Santonu Bordoloi</option>
+    </select>
+  </div>
 
-<div class="row">
-<label>Application Type:</label>
-<select id="appType" required style="width:350px;">
-<option value="">Select</option>
-<option value="NEW">NEW</option>
-<option value="ADD">ADD</option>
-</select>
-</div>
+  <div class="row">
+    <label>Application Type:</label>
+    <select id="appTypeDropdown" required style="width:350px;">
+      <option value="">Select</option>
+      <option value="new">New</option>
+      <option value="add">ADD</option>
+    </select>
+  </div>
 
-<div class="row">
-<label>Application Number:</label>
-<div style="position:relative; width:350px;">
-<input type="text" id="applicationNumber" maxlength="21" style="width:100%; padding-right:120px;">
-<span id="appStatus"></span>
-</div>
-</div>
+  <div class="row">
+    <label>Application Number:</label>
+    <input
+      type="text"
+      id="applicationNumber"
+      placeholder="RC202500000007638358"
+      style="width:350px;"
+      readonly
+    >
+  </div>
 
-<div class="row flex">
-<div>
-<label>DEO Name:</label>
-<input type="text" id="deo" required style="width:200px;">
-</div>
-<div>
-<label>Date:</label>
-<input type="date" id="date" required>
-</div>
-</div>
+  <div class="row flex">
+    <div>
+      <label>Name of Data Entry Operator:</label>
+      <input type="text" id="deo" required style="width:200px;">
+    </div>
+    <div>
+      <label>Date:</label>
+      <input
+        type="date"
+        id="date"
+        class="form-control"
+        value=""
+        min=""
+        max=""
+        required
+      />
+    </div>
+  </div>
 
-<div class="row">
-<label>Mobile:</label>
-<input type="text" id="mobile" maxlength="10" required>
-</div>
+  <div class="row">
+    <label>Mobile Number</label>
+    <input type="text" id="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
+  </div>
 
-<div class="row flex">
-<div>
-<label>Head of Family:</label>
-<input type="text" id="hof" required>
-</div>
-<div>
-<label>GP:</label>
-<input type="text" id="gp" required>
-</div>
-</div>
+  <div class="row flex">
+    <div class="half">
+      <label>Name of Head of the Family:</label>
+      <input type="text" id="hof" required style="width:80%;">
+    </div>
+    <div>
+      <div class="row flex">
+    <div>
+      <label>Name of GP/Ward No</label>
+      <input type="text" id="gp" required style="width:250px;">
+    </div>
+    <div>
+      <label>Total Members</label>
+      <input type="number" id="totalMembers" required style="width:150px;" min="1">
+    </div>
+  </div>
 
-<div class="row">
-<label>Total Members:</label>
-<input type="number" id="totalMembers" min="1" required>
-</div>
-<div class="yellow-bar">
+  <div class="yellow-bar">
+    Fair Price Shop Detail
+  </div>
 
-Fair Price Shop Detail
+  <div class="note">
+    <b>N.B.:</b> You can fill only FPS Code
+  </div>
 
-</div>
+  <div class="row flex">
+    <div>
+      <label>F.P.S Code</label>
+      <input type="text" id="fpsCode" placeholder="130500500001" required style="width:200px;">
+    </div>
+    <div>
+      <label>FPS Name</label>
+      <input type="text" id="fpsName" readonly class="locked" style="width:250px;">
+    </div>
+  </div>
 
-<div class="note">
+  <div class="row flex">
+    <div>
+      <label>Name of GPSS</label>
+      <input type="text" id="gpss" readonly class="locked" style="width:390px;">
+    </div>
+    <div>
+      <label>Area Officer</label>
+      <input type="text" id="areaOfficer" readonly class="locked" style="width:280px;">
+    </div>
+  </div>
 
-<b>N.B.:</b> You can fill only FPS Code
+  <div class="row">
+    <label>LAC Name</label>
+    <input type="text" id="lacManual" readonly class="locked" style="width:300px;">
+  </div>
 
-<div class="note">
+  <div class="button-area">
 
-<b>N.B.:</b> You can fill only FPS Code
+    <button id="submitBtn" type="submit" class="btn btn-primary">
+      <span class="btn-text">Submit</span>
+      <span class="spinner" style="display: none;">↻</span>
+    </button>
 
-</div>
+    <button class="reset-btn" type="reset">
+      Reset
+    </button>
 
-<div class="row flex">
+    <div class="caution-bar">
+      📌 IMPORTANT<br>
+      ✔ All details must be verified before submission.<br>
+      ⚠ Incorrect data entry will be responsibility of the DEO.
+    </div>
 
-<div>
-
-<label>F.P.S Code</label>
-
-<input type="text" id="fpsCode" placeholder="130500500001" required style="width:200px;">
-
-</div>
-
-<div>
-
-<label>FPS Name</label>
-
-<input type="text" id="fpsName" readonly class="locked" style="width:250px;">
-
-</div>
-
-</div>
-
-<div class="row flex">
-
-<div>
-
-<label>Name of GPSS</label>
-
-<input type="text" id="gpss" readonly class="locked" style="width:390px;">
-
-</div>
-
-<div>
-
-<label>Area Officer</label>
-
-<input type="text" id="areaOfficer" readonly class="locked" style="width:280px;">
-
-</div>
-
-</div>
-
-<div class="row">
-
-<label>LAC Name</label>
-
-<input type="text" id="lacManual" readonly class="locked" style="width:300px;">
-
-</div>
-
-
-<div class="button-area">
-<button id="submitBtn" type="submit">
-<span class="btn-text">Submit</span>
-<span class="spinner" style="display:none;">↻</span>
-</button>
-
-<button type="reset" class="reset-btn">Reset</button>
-</div>
+  </div>
 
 </form>
+
 </div>
 
 <script src="script.js"></script>
+
+<script>
+  function showToast(message, type = "success") {
+    const toast = document.getElementById("toast");
+
+    let icon = "✔";
+    if (type === "error") icon = "❌";
+    if (type === "warning") icon = "⚠";
+
+    toast.className = "";
+    toast.classList.add("show", `toast-${type}`);
+    toast.style.display = "block";
+    toast.innerHTML = `<span style="margin-right:8px;">${icon}</span> ${message}`;
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => { toast.style.display = "none"; }, 300);
+    }, 3500);
+  }
+
+  // Application type dropdown → auto fill application number
+  const appTypeDropdown = document.getElementById("appTypeDropdown");
+  const applicationNumber = document.getElementById("applicationNumber");
+
+  appTypeDropdown?.addEventListener("change", function () {
+    const val = this.value.trim();
+
+    if (val === "new") {
+      applicationNumber.value = "RC202500000007638358";
+    } else if (val === "add") {
+      applicationNumber.value = "RC2025061100001187378";
+    } else {
+      applicationNumber.value = "";
+    }
+
+    // Trigger input so validation + duplicate check runs
+    const inputEvent = new Event("input", { bubbles: true });
+    applicationNumber.dispatchEvent(inputEvent);
+  });
+
+  // Set today only in date field
+  function setToday() {
+    const dt = new Date();
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth() + 1).padStart(2, "0");
+    const d = String(dt.getDate()).padStart(2, "0");
+    const today = `${y}-${m}-${d}`;
+    dateInput.value = today;
+    dateInput.min = today;
+    dateInput.max = today;
+  }
+
+  setToday();
+</script>
+
 </body>
 </html>
