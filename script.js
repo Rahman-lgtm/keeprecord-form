@@ -61,11 +61,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (this.value === "NEW") {
                     appNumField.maxLength = 20;
                     appNumField.placeholder = "RC + 18 digits (20 chars total)";
-                    if (appFormat) appFormat.textContent = "(20 digits)";
+                    if (appFormat) appFormat.textContent = "";
                 } else {
                     appNumField.maxLength = 21;
                     appNumField.placeholder = "RC + 19 digits (21 chars total)";
-                    if (appFormat) appFormat.textContent = "(21 digits)";
+                    if (appFormat) appFormat.textContent = "";
                 }
 
                 appNumField.focus();
