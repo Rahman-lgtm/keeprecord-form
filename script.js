@@ -2,6 +2,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV
 
 let fpsData = [];
 let checkedAppNums = new Set();
+let debounceTimer;
 
 // ✅ Toast
 function showToast(message, success = true) {
@@ -9,7 +10,6 @@ function showToast(message, success = true) {
   const msg = toast.querySelector(".toast-message");
 
   msg.textContent = message;
-
   toast.className = "toast show " + (success ? "toast-success" : "toast-error");
 
   setTimeout(() => {
@@ -17,7 +17,7 @@ function showToast(message, success = true) {
   }, 3000);
 }
 
-// ✅ Correct regex
+// ✅ Regex
 function isValidAppNum(value) {
   return /^RC\d{18,19}$/.test(value);
 }
@@ -36,6 +36,7 @@ fetch(`${API_URL}?action=getFPS`)
 
 // ✅ Elements
 const applicationNumber = document.getElementById("applicationNumber");
+const statusEl = document.getElementById("appStatus"); // 🔥 new
 const fpsCode = document.getElementById("fpsCode");
 const fpsName = document.getElementById("fpsName");
 const gpss = document.getElementById("gpss");
@@ -58,23 +59,56 @@ fpsCode.addEventListener("change", function () {
   }
 });
 
-// ✅ Duplicate check (LIVE)
-applicationNumber.addEventListener("blur", function () {
+// ✅ 🔥 LIVE DUPLICATE CHECK (UPDATED)
+applicationNumber.addEventListener("input", function () {
   const val = this.value.trim();
 
-  if (!isValidAppNum(val)) return;
+  clearTimeout(debounceTimer);
 
-  fetch(`${API_URL}?action=checkDuplicate&appNum=${val}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.exists) {
-        checkedAppNums.add(val);
-        this.style.borderColor = "red";
-        showToast("Already exists", false);
-      } else {
-        this.style.borderColor = "green";
-      }
-    });
+  if (!isValidAppNum(val)) {
+    if (statusEl) statusEl.textContent = "";
+    this.style.borderColor = "";
+    return;
+  }
+
+  if (statusEl) {
+    statusEl.textContent = "Checking...";
+    statusEl.className = "status-checking";
+  }
+
+  debounceTimer = setTimeout(() => {
+
+    fetch(`${API_URL}?action=checkDuplicate&appNum=${val}`)
+      .then(res => res.json())
+      .then(data => {
+
+        if (data.exists) {
+          checkedAppNums.add(val);
+          this.style.borderColor = "red";
+
+          if (statusEl) {
+            statusEl.textContent = "Duplicate";
+            statusEl.className = "status-dup";
+          }
+
+        } else {
+          this.style.borderColor = "green";
+
+          if (statusEl) {
+            statusEl.textContent = "Available";
+            statusEl.className = "status-ok";
+          }
+        }
+
+      })
+      .catch(() => {
+        if (statusEl) {
+          statusEl.textContent = "Error";
+          statusEl.className = "status-dup";
+        }
+      });
+
+  }, 500); // ⚡ fast
 });
 
 // ✅ Submit
@@ -109,17 +143,23 @@ document.getElementById("dataForm").addEventListener("submit", function (e) {
     method: "POST",
     body: formData
   })
-    .then(res => res.text())
+    .then(res => res.json()) // 🔥 FIXED
     .then(res => {
-      if (res === "Success") {
+
+      if (res.status === "Success") {
         showToast("Saved Successfully", true);
         checkedAppNums.add(appNum);
         this.reset();
-      } else if (res === "Duplicate") {
+
+        if (statusEl) statusEl.textContent = "";
+      } 
+      else if (res.status === "Duplicate") {
         showToast("Already exists in system", false);
-      } else {
-        showToast("Failed", false);
+      } 
+      else {
+        showToast(res.message || "Failed", false);
       }
+
     })
     .catch(() => showToast("Error submitting", false))
     .finally(() => toggleLoader(submitBtn, false));
