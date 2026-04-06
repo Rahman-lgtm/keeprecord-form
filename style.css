@@ -68,7 +68,25 @@ body {
 
         .note { margin-bottom: 10px; }
         .button-area { text-align: center; margin-top: 30px; }
+.btn-primary.loading {
+    pointer-events: none;
+    position: relative;
+    color: transparent;
+}
 
+.btn-primary.loading::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
         .submit-btn, #submitBtn {
             background: red;
             color: white;
