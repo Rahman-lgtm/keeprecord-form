@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Entry Form - DEO Work Record</title>
     <style>
+        /* सभी original CSS same */
         body {
             font-family: "Bookman Old Style", serif;
             background: #dcdcdc;
@@ -34,19 +35,11 @@
             box-shadow: 2px 3px 6px gray;
         }
 
-        .subtitle {
-            font-size: 16px;
-            font-weight: normal;
-        }
+        .subtitle { font-size: 16px; font-weight: normal; }
 
-        .container {
-            width: 800px;
-            margin: 25px auto;
-        }
+        .container { width: 800px; margin: 25px auto; }
 
-        label {
-            font-size: 18px;
-        }
+        label { font-size: 18px; }
 
         input, select {
             border: 1px solid #cfcfcf;
@@ -58,14 +51,8 @@
             transition: border-color .2s ease, box-shadow .2s ease;
         }
 
-        input:hover, select:hover {
-            border-color: #b5b5b5;
-        }
-
-        input:focus, select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 3px rgba(13,110,253,.2);
-        }
+        input:hover, select:hover { border-color: #b5b5b5; }
+        input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 3px rgba(13,110,253,.2); }
 
         .locked {
             background: #e6e6e6;
@@ -74,20 +61,9 @@
             cursor: not-allowed;
         }
 
-        .row {
-            margin: 14px 0;
-        }
-
-        .flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .half {
-            width: 48%;
-        }
+        .row { margin: 14px 0; }
+        .flex { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        .half { width: 48%; }
 
         .yellow-bar {
             background: #ffc107;
@@ -98,14 +74,8 @@
             box-shadow: 2px 3px 6px gray;
         }
 
-        .note {
-            margin-bottom: 10px;
-        }
-
-        .button-area {
-            text-align: center;
-            margin-top: 30px;
-        }
+        .note { margin-bottom: 10px; }
+        .button-area { text-align: center; margin-top: 30px; }
 
         .submit-btn, #submitBtn {
             background: red;
@@ -120,10 +90,7 @@
             transition: 0.3s;
         }
 
-        .submit-btn:hover, #submitBtn:hover {
-            background: #218838;
-        }
-
+        .submit-btn:hover, #submitBtn:hover { background: #218838; }
         .reset-btn {
             background: #ffc107;
             padding: 8px 30px;
@@ -135,9 +102,7 @@
             transition: 0.3s;
         }
 
-        .reset-btn:hover {
-            background: #e0a800;
-        }
+        .reset-btn:hover { background: #e0a800; }
 
         .caution-bar {
             width: 100%;
@@ -198,46 +163,8 @@
             font-weight: bold;
         }
 
-        /* 🔥 HIDDEN FORM SECTIONS */
-        .form-section {
-            display: none;
-            opacity: 0;
-            transition: all 0.5s ease;
-        }
-
-        .form-section.show {
-            display: block;
-            opacity: 1;
-        }
-
-        /* SIMPLE APP TYPE SELECTOR */
-        .app-type-selector {
-            text-align: center;
-            margin: 40px 0;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .app-type-selector select {
-            font-size: 24px;
-            padding: 15px 20px;
-            width: 400px;
-            max-width: 90%;
-            border-radius: 10px;
-            border: none;
-            background: white;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .app-type-hint {
-            margin-top: 15px;
-            font-size: 16px;
-            opacity: 0.9;
-        }
+        /* 🔥 HIDDEN BY DEFAULT */
+        .main-form { display: none; }
 
         @media screen and (max-width: 960px) {
             .container { width: 95%; }
@@ -259,126 +186,124 @@
     </div>
 
     <div class="container">
-        <!-- 🔥 SIMPLE APP TYPE SELECTOR - ONLY VISIBLE FIRST -->
-        <div class="app-type-selector">
-            <label style="font-size: 28px; margin-bottom: 20px; display: block;">Application Type चुनें:</label>
-            <select id="appType" name="appType" required>
-                <option value="">--- पहले Type Select करें ---</option>
-                <option value="NEW">🆕 NEW (20 digits)</option>
-                <option value="ADD">➕ ADD (21 digits)</option>
+        <!-- 🔥 SIMPLE APP TYPE - SAME AS OTHER INPUTS -->
+        <div class="row">
+            <label>Application Type <span style="color:red;">*</span>:</label>
+            <select id="appType" name="appType" required style="width:350px;">
+                <option value="">Select</option>
+                <option value="NEW">NEW (20 digits)</option>
+                <option value="ADD">ADD (21 digits)</option>
             </select>
-            <div class="app-type-hint" id="appTypeHint"></div>
         </div>
 
-        <!-- 🔥 HIDDEN FORM - SHOW ONLY AFTER APP TYPE SELECT -->
-        <form id="dataForm" novalidate style="display:none;">
-            <input type="hidden" name="appType" id="hiddenAppType">
+        <!-- 🔥 MAIN FORM - HIDDEN TILL APP TYPE SELECTED -->
+        <div id="mainForm" class="main-form">
+            <form id="dataForm" novalidate>
+                <input type="hidden" name="appType" id="hiddenAppType">
 
-            <div class="row">
-                <label>Application Number <span style="color:red;">*</span> <span id="appFormat" style="font-size:14px;color:#666;"></span>:</label>
-                <div style="position: relative; display: inline-block; width: 350px;">
-                    <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%; font-size:16px;">
-                    <span id="appStatus"></span>
+                <div class="row">
+                    <label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
+                    <div style="position: relative; display: inline-block; width: 350px;">
+                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
+                        <span id="appStatus"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <label>Name of Inspector <span style="color:red;">*</span>:</label>
-                <select id="inspector" name="inspector" required style="width:350px;">
-                    <option value="">Select</option>
-                    <option>Abhijit Bora</option>
-                    <option>Durga Bodo</option>
-                    <option>Mausam Zinnat</option>
-                    <option>Mausumi Bora</option>
-                    <option>Sanjiv Sarma</option>
-                    <option>Santonu Bordoloi</option>
-                </select>
-            </div>
-
-            <div class="row flex">
-                <div>
-                    <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
-                    <input type="text" id="deo" name="deo" required style="width:200px;">
+                <div class="row">
+                    <label>Name of Inspector <span style="color:red;">*</span>:</label>
+                    <select id="inspector" name="inspector" required style="width:350px;">
+                        <option value="">Select</option>
+                        <option>Abhijit Bora</option>
+                        <option>Durga Bodo</option>
+                        <option>Mausam Zinnat</option>
+                        <option>Mausumi Bora</option>
+                        <option>Sanjiv Sarma</option>
+                        <option>Santonu Bordoloi</option>
+                    </select>
                 </div>
-                <div>
-                    <label>Date <span style="color:red;">*</span>:</label>
-                    <input type="date" id="date" name="date" required style="width:170px;">
+
+                <div class="row flex">
+                    <div>
+                        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
+                        <input type="text" id="deo" name="deo" required style="width:200px;">
+                    </div>
+                    <div>
+                        <label>Date <span style="color:red;">*</span>:</label>
+                        <input type="date" id="date" name="date" required style="width:170px;">
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <label>Mobile Number <span style="color:red;">*</span>:</label>
-                <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
-            </div>
-
-            <div class="row flex">
-                <div class="half">
-                    <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
-                    <input type="text" id="hof" name="hof" required style="width:80%;">
+                <div class="row">
+                    <label>Mobile Number <span style="color:red;">*</span>:</label>
+                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
                 </div>
-                <div class="half">
-                    <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
-                    <input type="text" id="gp" name="gp" required style="width:80%;">
+
+                <div class="row flex">
+                    <div class="half">
+                        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
+                        <input type="text" id="hof" name="hof" required style="width:80%;">
+                    </div>
+                    <div class="half">
+                        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
+                        <input type="text" id="gp" name="gp" required style="width:80%;">
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <label>Total Members <span style="color:red;">*</span>:</label>
-                <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
-            </div>
-
-            <div class="yellow-bar">Fair Price Shop Detail</div>
-
-            <div class="note">
-                <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
-            </div>
-
-            <div class="row flex">
-                <div>
-                    <label>F.P.S Code <span style="color:red;">*</span>:</label>
-                    <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
+                <div class="row">
+                    <label>Total Members <span style="color:red;">*</span>:</label>
+                    <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
                 </div>
-                <div>
-                    <label>FPS Name:</label>
-                    <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
+
+                <div class="yellow-bar">Fair Price Shop Detail</div>
+
+                <div class="note">
+                    <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
                 </div>
-            </div>
 
-            <div class="row flex">
-                <div>
-                    <label>Name of GPSS:</label>
-                    <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
+                <div class="row flex">
+                    <div>
+                        <label>F.P.S Code <span style="color:red;">*</span>:</label>
+                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
+                    </div>
+                    <div>
+                        <label>FPS Name:</label>
+                        <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
+                    </div>
                 </div>
-                <div>
-                    <label>Area Officer:</label>
-                    <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:280px;">
+
+                <div class="row flex">
+                    <div>
+                        <label>Name of GPSS:</label>
+                        <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
+                    </div>
+                    <div>
+                        <label>Area Officer:</label>
+                        <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:280px;">
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <label>LAC Name:</label>
-                <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
-            </div>
+                <div class="row">
+                    <label>LAC Name:</label>
+                    <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
+                </div>
 
-            <div id="submitWarning" class="warning-bar" style="display:none;">
-                ⚠️ <strong>ADD Application:</strong> यह पहले submit हो चुका है! अधिकतम 3 बार ही submit हो सकता है।
-            </div>
+                <div id="submitWarning" class="warning-bar" style="display:none;">
+                    ⚠️ ADD Application: अधिकतम 3 बार ही submit हो सकता है।
+                </div>
 
-            <div class="button-area">
-                <button id="submitBtn" class="submit-btn" type="submit">
-                    <span class="btn-text">Submit</span>
-                    <span class="spinner"></span>
-                </button>
-                <button class="reset-btn" type="button">Reset</button>
-            </div>
+                <div class="button-area">
+                    <button id="submitBtn" class="submit-btn" type="submit">
+                        <span class="btn-text">Submit</span>
+                        <span class="spinner"></span>
+                    </button>
+                    <button class="reset-btn" type="button">Reset</button>
+                </div>
 
-            <div class="caution-bar">
-                📌 <strong>IMPORTANT:</strong><br>
-                ✔ NEW: 20 digits (RC202500000007634117)<br>
-                ✔ ADD: 21 digits (RC2025061100001187008)<br>
-                ✔ ADD max 3 submits per application
-            </div>
-        </form>
+                <div class="caution-bar">
+                    📌 NEW: 20 digits | ADD: 21 digits | ADD max 3 submits
+                </div>
+            </form>
+        </div>
     </div>
 
     <div id="toast" class="toast">
@@ -397,95 +322,122 @@
             const t = document.getElementById("toast");
             t.querySelector(".toast-message").textContent = msg;
             t.className = "toast show " + (ok ? "toast-success" : "toast-error");
-            setTimeout(()=>t.classList.remove("show"),4000);
+            setTimeout(()=>t.classList.remove("show"),3000);
         }
 
-        // 🔥 SHOW/HIDE FORM ON APP TYPE SELECT
-        document.getElementById("appType").addEventListener("change", function(){
-            if(this.value){
-                currentAppType = this.value;
-                document.getElementById("hiddenAppType").value = this.value;
-                
-                const form = document.getElementById("dataForm");
-                const appNumField = document.getElementById("applicationNumber");
-                const appStatus = document.getElementById("appStatus");
-                const appFormat = document.getElementById("appFormat");
-                const submitWarning = document.getElementById("submitWarning");
-                const hint = document.getElementById("appTypeHint");
+        function toggle(btn,load){
+            btn.disabled = load;
+            btn.querySelector(".btn-text").style.display = load ? "none" : "inline";
+            btn.querySelector(".spinner").style.display = load ? "inline" : "none";
+        }
 
-                // Clear previous data
+        // 🔥 FIXED: APP TYPE SHOW/HIDE MAIN FORM
+        document.getElementById("appType").addEventListener("change", function(){
+            currentAppType = this.value;
+            document.getElementById("hiddenAppType").value = this.value;
+            const mainForm = document.getElementById("mainForm");
+            const appNumField = document.getElementById("applicationNumber");
+            const appFormat = document.getElementById("appFormat");
+            const submitWarning = document.getElementById("submitWarning");
+
+            if(this.value){
+                // Show main form
+                mainForm.style.display = "block";
+                
+                // Clear & setup app number field
                 appNumField.value = '';
-                appStatus.textContent = '';
+                document.getElementById("appStatus").textContent = '';
                 checkedAppNums.clear();
 
-                // Set format
                 if(this.value === 'NEW'){
-                    appFormat.textContent = '(RC + 20 digits)';
+                    appFormat.textContent = '(20 digits)';
                     appNumField.maxLength = 22;
                     submitWarning.style.display = 'none';
-                    hint.textContent = 'अब NEW form भरें (20 digits)';
                 } else {
-                    appFormat.textContent = '(RC + 21 digits)';
+                    appFormat.textContent = '(21 digits)';
                     appNumField.maxLength = 23;
                     submitWarning.style.display = 'block';
-                    hint.textContent = 'अब ADD form भरें (21 digits, max 3 submits)';
                 }
-
-                // Show form with animation
-                form.classList.add('form-section', 'show');
-                form.style.display = 'block';
-                setTimeout(() => appNumField.focus(), 300);
-                showToast("Form खुल गया! Application Number भरें 👇", true);
+                
+                appNumField.focus();
+            } else {
+                mainForm.style.display = "none";
             }
         });
 
-        function getAppNumberPattern(){
-            if(currentAppType === 'NEW') return /^RC\d{20}$/;
-            if(currentAppType === 'ADD') return /^RC\d{21}$/;
-            return /^RC\d{0,}$/;
-        }
+        // 🔥 FIXED LIVE CHECK - WORKING NOW
+        document.getElementById("applicationNumber").addEventListener("input", function(){
+            const v = this.value.trim();
+            const status = document.getElementById("appStatus");
+            clearTimeout(debounceTimer);
 
+            // Clear status first
+            status.textContent = '';
+            status.className = '';
+
+            // Check pattern first
+            const pattern = currentAppType === 'NEW' ? /^RC\d{20}$/ : /^RC\d{21}$/;
+            if(v && !pattern.test(v)){
+                return;
+            }
+
+            if(v.length >= 22){ // Minimum length for check
+                status.textContent = "Checking...";
+                status.className = "status-checking";
+
+                debounceTimer = setTimeout(() => {
+                    fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(v)}`)
+                    .then(r => r.json())
+                    .then(d => {
+                        if(d.exists){
+                            status.innerHTML = "Duplicate ❌";
+                            status.className = "status-dup";
+                            checkedAppNums.add(v);
+                        } else {
+                            status.innerHTML = "Available ✅";
+                            status.className = "status-ok";
+                        }
+                    })
+                    .catch(() => {
+                        status.innerHTML = "Error!";
+                        status.className = "status-dup";
+                    });
+                }, 600);
+            }
+        });
+
+        // Validation
         function validateForm(){
-            const requiredFields = [
-                'applicationNumber', 'inspector', 'deo', 'date', 'mobile', 
-                'hof', 'gp', 'totalMembers', 'fpsCode'
-            ];
+            if(!currentAppType){
+                showToast("Application Type select करें!", false);
+                return false;
+            }
 
-            for(let id of requiredFields){
-                const field = document.getElementById(id);
-                if(!field.value.trim()){
-                    field.focus();
-                    showToast(`${field.previousElementSibling.textContent.trim()} भरें!`, false);
+            const required = ['applicationNumber','inspector','deo','date','mobile','hof','gp','totalMembers','fpsCode'];
+            for(let id of required){
+                if(!document.getElementById(id).value.trim()){
+                    document.getElementById(id).focus();
+                    showToast("सभी fields भरें!", false);
                     return false;
                 }
             }
 
-            const mobile = document.getElementById('mobile').value;
-            if(!/^\d{10}$/.test(mobile)){
-                document.getElementById('mobile').focus();
+            if(!/^\d{10}$/.test(document.getElementById('mobile').value)){
                 showToast("10 digit mobile!", false);
                 return false;
             }
 
             const appNum = document.getElementById('applicationNumber').value.trim();
-            const pattern = getAppNumberPattern();
+            const pattern = currentAppType === 'NEW' ? /^RC\d{20}$/ : /^RC\d{21}$/;
             if(!pattern.test(appNum)){
-                document.getElementById('applicationNumber').focus();
-                showToast(currentAppType === 'NEW' ? "NEW: RC + 20 digits!" : "ADD: RC + 21 digits!", false);
-                return false;
-            }
-
-            const fpsCode = document.getElementById('fpsCode').value.trim();
-            if(fpsData.length && !fpsData.some(f=>f[0].toString().trim() === fpsCode)){
-                document.getElementById('fpsCode').focus();
-                showToast("Valid FPS Code!", false);
+                showToast(currentAppType === 'NEW' ? "20 digits!" : "21 digits!", false);
                 return false;
             }
 
             if(currentAppType === 'ADD'){
                 const count = submitCounts.get(appNum) || 0;
                 if(count >= 3){
-                    showToast("❌ ADD max 3 submits!", false);
+                    showToast("Max 3 submits!", false);
                     return false;
                 }
             }
@@ -493,133 +445,77 @@
             return true;
         }
 
-        function toggle(btn,load){
-            btn.disabled=load;
-            btn.querySelector(".btn-text").style.display=load?"none":"inline";
-            btn.querySelector(".spinner").style.display=load?"inline":"none";
-        }
-
-        // FPS Load
-        fetch(API_URL+"?action=getFPS")
-        .then(r=>r.json())
-        .then(data=>{
-            fpsData = data;
-            console.log("FPS loaded:", fpsData.length);
-        }).catch(console.error);
-
-        // App Number Live Check
-        document.getElementById("applicationNumber").addEventListener("input",function(){
-            const v = this.value.trim();
-            clearTimeout(debounceTimer);
-
-            const pattern = getAppNumberPattern();
-            if(!pattern.test(v)){
-                document.getElementById("appStatus").textContent = "";
-                return;
-            }
-
-            const status = document.getElementById("appStatus");
-            status.innerHTML="Checking... <span class='spinner'></span>";
-            status.className="status-checking";
-
-            debounceTimer = setTimeout(()=>{
-                fetch(API_URL+`?action=checkDuplicate&appNum=${encodeURIComponent(v)}`)
-                .then(r=>r.json())
-                .then(d=>{
-                    if(d.exists){
-                        status.textContent="Duplicate ❌";
-                        status.className="status-dup";
-                        checkedAppNums.add(v);
-                    } else {
-                        status.textContent="Available ✅";
-                        status.className="status-ok";
-                    }
-                }).catch(()=>{
-                    status.textContent="Error!";
-                    status.className="status-dup";
-                });
-            },500);
-        });
-
-        // FPS Auto-fill
+        // FPS Load & Auto-fill
+        fetch(API_URL+"?action=getFPS").then(r=>r.json()).then(d=>fpsData=d);
         document.getElementById("fpsCode").addEventListener("input", function(){
             const code = this.value.trim();
-            const fields = {
-                fpsName: document.getElementById("fpsName"),
-                gpss: document.getElementById("gpss"),
-                areaOfficer: document.getElementById("areaOfficer"),
-                lacManual: document.getElementById("lacManual")
-            };
-
-            if(code && fpsData.length){
-                const fps = fpsData.find(f=>f[0].toString().trim() === code);
-                if(fps?.length >= 5){
-                    fields.fpsName.value = fps[1] || '';
-                    fields.gpss.value = fps[2] || '';
-                    fields.areaOfficer.value = fps[3] || '';
-                    fields.lacManual.value = fps[4] || '';
-                } else {
-                    Object.values(fields).forEach(f=>f.value='');
-                }
+            if(!code || !fpsData.length) return;
+            
+            const fps = fpsData.find(f => f[0].toString().trim() === code);
+            if(fps && fps.length >= 5){
+                document.getElementById("fpsName").value = fps[1] || '';
+                document.getElementById("gpss").value = fps[2] || '';
+                document.getElementById("areaOfficer").value = fps[3] || '';
+                document.getElementById("lacManual").value = fps[4] || '';
             } else {
-                Object.values(fields).forEach(f=>f.value='');
+                ['fpsName','gpss','areaOfficer','lacManual'].forEach(id => 
+                    document.getElementById(id).value = ''
+                );
             }
         });
 
         document.getElementById("date").valueAsDate = new Date();
 
         // Submit
-        document.getElementById("dataForm").addEventListener("submit",function(e){
+        document.getElementById("dataForm").addEventListener("submit", e => {
             e.preventDefault();
             if(!validateForm()) return;
 
             const btn = document.getElementById("submitBtn");
             const appNum = document.getElementById('applicationNumber').value.trim();
-            toggle(btn,true);
+            toggle(btn, true);
 
-            const fd = new FormData(this);
-            fd.append("action","submit");
+            const fd = new FormData(e.target);
+            fd.append("action", "submit");
 
-            fetch(API_URL,{method:"POST",body:fd})
+            fetch(API_URL, {method:"POST", body:fd})
             .then(r=>r.json())
-            .then(res=>{
-                if(res.status==="Success"){
+            .then(res => {
+                if(res.status === "Success"){
                     if(currentAppType === 'ADD'){
                         const count = (submitCounts.get(appNum) || 0) + 1;
                         submitCounts.set(appNum, count);
-                        showToast(`✅ ADD Saved! ${count}/3`,true);
+                        showToast(`ADD ${count}/3 ✅`, true);
                     } else {
-                        showToast("✅ NEW Saved!",true);
+                        showToast("NEW Saved ✅", true);
                     }
                     resetForm();
                 } else {
-                    showToast("❌ Duplicate!",false);
-                    checkedAppNums.add(appNum);
+                    showToast("Duplicate ❌", false);
                 }
             })
-            .catch(()=>showToast("❌ Error!",false))
-            .finally(()=>toggle(btn,false));
+            .catch(()=>showToast("Error ❌", false))
+            .finally(()=>toggle(btn, false));
         });
 
         function resetForm(){
             document.getElementById("dataForm").reset();
-            document.querySelector('.form-section').classList.remove('show');
-            document.getElementById("dataForm").style.display = 'none';
+            document.getElementById("mainForm").style.display = "none";
             document.getElementById("appStatus").textContent = '';
-            document.getElementById("submitWarning").style.display = 'none';
             document.getElementById("appFormat").textContent = '';
-            checkedAppNums.clear();
+            document.getElementById("submitWarning").style.display = 'none';
+            document.getElementById("appType").value = '';
             currentAppType = '';
-            document.getElementById("appType").focus();
+            checkedAppNums.clear();
             document.getElementById("date").valueAsDate = new Date();
+            document.getElementById("appType").focus();
         }
 
         document.querySelector('.reset-btn').addEventListener('click', resetForm);
 
-        // Page Load
-        window.addEventListener('load', ()=>{
+        // Auto focus
+        window.addEventListener('load', () => {
             document.getElementById("appType").focus();
-            showToast("Application Type select करें!", true);
         });
     </script>
 </body>
