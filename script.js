@@ -226,12 +226,12 @@ if (dataForm) {
         fetch(API_URL, { method: "POST", body: formData })
             .then(r => r.json())
             .then(res => {
-                if (res.status === "Success") {
+                if (res.status === "Data Saved successfully ✔") {
                     const count = currentAppType === "ADD" ? 
                         (submitCounts.get(appNum) || 0) + 1 : 0;
                     
                     submitCounts.set(appNum, count);
-                    showToast(`Saved! ${currentAppType === "ADD" ? `(${count}/3)` : ''} `, true);
+                    showToast(`Data Saved successfully ✔! ${currentAppType === "ADD" ? `(${count}/3)` : ''} `, true);
                     resetForm();
                 } else {
                     showToast(res.message || "Duplicate!", false);
