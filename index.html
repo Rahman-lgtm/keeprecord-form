@@ -5,10 +5,12 @@
   <title>Data Entry Form</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div id="toast" class="toast" style="display: none;">
-  <span class="toast-message">Success</span>
+<!-- Toast -->
+<div id="toast" class="toast">
+  <span class="toast-message"></span>
 </div>
 
 <div class="top-title">
@@ -39,26 +41,20 @@
     </select>
   </div>
 
-  <!-- Single Application Type dropdown -->
   <div class="row">
     <label>Application Type:</label>
     <select id="appType" required style="width:350px;">
-  <option value="">Select</option>
-  <option value="NEW">NEW</option>
-  <option value="ADD">ADD</option>
-</select>
+      <option value="">Select</option>
+      <option value="NEW">NEW</option>
+      <option value="ADD">ADD</option>
+    </select>
   </div>
 
   <div class="row">
     <label>Application Number:</label>
-    <input
-      type="text"
-      id="applicationNumber"
-      placeholder="Type RC number here"
-      style="width:350px;"
-      maxlength="21"
-    >    
+    <input type="text" id="applicationNumber" placeholder="Type RC number here" style="width:350px;" maxlength="21">
   </div>
+
   <div class="row flex">
     <div>
       <label>Name of Data Entry Operator:</label>
@@ -66,15 +62,7 @@
     </div>
     <div>
       <label>Date:</label>
-      <input
-        type="date"
-        id="date"
-        class="form-control"
-        value=""
-        min=""
-        max="today"
-        required
-      />
+      <input type="date" id="date" required style="width:170px;">
     </div>
   </div>
 
@@ -94,11 +82,9 @@
     </div>
   </div>
 
-  <div class="row flex">
-    <div style="width:48%;">
-      <label>Total Members</label>
-      <input type="number" id="totalMembers" required style="width:100%;" min="1">
-    </div>
+  <div class="row">
+    <label>Total Members</label>
+    <input type="number" id="totalMembers" required min="1" style="width:150px;">
   </div>
 
   <div class="yellow-bar">Fair Price Shop Detail</div>
@@ -108,7 +94,7 @@
   <div class="row flex">
     <div>
       <label>F.P.S Code</label>
-      <input type="text" id="fpsCode" placeholder="130500500001" required style="width:200px;">
+      <input type="text" id="fpsCode" required style="width:200px;">
     </div>
     <div>
       <label>FPS Name</label>
@@ -133,11 +119,13 @@
   </div>
 
   <div class="button-area">
-    <button id="submitBtn" type="submit" class="btn btn-primary">
+    <button id="submitBtn" type="submit">
       <span class="btn-text">Submit</span>
-      <span class="spinner" style="display: none;">↻</span>
+      <span class="spinner" style="display:none;">↻</span>
     </button>
-    <button class="reset-btn" type="reset">Reset</button>
+
+    <button type="reset" class="reset-btn">Reset</button>
+
     <div class="caution-bar">
       📌 IMPORTANT<br>
       ✔ All details must be verified before submission.<br>
@@ -148,31 +136,30 @@
 </form>
 </div>
 
-<!-- Inline script for dynamic maxlength + date -->
+<!-- ✅ ONLY SAFE SCRIPT (NO VARIABLE CONFLICT) -->
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+
   const appType = document.getElementById("appType");
   const applicationNumber = document.getElementById("applicationNumber");
   const dateInput = document.getElementById("date");
 
-  // Dynamic maxlength based on Application Type
-  function updateAppNumLength() {
-    const type = appType.value;
-    if (type === "NEW") {
+  // 🔹 Application type change
+  appType.addEventListener("change", function () {
+    if (this.value === "NEW") {
       applicationNumber.maxLength = 20;
       applicationNumber.placeholder = "RC + 18 digits (20 chars)";
-    } else if (type === "ADD") {
+    } else if (this.value === "ADD") {
       applicationNumber.maxLength = 21;
       applicationNumber.placeholder = "RC + 19 digits (21 chars)";
     } else {
       applicationNumber.maxLength = 21;
-      applicationNumber.placeholder = "Type RC number here (20/21 chars)";
+      applicationNumber.placeholder = "Type RC number";
     }
-    applicationNumber.value = ""; // Clear on type change
-  }
+    applicationNumber.value = "";
+  });
 
-  appType.addEventListener("change", updateAppNumLength);
-
-  // Set today in date field
+  // 🔹 Today date set
   function setToday() {
     const dt = new Date();
     const y = dt.getFullYear();
@@ -180,23 +167,20 @@
     const d = String(dt.getDate()).padStart(2, "0");
     const today = `${y}-${m}-${d}`;
     dateInput.value = today;
-    dateInput.min = today;
     dateInput.max = today;
   }
+
   setToday();
 
-  // Reset form handler
-  document.querySelector('.reset-btn')?.addEventListener('click', function() {
-    setTimeout(() => {
-      appType.value = "";
-      applicationNumber.value = "";
-      applicationNumber.maxLength = 21;
-      setToday();
-    }, 100);
+  // 🔹 Reset
+  document.querySelector(".reset-btn").addEventListener("click", () => {
+    setTimeout(setToday, 100);
   });
+
+});
 </script>
 
-<!-- Main script.js (API + validation + loader + toast) -->
+<!-- ✅ MAIN SCRIPT LAST -->
 <script src="script.js"></script>
 
 </body>
