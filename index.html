@@ -181,9 +181,19 @@ document.addEventListener("DOMContentLoaded", function () {
   setToday();
 
   // 🔹 Reset
-  document.querySelector(".reset-btn").addEventListener("click", () => {
-    setTimeout(setToday, 100);
-  });
+  // 🔄 Reset Spinner Effect
+const resetBtn = document.querySelector(".reset-btn");
+
+resetBtn.addEventListener("click", function () {
+
+  this.innerHTML = "Resetting...";
+  this.disabled = true;
+
+  setTimeout(() => {
+    this.innerHTML = "Reset";
+    this.disabled = false;
+  }, 800); // fast animation
+});
 
 });
 </script>
