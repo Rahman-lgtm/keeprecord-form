@@ -1,7 +1,8 @@
-/* ===== RESET & BODY ===== */
+/* ✅ Full Page Setup */
 html, body {
     height: 100%;
     margin: 0;
+    overflow: hidden; /* scroll band */
 }
 
 body {
@@ -12,7 +13,7 @@ body {
     font-family: "Bookman Old Style", serif;
 }
 
-/* ===== TOP TITLES ===== */
+/* ✅ Top Titles */
 .top-title {
     width: 100%;
     margin: 0 0 10px;
@@ -35,35 +36,46 @@ body {
     box-shadow: 2px 3px 6px gray;
 }
 
-.subtitle { font-size: 14px; font-weight: normal; }
+.subtitle {
+    font-size: 14px;
+    font-weight: normal;
+}
 
-/* ===== CONTAINER ===== */
+/* ✅ Main Container */
 .container {
-    width: 1000px;
+    width: 900px;
     max-width: 95%;
-    height: auto;
+    height: 95vh;
 
     background: #efefef;
-    padding: 20px 30px;
-    border-radius: 12px;
+    padding: 15px 20px;
+    border-radius: 10px;
 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
 
+/* ✅ Form Layout */
+.row { margin: 10px 0; }
+
+.flex {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
-/* ===== FORM ===== */
+.half { width: 48%; }
+
 label {
-    font-size: 16px;
+    font-size: 15px;
 }
 
-/* 🔥 MODERN INPUT */
+/* ✅ Modern Inputs */
 input, select {
     width: 100%;
     border: 1px solid #d0d7de;
-    padding: 10px 12px;
+    padding: 8px 10px;
     border-radius: 8px;
     outline: none;
     background: #ffffff;
@@ -78,7 +90,7 @@ input:hover, select:hover {
     box-shadow: 0 3px 6px rgba(0,0,0,0.08);
 }
 
-/* ✅ FIXED FOCUS (your mistake corrected here) */
+/* ✅ FIXED Focus Effect */
 input:focus, select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
@@ -88,6 +100,7 @@ input:focus, select:focus {
 /* Placeholder */
 input::placeholder {
     color: #999;
+    font-size: 13px;
 }
 
 /* Disabled */
@@ -104,21 +117,7 @@ input:active, select:active {
     transform: scale(0.99);
 }
 
-/* ===== LAYOUT ===== */
-.row {
-    margin: 12px 0;
-}
-
-.flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-}
-
-.half { width: 48%; }
-
-/* ===== BARS ===== */
+/* ✅ Section Bar */
 .yellow-bar {
     background: #ffc107;
     padding: 8px;
@@ -128,19 +127,7 @@ input:active, select:active {
     box-shadow: 2px 3px 6px gray;
 }
 
-.warning-bar {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    color: #856404;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-    font-weight: bold;
-}
-
-.note { margin-bottom: 10px; }
-
-/* ===== BUTTONS ===== */
+/* ✅ Buttons */
 .button-area {
     text-align: center;
     margin-top: 20px;
@@ -165,7 +152,22 @@ input:active, select:active {
     background: #218838;
 }
 
-/* Loading */
+.reset-btn {
+    background: #ffc107;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 2px 3px 6px gray;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.reset-btn:hover {
+    background: #e0a800;
+}
+
+/* ✅ Loading Spinner */
 #submitBtn.loading {
     pointer-events: none;
     opacity: 0.8;
@@ -189,34 +191,18 @@ input:active, select:active {
     animation: spin 0.8s linear infinite;
 }
 
-/* Animation */
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Reset Button */
-.reset-btn {
-    background: #ffc107;
-    padding: 8px 25px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 2px 3px 6px gray;
-    cursor: pointer;
-}
-
-.reset-btn:hover {
-    background: #e0a800;
-}
-
-/* ===== STATUS ===== */
+/* ✅ Status */
 #appStatus {
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
 }
 
@@ -224,13 +210,13 @@ input:active, select:active {
 .status-ok { color: green; }
 .status-dup { color: red; }
 
-/* ===== TOAST ===== */
+/* ✅ Toast */
 .toast {
     position: fixed;
     top: 20px;
     right: 20px;
     padding: 10px 15px;
-    border-radius: 5px;
+    border-radius: 6px;
     opacity: 0;
     transition: 0.3s;
     z-index: 10000;
@@ -251,16 +237,27 @@ input:active, select:active {
     color: white;
 }
 
-/* ===== HIDDEN FORM ===== */
-.main-form {
-    display: block; /* 🔥 important */
-    width: 100%;
+/* ✅ Warning */
+.warning-bar {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 8px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 13px;
+    font-weight: bold;
 }
 
-/* ===== RESPONSIVE ===== */
+/* Hidden */
+.main-form {
+    display: none;
+}
+
+/* ✅ Responsive */
 @media screen and (max-width: 960px) {
     body {
-        overflow: auto; /* 🔥 mobile me scroll allow */
+        overflow: auto; /* mobile me scroll allow */
     }
 
     .container {
@@ -268,12 +265,10 @@ input:active, select:active {
     }
 
     .flex {
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-}
+        flex-direction: column;
+    }
 
     .half {
-    width: 50%;
-}
+        width: 100%;
+    }
 }
