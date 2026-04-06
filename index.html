@@ -221,8 +221,8 @@
             <label>Application Type <span style="color:red;">*</span>:</label>
             <select id="appType" name="appType" required style="width:350px;">
                 <option value="">Select</option>
-                <option value="NEW">NEW (20 digits)</option>
-                <option value="ADD">ADD (21 digits)</option>
+                <option value="NEW">NEW Application</option>
+                <option value="ADD">ADD Member Application</option>
             </select>
         </div>
 
@@ -287,13 +287,13 @@
                 <div class="yellow-bar">Fair Price Shop Detail</div>
 
                 <div class="note">
-                    <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
+                    <b>N.B.:</b> Fill only FPS ID- remaining fields will be auto-fill
                 </div>
 
                 <div class="row flex">
                     <div>
-                        <label>F.P.S Code <span style="color:red;">*</span>:</label>
-                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
+                        <label>F.P.S ID <span style="color:red;">*</span>:</label>
+                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001 (12 digits)" required style="width:200px;">
                     </div>
                     <div>
                         <label>FPS Name:</label>
@@ -318,7 +318,7 @@
                 </div>
 
                 <div id="submitWarning" class="warning-bar" style="display:none;">
-                    ⚠️ ADD Application: अधिकतम 3 बार ही submit हो सकता है।
+                    ⚠️ ADD Application: Can only be submitted a maximum of 3 times
                 </div>
 
                 <div class="button-area">
@@ -447,7 +447,7 @@ document.getElementById("applicationNumber").addEventListener("input", function 
             .then(res => res.json())
             .then(data => {
                 if (data.exists) {
-                    status.textContent = "Duplicate ❌";
+                    status.textContent = "already been submitted";
                     status.className = "status-dup";
                     this.style.borderColor = "red";
                     checkedAppNums.add(value);
@@ -526,11 +526,11 @@ document.getElementById("dataForm").addEventListener("submit", function (e) {
                     submitCounts.set(appNum, count);
                     showToast(`Saved (${count}/3) ✅`, true);
                 } else {
-                    showToast("Saved Successfully ✅", true);
+                    showToast("Submitted Successfully ✅", true);
                 }
                 resetForm();
             } else {
-                showToast("Duplicate ❌", false);
+                showToast("this application number has already been submitted", false);
             }
         })
         .catch(() => showToast("Server Error ❌", false))
