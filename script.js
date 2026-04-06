@@ -131,7 +131,7 @@ function initAppNumValidation() {
                         checkedAppNums.add(value);
                     } else {
                         if (status) {
-                            status.textContent = "Available ✅";
+                            status.textContent = "Available";
                             status.className = "status-ok";
                         }
                         this.style.borderColor = "#28a745";
