@@ -124,7 +124,7 @@ function initAppNumValidation() {
                 .then(data => {
                     if (data && data.exists) {
                         if (status) {
-                            status.textContent = "이미 Submitted";
+                            status.textContent = "already submitted";
                             status.className = "status-dup";
                         }
                         this.style.borderColor = "red";
