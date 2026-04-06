@@ -39,13 +39,14 @@
     </select>
   </div>
 
+  <!-- Clean dropdowns - सिर्फ NEW/ADD -->
   <div class="row flex">
     <div style="width:48%;">
       <label>Application Type:</label>
       <select id="appTypeDropdown" required style="width:100%;">
         <option value="">Select</option>
-        <option value="new">NEW (20 chars: RC + 18 digits)</option>
-        <option value="add">ADD (21 chars: RC + 19 digits)</option>
+        <option value="new">NEW</option>
+        <option value="add">ADD</option>
       </select>
     </div>
     <div style="width:48%;">
@@ -63,7 +64,7 @@
     <input
       type="text"
       id="applicationNumber"
-      placeholder="RC202500000007638358"
+      placeholder="Auto-filled based on type above"
       style="width:350px;"
       readonly
     >
@@ -88,7 +89,6 @@
     </div>
   </div>
 
-  <!-- बाकी form वही रहेगा -->
   <div class="row">
     <label>Mobile Number</label>
     <input type="text" id="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
@@ -159,19 +159,19 @@
 </form>
 </div>
 
-<!-- Inline script for dropdown sync -->
+<!-- Inline script for dropdown sync + basic functionality -->
 <script>
-  // Sync both application type dropdowns
+  // Elements
   const appTypeDropdown = document.getElementById("appTypeDropdown");
   const appType = document.getElementById("appType");
   const applicationNumber = document.getElementById("applicationNumber");
   const dateInput = document.getElementById("date");
 
+  // Sync dropdowns - Clean NEW/ADD only
   function syncAppTypes() {
     const dropdownVal = appTypeDropdown.value;
     const typeVal = appType.value;
 
-    // Sync dropdowns
     if (dropdownVal === "new") {
       appType.value = "NEW";
       applicationNumber.value = "RC202500000007638358"; // RC + 18 digits = 20 chars
@@ -190,7 +190,7 @@
       applicationNumber.value = "";
     }
 
-    // Trigger validation
+    // Trigger input event for validation
     const inputEvent = new Event("input", { bubbles: true });
     applicationNumber.dispatchEvent(inputEvent);
   }
@@ -210,8 +210,19 @@
     dateInput.max = today;
   }
   setToday();
+
+  // Reset form handler
+  document.querySelector('.reset-btn').addEventListener('click', function() {
+    setTimeout(() => {
+      appTypeDropdown.value = "";
+      appType.value = "";
+      applicationNumber.value = "";
+      setToday();
+    }, 100);
+  });
 </script>
 
+<!-- Main script.js (API + validation + loader + toast) -->
 <script src="script.js"></script>
 
 </body>
