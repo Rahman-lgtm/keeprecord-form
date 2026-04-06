@@ -59,10 +59,10 @@ function handleAppTypeChange(type) {
         appNumField.maxLength = type === "NEW" ? 20 : 21;
         appNumField.placeholder =
             type === "NEW"
-                ? "RC + 18 digits (20 total)"
-                : "RC + 19 digits (21 total)";
+                ? "RC + 18 digits"
+                : "RC + 19 digits";
 
-        appFormat.textContent = type === "NEW" ? "(20 digits)" : "(21 digits)";
+        appFormat.textContent = type === "NEW" ? "" : "";
         status.textContent = "";
 
         checkedAppNums.clear();
@@ -258,7 +258,7 @@ async function checkDuplicate(appNum) {
         const appNumField = document.getElementById("applicationNumber");
 
         if (data.exists || data.duplicate) {
-            status.textContent = "Already submitted";
+            status.textContent = "already submitted";
             status.className = "status status-dup";
             appNumField.style.borderColor = "#e74c3c";
         } else {
