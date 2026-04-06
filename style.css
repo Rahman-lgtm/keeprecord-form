@@ -6,26 +6,40 @@ body {
     font-family: "Bookman Old Style", serif;
 }
 
-/* ✅ Top Titles */
+/* ✅ Top Wrapper */
 .top-fixed {
-    
+    width: 100%;
     max-width: 1000px;
     margin-top: 10px;
-.top-title { width: 100%; margin: 10px; background: #bfbfbf; text-align: center; padding: 8px; font-style: italic; box-shadow: 2px 3px 6px gray; }
 }
 
+/* ✅ Top Grey Bar */
+.top-title {
+    width: 100%;
+    margin: 0 0 10px;
+    background: #bfbfbf;
+    text-align: center;
+    padding: 8px;
+    font-style: italic;
+    box-shadow: 2px 3px 6px gray;
+    border-radius: 6px;
+}
+
+/* ✅ Red-Yellow Title Bar */
 .title {
     width: 100%;
-    margin: 10px 0;
-    padding: 6px;
+    margin: 0;
+    padding: 8px;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
     background: linear-gradient(to right, red, #ffc107);
     color: white;
     box-shadow: 2px 3px 6px gray;
+    border-radius: 6px;
 }
 
+/* Subtitle */
 .subtitle {
     font-size: 14px;
     font-weight: normal;
