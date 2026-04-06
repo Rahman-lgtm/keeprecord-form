@@ -96,32 +96,49 @@ select:focus {
   margin-bottom: 10px;
 }
 
-.button-area {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.btn.btn-primary,
+/* ✅ Submit Button (GREEN + HOVER) */
 #submitBtn {
-  background: red;
+  background: #28a745;
   color: white;
   padding: 8px 30px;
   border: none;
   border-radius: 10px;
   font-weight: bold;
   box-shadow: 2px 3px 6px gray;
-  margin-right: 15px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+#submitBtn:hover {
+  background: #218838;
+  transform: translateY(-1px);
+  box-shadow: 3px 5px 10px rgba(0,0,0,0.3);
+}
+
+#submitBtn:active {
+  transform: scale(0.96);
+}
+
+/* ✅ Reset Button Hover */
 .reset-btn {
   background: #ffc107;
-  padding: 8px 30px;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  box-shadow: 2px 3px 6px gray;
-  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+  background: #e0a800;
+  transform: translateY(-1px);
+  box-shadow: 3px 5px 10px rgba(0,0,0,0.3);
+}
+
+.reset-btn:active {
+  transform: scale(0.96);
+}
+
+/* ✅ Disabled Button */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .caution-bar {
