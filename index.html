@@ -24,7 +24,6 @@
 </div>
 
 <div class="container">
-
 <form id="dataForm">
 
   <div class="row">
@@ -40,13 +39,23 @@
     </select>
   </div>
 
-  <div class="row">
-    <label>Application Type:</label>
-    <select id="appTypeDropdown" required style="width:350px;">
-      <option value="">Select</option>
-      <option value="new">New — RC202500000007638358</option>
-      <option value="add">ADD — RC2025061100001187378</option>
-    </select>
+  <div class="row flex">
+    <div style="width:48%;">
+      <label>Application Type:</label>
+      <select id="appTypeDropdown" required style="width:100%;">
+        <option value="">Select</option>
+        <option value="new">NEW (20 chars: RC + 18 digits)</option>
+        <option value="add">ADD (21 chars: RC + 19 digits)</option>
+      </select>
+    </div>
+    <div style="width:48%;">
+      <label>Application type:</label>
+      <select id="appType" required style="width:100%;">
+        <option value="">Select</option>
+        <option>NEW</option>
+        <option>ADD</option>
+      </select>
+    </div>
   </div>
 
   <div class="row">
@@ -79,6 +88,7 @@
     </div>
   </div>
 
+  <!-- बाकी form वही रहेगा -->
   <div class="row">
     <label>Mobile Number</label>
     <input type="text" id="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
@@ -90,33 +100,21 @@
       <input type="text" id="hof" required style="width:80%;">
     </div>
     <div>
-      <label>Application type</label>
-      <select id="appType" required style="width:150px;">
-        <option value="">Select</option>
-        <option>NEW</option>
-        <option>ADD</option>
-      </select>
+      <label>Name of GP/Ward No</label>
+      <input type="text" id="gp" required style="width:250px;">
     </div>
   </div>
 
   <div class="row flex">
-    <div>
-      <label>Name of GP/Ward No</label>
-      <input type="text" id="gp" required style="width:250px;">
-    </div>
-    <div>
+    <div style="width:48%;">
       <label>Total Members</label>
-      <input type="number" id="totalMembers" required style="width:150px;" min="1">
+      <input type="number" id="totalMembers" required style="width:100%;" min="1">
     </div>
   </div>
 
-  <div class="yellow-bar">
-    Fair Price Shop Detail
-  </div>
+  <div class="yellow-bar">Fair Price Shop Detail</div>
 
-  <div class="note">
-    <b>N.B.:</b> You can fill only FPS Code
-  </div>
+  <div class="note"><b>N.B.:</b> You can fill only FPS Code</div>
 
   <div class="row flex">
     <div>
@@ -146,70 +144,61 @@
   </div>
 
   <div class="button-area">
-
     <button id="submitBtn" type="submit" class="btn btn-primary">
       <span class="btn-text">Submit</span>
       <span class="spinner" style="display: none;">↻</span>
     </button>
-
-    <button class="reset-btn" type="reset">
-      Reset
-    </button>
-
+    <button class="reset-btn" type="reset">Reset</button>
     <div class="caution-bar">
       📌 IMPORTANT<br>
       ✔ All details must be verified before submission.<br>
       ⚠ Incorrect data entry will be responsibility of the DEO.
     </div>
-
   </div>
 
 </form>
-
 </div>
 
-<script src="script.js"></script>
-
+<!-- Inline script for dropdown sync -->
 <script>
-  function showToast(message, type = "success") {
-    const toast = document.getElementById("toast");
-
-    let icon = "✔";
-    if (type === "error") icon = "❌";
-    if (type === "warning") icon = "⚠";
-
-    toast.className = "";
-    toast.classList.add("show", `toast-${type}`);
-    toast.style.display = "block";
-    toast.innerHTML = `<span style="margin-right:8px;">${icon}</span> ${message}`;
-
-    setTimeout(() => {
-      toast.classList.remove("show");
-      setTimeout(() => { toast.style.display = "none"; }, 300);
-    }, 3500);
-  }
-
-  // Application type dropdown → auto fill application number
+  // Sync both application type dropdowns
   const appTypeDropdown = document.getElementById("appTypeDropdown");
+  const appType = document.getElementById("appType");
   const applicationNumber = document.getElementById("applicationNumber");
+  const dateInput = document.getElementById("date");
 
-  appTypeDropdown?.addEventListener("change", function () {
-    const val = this.value.trim();
+  function syncAppTypes() {
+    const dropdownVal = appTypeDropdown.value;
+    const typeVal = appType.value;
 
-    if (val === "new") {
+    // Sync dropdowns
+    if (dropdownVal === "new") {
+      appType.value = "NEW";
+      applicationNumber.value = "RC202500000007638358"; // RC + 18 digits = 20 chars
+    } else if (dropdownVal === "add") {
+      appType.value = "ADD";
+      applicationNumber.value = "RC2025061100001187378"; // RC + 19 digits = 21 chars
+    } else if (typeVal === "NEW") {
+      appTypeDropdown.value = "new";
       applicationNumber.value = "RC202500000007638358";
-    } else if (val === "add") {
+    } else if (typeVal === "ADD") {
+      appTypeDropdown.value = "add";
       applicationNumber.value = "RC2025061100001187378";
     } else {
+      appTypeDropdown.value = "";
+      appType.value = "";
       applicationNumber.value = "";
     }
 
-    // Trigger input so validation + duplicate check runs
+    // Trigger validation
     const inputEvent = new Event("input", { bubbles: true });
     applicationNumber.dispatchEvent(inputEvent);
-  });
+  }
 
-  // Set today only in date field
+  appTypeDropdown.addEventListener("change", syncAppTypes);
+  appType.addEventListener("change", syncAppTypes);
+
+  // Set today in date field
   function setToday() {
     const dt = new Date();
     const y = dt.getFullYear();
@@ -220,9 +209,10 @@
     dateInput.min = today;
     dateInput.max = today;
   }
-
   setToday();
 </script>
+
+<script src="script.js"></script>
 
 </body>
 </html>
