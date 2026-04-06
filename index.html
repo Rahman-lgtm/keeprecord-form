@@ -311,212 +311,256 @@
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV5suO2d2hb7ahw95fbO4ftwzyoaImknOI23Uvzjv4aeXdBA/exec";
-        let fpsData = [];
-        let checkedAppNums = new Set();
-        let submitCounts = new Map();
-        let debounceTimer;
-        let currentAppType = '';
+       const API_URL = "https://script.google.com/macros/s/AKfycbxTbYw912i1BbKm_BL8USYV5suO2d2hb7ahw95fbO4ftwzyoaImknOI23Uvzjv4aeXdBA/exec";
 
-        function showToast(msg, ok=true){
-            const t = document.getElementById("toast");
-            t.querySelector(".toast-message").textContent = msg;
-            t.className = "toast show " + (ok ? "toast-success" : "toast-error");
-            setTimeout(()=>t.classList.remove("show"),3000);
+let fpsData = [];
+let checkedAppNums = new Set();
+let submitCounts = new Map();
+let debounceTimer;
+let currentAppType = '';
+
+// ✅ Toast
+function showToast(msg, ok = true) {
+    const t = document.getElementById("toast");
+    t.querySelector(".toast-message").textContent = msg;
+    t.className = "toast show " + (ok ? "toast-success" : "toast-error");
+    setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// ✅ Button Loader
+function toggle(btn, load) {
+    btn.disabled = load;
+    btn.querySelector(".btn-text").style.display = load ? "none" : "inline";
+    btn.querySelector(".spinner").style.display = load ? "inline" : "none";
+}
+
+// ✅ APP TYPE CHANGE
+document.getElementById("appType").addEventListener("change", function () {
+
+    currentAppType = this.value;
+
+    const mainForm = document.getElementById("mainForm");
+    const appNumField = document.getElementById("applicationNumber");
+    const status = document.getElementById("appStatus");
+
+    if (this.value) {
+        mainForm.style.display = "block";
+
+        appNumField.value = "";
+        status.textContent = "";
+        checkedAppNums.clear();
+
+        if (this.value === "NEW") {
+            appNumField.maxLength = 20;
+            appNumField.placeholder = "RC + 18 digits";
+        } else {
+            appNumField.maxLength = 21;
+            appNumField.placeholder = "RC + 19 digits";
         }
 
-        function toggle(btn,load){
-            btn.disabled = load;
-            btn.querySelector(".btn-text").style.display = load ? "none" : "inline";
-            btn.querySelector(".spinner").style.display = load ? "inline" : "none";
-        }
+        appNumField.focus();
 
-        // 🔥 FIXED: APP TYPE SHOW/HIDE MAIN FORM
-        document.getElementById("appType").addEventListener("change", function(){
-            currentAppType = this.value;
-            document.getElementById("hiddenAppType").value = this.value;
-            const mainForm = document.getElementById("mainForm");
-            const appNumField = document.getElementById("applicationNumber");
-            const appFormat = document.getElementById("appFormat");
-            const submitWarning = document.getElementById("submitWarning");
+    } else {
+        mainForm.style.display = "none";
+    }
+});
 
-            if(this.value){
-                // Show main form
-                mainForm.style.display = "block";
-                
-                // Clear & setup app number field
-                appNumField.value = '';
-                document.getElementById("appStatus").textContent = '';
-                checkedAppNums.clear();
+// ✅ LIVE DUPLICATE CHECK (FAST + CLEAN)
+document.getElementById("applicationNumber").addEventListener("input", function () {
 
-                if(this.value === 'NEW'){
-                    appFormat.textContent = '(20 digits)';
-                    appNumField.maxLength = 22;
-                    submitWarning.style.display = 'none';
+    const value = this.value.trim();
+    const status = document.getElementById("appStatus");
+
+    clearTimeout(debounceTimer);
+
+    status.textContent = "";
+    status.className = "";
+
+    if (!value) return;
+
+    // Pattern check
+    const pattern = currentAppType === "NEW"
+        ? /^RC\d{18}$/
+        : /^RC\d{19}$/;
+
+    if (!pattern.test(value)) return;
+
+    status.textContent = "Checking...";
+    status.className = "status-checking";
+
+    debounceTimer = setTimeout(() => {
+
+        fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.exists) {
+                    status.textContent = "Duplicate ❌";
+                    status.className = "status-dup";
+                    checkedAppNums.add(value);
                 } else {
-                    appFormat.textContent = '(21 digits)';
-                    appNumField.maxLength = 23;
-                    submitWarning.style.display = 'block';
+                    status.textContent = "Available ✅";
+                    status.className = "status-ok";
                 }
-                
-                appNumField.focus();
-            } else {
-                mainForm.style.display = "none";
-            }
-        });
 
-        // 🔥 FIXED LIVE CHECK - WORKING NOW
-        document.getElementById("applicationNumber").addEventListener("input", function(){
-            const v = this.value.trim();
-            const status = document.getElementById("appStatus");
-            clearTimeout(debounceTimer);
-
-            // Clear status first
-            status.textContent = '';
-            status.className = '';
-
-            // Check pattern first
-            const pattern = currentAppType === 'NEW' ? /^RC\d{20}$/ : /^RC\d{21}$/;
-            if(v && !pattern.test(v)){
-                return;
-            }
-
-            if(v.length >= 22){ // Minimum length for check
-                status.textContent = "Checking...";
-                status.className = "status-checking";
-
-                debounceTimer = setTimeout(() => {
-                    fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(v)}`)
-                    .then(r => r.json())
-                    .then(d => {
-                        if(d.exists){
-                            status.innerHTML = "Duplicate ❌";
-                            status.className = "status-dup";
-                            checkedAppNums.add(v);
-                        } else {
-                            status.innerHTML = "Available ✅";
-                            status.className = "status-ok";
-                        }
-                    })
-                    .catch(() => {
-                        status.innerHTML = "Error!";
-                        status.className = "status-dup";
-                    });
-                }, 600);
-            }
-        });
-
-        // Validation
-        function validateForm(){
-            if(!currentAppType){
-                showToast("Application Type select करें!", false);
-                return false;
-            }
-
-            const required = ['applicationNumber','inspector','deo','date','mobile','hof','gp','totalMembers','fpsCode'];
-            for(let id of required){
-                if(!document.getElementById(id).value.trim()){
-                    document.getElementById(id).focus();
-                    showToast("सभी fields भरें!", false);
-                    return false;
-                }
-            }
-
-            if(!/^\d{10}$/.test(document.getElementById('mobile').value)){
-                showToast("10 digit mobile!", false);
-                return false;
-            }
-
-            const appNum = document.getElementById('applicationNumber').value.trim();
-            const pattern = currentAppType === 'NEW' ? /^RC\d{20}$/ : /^RC\d{21}$/;
-            if(!pattern.test(appNum)){
-                showToast(currentAppType === 'NEW' ? "20 digits!" : "21 digits!", false);
-                return false;
-            }
-
-            if(currentAppType === 'ADD'){
-                const count = submitCounts.get(appNum) || 0;
-                if(count >= 3){
-                    showToast("Max 3 submits!", false);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        // FPS Load & Auto-fill
-        fetch(API_URL+"?action=getFPS").then(r=>r.json()).then(d=>fpsData=d);
-        document.getElementById("fpsCode").addEventListener("input", function(){
-            const code = this.value.trim();
-            if(!code || !fpsData.length) return;
-            
-            const fps = fpsData.find(f => f[0].toString().trim() === code);
-            if(fps && fps.length >= 5){
-                document.getElementById("fpsName").value = fps[1] || '';
-                document.getElementById("gpss").value = fps[2] || '';
-                document.getElementById("areaOfficer").value = fps[3] || '';
-                document.getElementById("lacManual").value = fps[4] || '';
-            } else {
-                ['fpsName','gpss','areaOfficer','lacManual'].forEach(id => 
-                    document.getElementById(id).value = ''
-                );
-            }
-        });
-
-        document.getElementById("date").valueAsDate = new Date();
-
-        // Submit
-        document.getElementById("dataForm").addEventListener("submit", e => {
-            e.preventDefault();
-            if(!validateForm()) return;
-
-            const btn = document.getElementById("submitBtn");
-            const appNum = document.getElementById('applicationNumber').value.trim();
-            toggle(btn, true);
-
-            const fd = new FormData(e.target);
-            fd.append("action", "submit");
-
-            fetch(API_URL, {method:"POST", body:fd})
-            .then(r=>r.json())
-            .then(res => {
-                if(res.status === "Success"){
-                    if(currentAppType === 'ADD'){
-                        const count = (submitCounts.get(appNum) || 0) + 1;
-                        submitCounts.set(appNum, count);
-                        showToast(`ADD ${count}/3 ✅`, true);
-                    } else {
-                        showToast("NEW Saved ✅", true);
-                    }
-                    resetForm();
-                } else {
-                    showToast("Duplicate ❌", false);
-                }
             })
-            .catch(()=>showToast("Error ❌", false))
-            .finally(()=>toggle(btn, false));
-        });
+            .catch(() => {
+                status.textContent = "Error!";
+                status.className = "status-dup";
+            });
 
-        function resetForm(){
-            document.getElementById("dataForm").reset();
-            document.getElementById("mainForm").style.display = "none";
-            document.getElementById("appStatus").textContent = '';
-            document.getElementById("appFormat").textContent = '';
-            document.getElementById("submitWarning").style.display = 'none';
-            document.getElementById("appType").value = '';
-            currentAppType = '';
-            checkedAppNums.clear();
-            document.getElementById("date").valueAsDate = new Date();
-            document.getElementById("appType").focus();
+    }, 400); // ⚡ faster
+});
+
+// ✅ VALIDATION
+function validateForm() {
+
+    if (!currentAppType) {
+        showToast("Select Application Type!", false);
+        return false;
+    }
+
+    const required = [
+        'applicationNumber', 'inspector', 'deo',
+        'date', 'mobile', 'hof', 'gp',
+        'totalMembers', 'fpsCode'
+    ];
+
+    for (let id of required) {
+        if (!document.getElementById(id).value.trim()) {
+            document.getElementById(id).focus();
+            showToast("Fill all required fields!", false);
+            return false;
         }
+    }
 
-        document.querySelector('.reset-btn').addEventListener('click', resetForm);
+    if (!/^\d{10}$/.test(document.getElementById("mobile").value)) {
+        showToast("Enter valid 10-digit mobile!", false);
+        return false;
+    }
 
-        // Auto focus
-        window.addEventListener('load', () => {
-            document.getElementById("appType").focus();
-        });
+    const appNum = document.getElementById("applicationNumber").value.trim();
+
+    const pattern = currentAppType === "NEW"
+        ? /^RC\d{18}$/
+        : /^RC\d{19}$/;
+
+    if (!pattern.test(appNum)) {
+        showToast(currentAppType === "NEW"
+            ? "Invalid NEW format!"
+            : "Invalid ADD format!", false);
+        return false;
+    }
+
+    if (checkedAppNums.has(appNum)) {
+        showToast("Duplicate Application Number!", false);
+        return false;
+    }
+
+    // ADD limit
+    if (currentAppType === "ADD") {
+        const count = submitCounts.get(appNum) || 0;
+        if (count >= 3) {
+            showToast("Maximum 3 submissions allowed!", false);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// ✅ FPS LOAD
+fetch(API_URL + "?action=getFPS")
+    .then(r => r.json())
+    .then(d => fpsData = d);
+
+// ✅ FPS AUTO-FILL (FAST FIXED)
+document.getElementById("fpsCode").addEventListener("input", function () {
+
+    const code = this.value.trim();
+    if (!code || !fpsData.length) return;
+
+    const fps = fpsData.find(f => f.code == code);
+
+    if (fps) {
+        document.getElementById("fpsName").value = fps.fpsName || "";
+        document.getElementById("gpss").value = fps.gpss || "";
+        document.getElementById("areaOfficer").value = fps.areaOfficer || "";
+        document.getElementById("lacManual").value = fps.lac || "";
+    } else {
+        ["fpsName", "gpss", "areaOfficer", "lacManual"]
+            .forEach(id => document.getElementById(id).value = "");
+    }
+});
+
+// ✅ DATE AUTO
+document.getElementById("date").valueAsDate = new Date();
+
+// ✅ SUBMIT
+document.getElementById("dataForm").addEventListener("submit", e => {
+
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const btn = document.getElementById("submitBtn");
+    const appNum = document.getElementById("applicationNumber").value.trim();
+
+    toggle(btn, true);
+
+    const fd = new FormData(e.target);
+    fd.append("action", "submit");
+
+    fetch(API_URL, {
+        method: "POST",
+        body: fd
+    })
+        .then(r => r.json())
+        .then(res => {
+
+            if (res.status === "Success") {
+
+                if (currentAppType === "ADD") {
+                    const count = (submitCounts.get(appNum) || 0) + 1;
+                    submitCounts.set(appNum, count);
+                    showToast(`Saved (${count}/3) ✅`, true);
+                } else {
+                    showToast("Saved Successfully ✅", true);
+                }
+
+                resetForm();
+
+            } else if (res.status === "Duplicate") {
+                showToast("Already exists ❌", false);
+            } else {
+                showToast("Failed ❌", false);
+            }
+
+        })
+        .catch(() => showToast("Server Error ❌", false))
+        .finally(() => toggle(btn, false));
+});
+
+// ✅ RESET
+function resetForm() {
+
+    document.getElementById("dataForm").reset();
+    document.getElementById("mainForm").style.display = "none";
+    document.getElementById("appStatus").textContent = "";
+    document.getElementById("appType").value = "";
+
+    checkedAppNums.clear();
+    currentAppType = "";
+
+    document.getElementById("date").valueAsDate = new Date();
+}
+
+// RESET BUTTON
+document.querySelector(".reset-btn").addEventListener("click", resetForm);
+
+// AUTO FOCUS
+window.addEventListener("load", () => {
+    document.getElementById("appType").focus();
+});
     </script>
 </body>
 </html>
