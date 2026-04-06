@@ -4,163 +4,91 @@ let fpsData = [];
 let checkedAppNums = new Set();
 let debounceTimer;
 
-// ✅ Toast
-function showToast(message, success = true) {
-  const toast = document.getElementById("toast");
-  const msg = toast.querySelector(".toast-message");
-
-  msg.textContent = message;
-  toast.className = "toast show " + (success ? "toast-success" : "toast-error");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
+// Toast
+function showToast(msg, ok=true){
+  const t = document.getElementById("toast");
+  t.querySelector(".toast-message").textContent = msg;
+  t.className = "toast show " + (ok ? "toast-success" : "toast-error");
+  setTimeout(()=>t.classList.remove("show"),3000);
 }
 
-// ✅ Regex
-function isValidAppNum(value) {
-  return /^RC\d{18,19}$/.test(value);
+// Validation
+function isValid(val){
+  return /^RC\d{18,19}$/.test(val);
 }
 
-// ✅ Loader
-function toggleLoader(btn, loading = true) {
-  btn.disabled = loading;
-  btn.querySelector(".btn-text").style.display = loading ? "none" : "inline";
-  btn.querySelector(".spinner").style.display = loading ? "inline" : "none";
+// Loader
+function toggle(btn,load){
+  btn.disabled=load;
+  btn.querySelector(".btn-text").style.display=load?"none":"inline";
+  btn.querySelector(".spinner").style.display=load?"inline":"none";
 }
 
-// ✅ FPS Load
-fetch(`${API_URL}?action=getFPS`)
-  .then(res => res.json())
-  .then(data => fpsData = data);
+// FPS Load
+fetch(API_URL+"?action=getFPS")
+.then(r=>r.json()).then(d=>fpsData=d);
 
-// ✅ Elements
-const applicationNumber = document.getElementById("applicationNumber");
-const statusEl = document.getElementById("appStatus"); // 🔥 new
-const fpsCode = document.getElementById("fpsCode");
-const fpsName = document.getElementById("fpsName");
-const gpss = document.getElementById("gpss");
-const areaOfficer = document.getElementById("areaOfficer");
-const lacManual = document.getElementById("lacManual");
+// Elements
+const app = document.getElementById("applicationNumber");
+const status = document.getElementById("appStatus");
 
-// ✅ FPS Autofill
-fpsCode.addEventListener("change", function () {
-  const code = this.value.trim();
-  const found = fpsData.find(item => item.code === code);
-
-  if (found) {
-    fpsName.value = found.fpsName;
-    gpss.value = found.gpss;
-    areaOfficer.value = found.areaOfficer;
-    lacManual.value = found.lac;
-  } else {
-    showToast("FPS Code not found", false);
-    fpsName.value = gpss.value = areaOfficer.value = lacManual.value = "";
-  }
-});
-
-// ✅ 🔥 LIVE DUPLICATE CHECK (UPDATED)
-applicationNumber.addEventListener("input", function () {
-  const val = this.value.trim();
-
+// LIVE CHECK
+app.addEventListener("input",function(){
+  const v=this.value.trim();
   clearTimeout(debounceTimer);
 
-  if (!isValidAppNum(val)) {
-    if (statusEl) statusEl.textContent = "";
-    this.style.borderColor = "";
+  if(!isValid(v)){
+    status.textContent="";
     return;
   }
 
-  if (statusEl) {
-    statusEl.textContent = "Checking...";
-    statusEl.className = "status-checking";
-  }
+  status.textContent="Checking...";
+  status.className="status-checking";
 
-  debounceTimer = setTimeout(() => {
-
-    fetch(`${API_URL}?action=checkDuplicate&appNum=${val}`)
-      .then(res => res.json())
-      .then(data => {
-
-        if (data.exists) {
-          checkedAppNums.add(val);
-          this.style.borderColor = "red";
-
-          if (statusEl) {
-            statusEl.textContent = "Duplicate";
-            statusEl.className = "status-dup";
-          }
-
-        } else {
-          this.style.borderColor = "green";
-
-          if (statusEl) {
-            statusEl.textContent = "Available";
-            statusEl.className = "status-ok";
-          }
-        }
-
-      })
-      .catch(() => {
-        if (statusEl) {
-          statusEl.textContent = "Error";
-          statusEl.className = "status-dup";
-        }
-      });
-
-  }, 500); // ⚡ fast
+  debounceTimer=setTimeout(()=>{
+    fetch(API_URL+`?action=checkDuplicate&appNum=${v}`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.exists){
+        status.textContent="Duplicate ❌";
+        status.className="status-dup";
+        checkedAppNums.add(v);
+      } else {
+        status.textContent="Available ✅";
+        status.className="status-ok";
+      }
+    });
+  },400);
 });
 
-// ✅ Submit
-document.getElementById("dataForm").addEventListener("submit", function (e) {
+// Submit
+document.getElementById("dataForm").addEventListener("submit",function(e){
   e.preventDefault();
 
-  const appNum = applicationNumber.value.trim();
-  const mobile = document.getElementById("mobile").value.trim();
-  const submitBtn = document.getElementById("submitBtn");
+  const btn=document.getElementById("submitBtn");
+  const appNum=app.value.trim();
+  const mobile=document.getElementById("mobile").value;
 
-  if (!/^\d{10}$/.test(mobile)) {
-    showToast("Invalid mobile number", false);
-    return;
-  }
+  if(!/^\d{10}$/.test(mobile)) return showToast("Invalid Mobile",false);
+  if(!isValid(appNum)) return showToast("Invalid App No",false);
+  if(checkedAppNums.has(appNum)) return showToast("Duplicate",false);
 
-  if (!isValidAppNum(appNum)) {
-    showToast("Invalid Application Number", false);
-    return;
-  }
+  toggle(btn,true);
 
-  if (checkedAppNums.has(appNum)) {
-    showToast("Duplicate Application Number", false);
-    return;
-  }
+  const fd=new URLSearchParams(new FormData(this));
+  fd.append("action","submit");
 
-  toggleLoader(submitBtn, true);
-
-  const formData = new URLSearchParams(new FormData(this));
-  formData.append("action", "submit");
-
-  fetch(API_URL, {
-    method: "POST",
-    body: formData
+  fetch(API_URL,{method:"POST",body:fd})
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.status==="Success"){
+      showToast("Saved ✅",true);
+      this.reset();
+      status.textContent="";
+    } else {
+      showToast("Duplicate ❌",false);
+    }
   })
-    .then(res => res.json()) // 🔥 FIXED
-    .then(res => {
-
-      if (res.status === "Success") {
-        showToast("Saved Successfully", true);
-        checkedAppNums.add(appNum);
-        this.reset();
-
-        if (statusEl) statusEl.textContent = "";
-      } 
-      else if (res.status === "Duplicate") {
-        showToast("Already exists in system", false);
-      } 
-      else {
-        showToast(res.message || "Failed", false);
-      }
-
-    })
-    .catch(() => showToast("Error submitting", false))
-    .finally(() => toggleLoader(submitBtn, false));
+  .catch(()=>showToast("Error ❌",false))
+  .finally(()=>toggle(btn,false));
 });
