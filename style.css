@@ -37,7 +37,7 @@ label { font-size: 18px; }
 
 input, select {
     border: 1px solid #cfcfcf;
-    padding: 6px;
+    padding: 8px;
     border-radius: 3px;
     outline: none;
     background: #fff;
