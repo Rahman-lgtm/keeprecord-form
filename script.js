@@ -53,12 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
             if (this.value === "NEW") {
                 appNumField.maxLength = 20;
                 appNumField.placeholder = "RCxxxxxxxxxxxxxxx (20 chars)";
-                if (appFormat) appFormat.textContent = "(20 chars)";
+                if (appFormat) appFormat.textContent = "";
                 if (submitWarning) submitWarning.style.display = "none";
             } else {
                 appNumField.maxLength = 21;
                 appNumField.placeholder = "RCxxxxxxxxxxxxxxxxx (21 chars)";
-                if (appFormat) appFormat.textContent = "(21 chars)";
+                if (appFormat) appFormat.textContent = "";
                 if (submitWarning) submitWarning.style.display = "block";
             }
 
