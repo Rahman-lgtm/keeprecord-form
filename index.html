@@ -4,9 +4,8 @@
 <title>Data Entry Form</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<div id="toast"></div>
 <body>
-
+<div id="toast"></div>
 <div class="top-title">
 This form is only for maintaining the DEO work record<br>
 It is not a SmartPDS portal data entry page</div>
@@ -205,7 +204,25 @@ Reset
 </div>
 
 <script src="script.js"></script>
+<script>
+  function showToast(message, type = "success") {
 
+  const toast = document.getElementById("toast");
+
+  let icon = "✔";
+  if (type === "error") icon = "❌";
+  if (type === "warning") icon = "⚠";
+
+  toast.className = "";
+  toast.classList.add("show", `toast-${type}`);
+
+  toast.innerHTML = `<span style="margin-right:8px;">${icon}</span> ${message}`;
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+}</script>
 </body>
 
 </html>
