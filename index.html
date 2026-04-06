@@ -1,31 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>DEO Data Entry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry Form - DEO Work Record</title>
+    <style>
+        /* सभी original CSS same */
+        body {
+            font-family: "Bookman Old Style", serif;
+            background: #dcdcdc;
+            margin: 0;
+        }
 
-<style>
-body { font-family:"Bookman Old Style"; background:#dcdcdc; margin:0; }
+        .top-title {
+            width: 600px;
+            margin: 25px auto 10px;
+            background: #bfbfbf;
+            text-align: center;
+            padding: 8px;
+            font-style: italic;
+            box-shadow: 2px 3px 6px gray;
+        }
 
-.container { width:800px; margin:30px auto; }
-.row { margin:12px 0; }
-.flex { display:flex; gap:20px; }
-label { font-size:17px; }
+        .title {
+            width: 70%;
+            max-width: 800px;
+            margin: 10px auto;
+            padding: 5px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(to right, red, #ffc107);
+            color: white;
+            box-shadow: 2px 3px 6px gray;
+        }
 
-input,select{
-  padding:6px;
-  border:1px solid #ccc;
-  border-radius:4px;
-}
+        .subtitle { font-size: 16px; font-weight: normal; }
 
-.locked{ background:#eee; pointer-events:none; }
+        .container { width: 800px; margin: 25px auto; }
 
-.yellow-bar{
-  background:#ffc107;
-  padding:8px;
-  text-align:center;
-  font-weight:bold;
-  margin:20px 0;
+        label { font-size: 18px; }
+
+        input, select {
+            border: 1px solid #cfcfcf;
+            padding: 6px;
+            border-radius: 3px;
+            outline: none;
+            background: #fff;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        input:hover, select:hover { border-color: #b5b5b5; }
+        input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 3px rgba(13,110,253,.2); }
+
+        .locked {
+            background: #e6e6e6;
+            color: #666;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .row { margin: 14px 0; }
+        .flex { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        .half { width: 48%; }
+
+        .yellow-bar {
+            background: #ffc107;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin: 25px 0 15px;
+            box-shadow: 2px 3px 6px gray;
+        }
+
+        .note { margin-bottom: 10px; }
+        .button-area { text-align: center; margin-top: 30px; }
+
+        .submit-btn, #submitBtn {
+            background: red;
+            color: white;
+            padding: 8px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 2px 3px 6px gray;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover, #submitBtn:hover { background: #218838; }
+        .reset-btn {
+            background: #ffc107;
+            padding: 8px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 2px 3px 6px gray;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .reset-btn:hover { background: #e0a800; }
+
+        .caution-bar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 15px auto;
+            padding: 10px;
+            color: #842029;
+            text-align: left;
+        }
+
+        #appStatus {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status-checking { color: orange; }
+        .status-ok { color: green; }
+        .status-dup { color: red; }
+
+.spinner {
+  display: none;
+  margin-left: 6px;
+  font-size: 16px;
+  animation: spin 1s linear infinite;
 }
 
 /* ✅ BUTTON */
@@ -62,32 +167,45 @@ input,select{
 @keyframes spin{
   100%{transform:translateY(-50%) rotate(360deg);}
 }
+          .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 10000;
+            min-width: 250px;
+        }
 
-/* STATUS */
-#appStatus{ font-size:13px; font-weight:bold; margin-left:10px; }
-.status-checking{color:orange;}
-.status-ok{color:green;}
-.status-dup{color:red;}
+        .toast.show { opacity: 1; }
+        .toast-success { background: green; color: white; }
+        .toast-error { background: red; color: white; }
 
-/* TOAST */
-.toast{
- position:fixed; top:15px; right:15px;
- padding:10px 15px;
- border-radius:5px;
- opacity:0;
- transition:.3s;
-}
-.toast.show{opacity:1;}
-.toast-success{background:green;color:#fff;}
-.toast-error{background:red;color:#fff;}
+        .warning-bar {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
 
-.main-form{display:none;}
-</style>
+        /* 🔥 HIDDEN BY DEFAULT */
+        .main-form { display: none; }
+
+        @media screen and (max-width: 960px) {
+            .container { width: 95%; }
+            .flex { flex-direction: column; gap: 20px; }
+            .half { width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-
-<div class="top-title">
+    <div class="top-title">
         This form is only for maintaining the DEO work record<br>
         It is not a SmartPDS portal data entry page
     </div>
@@ -199,82 +317,171 @@ input,select{
                     <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
                 </div>
 
-               
+                <div id="submitWarning" class="warning-bar" style="display:none;">
+                    ⚠️ ADD Application: अधिकतम 3 बार ही submit हो सकता है।
+                </div>
 
-<button id="submitBtn">Submit</button>
-<button type="button" id="resetBtn">Reset</button>
+                <div class="button-area">
+                    <button id="submitBtn" type="submit">
+                    <span class="btn-text">Submit</span>
+                 <span class="spinner">↻</span>
+                 </button>
+                    <button class="reset-btn" type="button">Reset</button>
+                </div>
 
-</form>
-</div>
-</div>
+                <div class="caution-bar">
+                    📌 NEW: 20 digits | ADD: 21 digits | ADD max 3 submits
+                </div>
+            </form>
+        </div>
+    </div>
 
-<div id="toast" class="toast"><span class="toast-message"></span></div>
+    <div id="toast" class="toast">
+        <div class="toast-message"></div>
+    </div>
 
-<script>
-const API_URL="https://script.google.com/macros/s/AKfycbw02vDrYaKFL3hA3XZBBf978uh5KrGuwKMbdSYAVPNbT5b6wFgM1EyV4RE_zHV0PRSQqQ/exec";
+    <script>
+       const API_URL = "https://script.google.com/macros/s/AKfycbw02vDrYaKFL3hA3XZBBf978uh5KrGuwKMbdSYAVPNbT5b6wFgM1EyV4RE_zHV0PRSQqQ/exec";
 
-let fpsData=[];
+let fpsData = [];
+let checkedAppNums = new Set();
+let submitCounts = new Map();
 let debounceTimer;
-let currentAppType="";
+let currentAppType = '';
 
-// TOAST
-function showToast(msg,ok=true){
- const t=document.getElementById("toast");
- t.querySelector(".toast-message").textContent=msg;
- t.className="toast show "+(ok?"toast-success":"toast-error");
- setTimeout(()=>t.classList.remove("show"),2000);
+// ✅ Toast
+function showToast(msg, ok = true) {
+    const t = document.getElementById("toast");
+    t.querySelector(".toast-message").textContent = msg;
+    t.className = "toast show " + (ok ? "toast-success" : "toast-error");
+    setTimeout(() => t.classList.remove("show"), 2500);
 }
 
-// APP TYPE
-appType.onchange=function(){
- currentAppType=this.value;
- mainForm.style.display=this.value?"block":"none";
- applicationNumber.value="";
+// ✅ Spinner Toggle (FINAL)
+function toggle(btn, load) {
+    if (load) {
+        btn.classList.add("loading");
+        btn.disabled = true;
+    } else {
+        btn.classList.remove("loading");
+        btn.disabled = false;
+    }
 }
 
-// LIVE CHECK
-applicationNumber.oninput=function(){
+// ✅ App Type Change
+document.getElementById("appType").addEventListener("change", function () {
 
- let v=this.value.trim();
- let status=appStatus;
+    currentAppType = this.value;
 
- clearTimeout(debounceTimer);
+    const mainForm = document.getElementById("mainForm");
+    const appNumField = document.getElementById("applicationNumber");
+    const status = document.getElementById("appStatus");
 
- if(!v) return;
+    if (this.value) {
+        mainForm.style.display = "block";
 
- if(!v.startsWith("RC")){
-  status.textContent="Start with RC";
-  status.className="status-dup";
-  return;
- }
+        appNumField.value = "";
+        status.textContent = "";
+        checkedAppNums.clear();
 
- let len=currentAppType==="NEW"?20:21;
+        if (this.value === "NEW") {
+            appNumField.maxLength = 20;
+            appNumField.placeholder = "RC + 18 digits";
+        } else {
+            appNumField.maxLength = 21;
+            appNumField.placeholder = "RC + 19 digits";
+        }
 
- if(v.length<len){
-  status.textContent="Typing...";
-  status.className="status-checking";
-  return;
- }
+        appNumField.focus();
+    } else {
+        mainForm.style.display = "none";
+    }
+});
 
- status.textContent="Checking...";
- status.className="status-checking";
+// ✅ LIVE CHECK (PRO LEVEL)
+document.getElementById("applicationNumber").addEventListener("input", function () {
 
- debounceTimer=setTimeout(()=>{
- fetch(API_URL+"?action=checkDuplicate&appNum="+v)
- .then(r=>r.json())
- .then(d=>{
-  if(d.exists){
-    status.textContent="Duplicate ❌";
-    status.className="status-dup";
-  }else{
-    status.textContent="Available ✅";
-    status.className="status-ok";
-  }
- })
- },300);
-}
+    const value = this.value.trim();
+    const status = document.getElementById("appStatus");
 
-// FPS FAST
+    clearTimeout(debounceTimer);
+
+    status.textContent = "";
+    status.className = "";
+    this.style.borderColor = "";
+
+    if (!value) return;
+
+    status.textContent = "Typing...";
+    status.className = "status-checking";
+
+    if (!value.startsWith("RC")) {
+        status.textContent = "Must start with RC";
+        status.className = "status-dup";
+        this.style.borderColor = "red";
+        return;
+    }
+
+    const expectedLength = currentAppType === "NEW" ? 20 : 21;
+
+    if (value.length < expectedLength) {
+        status.textContent = `Incomplete (${value.length}/${expectedLength})`;
+        return;
+    }
+
+    if (value.length > expectedLength) {
+        status.textContent = "Too long!";
+        status.className = "status-dup";
+        this.style.borderColor = "red";
+        return;
+    }
+
+    const pattern = currentAppType === "NEW"
+        ? /^RC\d{18}$/
+        : /^RC\d{19}$/;
+
+    if (!pattern.test(value)) {
+        status.textContent = "Invalid format";
+        status.className = "status-dup";
+        this.style.borderColor = "red";
+        return;
+    }
+
+    status.textContent = "Checking...";
+    status.className = "status-checking";
+
+    debounceTimer = setTimeout(() => {
+
+        fetch(`${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.exists) {
+                    status.textContent = "Duplicate ❌";
+                    status.className = "status-dup";
+                    this.style.borderColor = "red";
+                    checkedAppNums.add(value);
+                } else {
+                    status.textContent = "Available ✅";
+                    status.className = "status-ok";
+                    this.style.borderColor = "green";
+                }
+
+            })
+            .catch(() => {
+                status.textContent = "Server error!";
+                status.className = "status-dup";
+            });
+
+    }, 300);
+});
+
+// ✅ FPS Load
+fetch(API_URL + "?action=getFPS")
+    .then(r => r.json())
+    .then(d => fpsData = d);
+
+// ✅ FPS Autofill
 fetch(API_URL+"?action=getFPS")
 .then(r=>r.json())
 .then(d=>fpsData=d);
@@ -288,54 +495,59 @@ fpsCode.oninput=function(){
   lacManual.value=f.lac;
  }
 }
+// ✅ Date Auto
+document.getElementById("date").valueAsDate = new Date();
 
-// VALIDATION
-function validate(){
- const fields=["applicationNumber","inspector","deo","date","mobile","hof","gp","totalMembers","fpsCode"];
- for(let f of fields){
-  if(!document.getElementById(f).value.trim()){
-    showToast("All fields required!",false);
-    return false;
-  }
- }
- if(!/^\d{10}$/.test(mobile.value)){
-  showToast("Invalid mobile",false);
-  return false;
- }
- return true;
+// ✅ Submit
+document.getElementById("dataForm").addEventListener("submit", e => {
+
+    e.preventDefault();
+
+    const btn = document.getElementById("submitBtn");
+    const appNum = applicationNumber.value.trim();
+
+    toggle(btn, true);
+
+    const fd = new FormData(e.target);
+    fd.append("action", "submit");
+
+    fetch(API_URL, { method: "POST", body: fd })
+        .then(r => r.json())
+        .then(res => {
+
+            if (res.status === "Success") {
+
+                if (currentAppType === "ADD") {
+                    const count = (submitCounts.get(appNum) || 0) + 1;
+                    submitCounts.set(appNum, count);
+                    showToast(`Saved (${count}/3) ✅`, true);
+                } else {
+                    showToast("Saved Successfully ✅", true);
+                }
+
+                resetForm();
+
+            } else {
+                showToast("Duplicate ❌", false);
+            }
+
+        })
+        .catch(() => showToast("Server Error ❌", false))
+        .finally(() => toggle(btn, false));
+});
+
+// ✅ Reset
+function resetForm() {
+    document.getElementById("dataForm").reset();
+    document.getElementById("mainForm").style.display = "none";
+    document.getElementById("appStatus").textContent = "";
+    document.getElementById("appType").value = "";
+    currentAppType = "";
+    checkedAppNums.clear();
+    document.getElementById("date").valueAsDate = new Date();
 }
 
-// SUBMIT
-dataForm.onsubmit=e=>{
- e.preventDefault();
- if(!validate()) return;
-
- submitBtn.classList.add("loading");
-
- fetch(API_URL,{
-  method:"POST",
-  body:new FormData(dataForm)
- })
- .then(r=>r.json())
- .then(res=>{
-  if(res.status==="Success"){
-    showToast("Saved ✅",true);
-    dataForm.reset();
-    mainForm.style.display="none";
-  }else{
-    showToast("Duplicate ❌",false);
-  }
- })
- .catch(()=>showToast("Error ❌",false))
- .finally(()=>submitBtn.classList.remove("loading"));
-};
-
-// RESET
-resetBtn.onclick=()=>{
- dataForm.reset();
- mainForm.style.display="none";
-}
-</script>
-
+document.querySelector(".reset-btn").addEventListener("click", resetForm);
+    </script>
 </body>
 </html>
