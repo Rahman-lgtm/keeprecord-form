@@ -96,7 +96,21 @@ input:focus, select:focus {
     margin-left: auto;
     display: block;
 }
-.flex { display: flex; justify-content: space-between; align-items: flex-end; gap: 5px; }
+.flex {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+/* DEO wala */
+.flex .half {
+  flex: 1;   /* full width le */
+}
+
+/* DATE wala */
+.flex > div:last-child {
+  width: 170px;  /* fixed size */
+}
 
 /* ================= BARS ================= */
 .yellow-bar {
