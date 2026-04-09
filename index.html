@@ -10,7 +10,7 @@
 <body>
     <!-- TOP HEADER -->
     <div class="page-wrapper">
-    
+    <body>
     <div class="top-title">
         This form is only for maintaining the DEO work record<br>
         It is not a SmartPDS portal data entry page
@@ -57,17 +57,19 @@
                         <option>Santonu Bordoloi</option>
                     </select>
                 </div>
-<div class="row flex">
-    <div>
+
+               <div class="row flex">
+    <div class="half">
         <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
         <input type="text" id="deo" name="deo" required>
     </div>
 
-    <div>
+    <div class="half">
         <label>Date <span style="color:red;">*</span>:</label>
         <input type="date" id="date" name="date" required>
     </div>
 </div>
+
                 <div class="row">
                     <label>Mobile Number <span style="color:red;">*</span>:</label>
                     <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
