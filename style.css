@@ -8,9 +8,9 @@ body {
 
 /* ================= MAIN WRAPPER ================= */
 .page-wrapper {
-  width: 850px;
+  width: 900px;
   max-width: 95%;
-  margin: 20px auto;
+  margin: 10px auto;
   background: #e5e5e5;
   padding: 20px;
   border-radius: 12px;
