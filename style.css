@@ -256,3 +256,93 @@ input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 3px rgba(13,1
     .flex { flex-direction: column; }
     .half { width: 100%; }
 }
+/* ==============------================*/
+body {
+    background: #cfcfcf;
+    font-family: "Bookman Old Style", serif;
+}
+
+/* ✅ Center main card */
+.page-wrapper {
+    width: 850px;
+    margin: 20px auto;
+    background: #e5e5e5;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* Top grey note */
+.top-title {
+    background: #d9d9d9;
+    padding: 10px;
+    text-align: center;
+    font-style: italic;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* Orange alert */
+.title {
+    background: linear-gradient(to right, red, orange);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 13px;
+}
+
+/* Form spacing improve */
+.container {
+    margin-top: 15px;
+}
+
+.row {
+    margin: 10px 0;
+}
+
+/* Yellow section */
+.yellow-bar {
+    background: #ffb300;
+    padding: 10px;
+    text-align: center;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* Buttons center */
+.button-area {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* Submit */
+#submitBtn {
+    background: #2ecc71;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    color: white;
+}
+
+/* Reset */
+.reset-btn {
+    background: orange;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+}
+
+/* Inputs clean look */
+input, select {
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+}
