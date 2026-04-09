@@ -332,3 +332,18 @@ input, select {
     border-radius: 5px;
     border: 1px solid #bbb;
 }
+
+.flex {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;   /* 🔥 yahi magic hai */
+}
+
+.half {
+    flex: 1;
+}
+
+/* date height match */
+input[type="date"] {
+    height: 38px;
+}
