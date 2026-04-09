@@ -80,12 +80,26 @@ input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 3px rgba(13,1
 
 .row { margin: 14px 0; }
 
+/* 🔥 FINAL FLEX FIX */
+.flex {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    width: 100%;
+}
+
 .flex > div:first-child {
-    flex: 1;
+    flex: 1;   /* left side full */
 }
 
 .flex > div:last-child {
-    width: 160px;
+    width: 170px;   /* date / right side fixed */
+}
+
+/* remove width conflict */
+.row input,
+.row select {
+    max-width: 100%;
 }
 /* ================= BARS ================= */
 .yellow-bar {
@@ -338,13 +352,6 @@ input, select {
     border-radius: 5px;
     border: 1px solid #bbb;
 }
-
-.flex {
-    display: flex;
-    gap: 20px;
-    align-items: flex-end;   /* 🔥 yahi magic hai */
-}
-
 .half {
     flex: 1;
 }
