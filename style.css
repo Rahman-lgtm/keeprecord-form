@@ -8,8 +8,8 @@ body {
 
 /* ================= MAIN WRAPPER ================= */
 .page-wrapper {
-  width: 900px;
-  max-width: 95%;
+  width: calc(100% - 20px);   /* 🔥 left + right 10px gap */
+  max-width: 850px;
   margin: 10px auto;
   background: #e5e5e5;
   padding: 20px;
