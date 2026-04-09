@@ -315,7 +315,9 @@ function toggleLoading(btn, show) {
         btn.disabled = false;
     }
 }
-
+document.getElementById("fpsCode").addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "").slice(0, 12);
+})
 // ================= START =================
 setTimeout(() => {
     initAppNumValidation();
