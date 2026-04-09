@@ -242,7 +242,7 @@ function initAppNumValidation() {
 
         debounceTimer = setTimeout(() => {
             checkDuplicate(value);
-        }, 800);
+        }, 300);
     });
 }
 
