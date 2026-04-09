@@ -291,30 +291,6 @@ body {
     font-weight: bold;
 }
 
-/* Buttons center */
-.button-area {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-/* Submit */
-#submitBtn {
-    background: #2ecc71;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 8px;
-    color: white;
-}
-
-/* Reset */
-.reset-btn {
-    background: orange;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 8px;
-}
 
 /* Inputs clean look */
 input, select {
