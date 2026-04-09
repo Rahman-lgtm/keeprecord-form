@@ -1,9 +1,5 @@
-body {
-    font-family: "Bookman Old Style", serif;
-    background: #dcdcdc;
-    margin: 0;
-}
-
+* { box-sizing: border-box; } 
+body { font-family: "Bookman Old Style", serif; background: #cfcfcf; margin: 0; }
 /* ================= TITLE ================= */
 .top-title {
     width: 600px;
