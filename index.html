@@ -57,19 +57,15 @@
                         <option>Santonu Bordoloi</option>
                     </select>
                 </div>
-
-               <div class="row flex">
-    <div>
-        <label>Name of Data Entry Operator *</label>
-        <input type="text" id="deo" name="deo">
-    </div>
-
-    <div>
-        <label>Date *</label>
-        <input type="date" id="date" name="date">
+<div class="row flex">
+    <div class="half">
+        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
+        <input type="text" id="deo" name="deo" required>
+    </div>    
+        <label>Date <span style="color:red;">*</span>:</label>
+        <input type="date" id="date" name="date" required>
     </div>
 </div>
-
                 <div class="row">
                     <label>Mobile Number <span style="color:red;">*</span>:</label>
                     <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
