@@ -269,6 +269,7 @@ body {
     background: #e5e5e5;
     padding: 20px;
     border-radius: 12px;
+    overflow: hidden;
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 .top-page {
@@ -280,12 +281,16 @@ body {
 /* Form spacing improve */
 .container {
     margin-top: 15px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .row {
     margin: 10px 0;
 }
-
+* {
+    box-sizing: border-box;
+}
 /* Yellow section */
 .yellow-bar {
     background: #ffb300;
@@ -299,6 +304,7 @@ body {
 
 /* Inputs clean look */
 input, select {
+    max-width: 100%;
     padding: 6px;
     border-radius: 5px;
     border: 1px solid #bbb;
