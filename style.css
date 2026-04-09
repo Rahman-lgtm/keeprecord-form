@@ -271,7 +271,12 @@ body {
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
-
+.top-page {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
 /* Form spacing improve */
 .container {
     margin-top: 15px;
