@@ -95,8 +95,8 @@ input:focus, select:focus {
     margin-left: auto;
     display: block;
 }
-.flex { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-.half { width: 48%; }
+.flex { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; }
+
 /* ================= BARS ================= */
 .yellow-bar {
   background: #ffc107;
