@@ -1,4 +1,7 @@
-* { box-sizing: border-box; }
+/* ================= GLOBAL ================= */
+* {
+  box-sizing: border-box;
+}
 
 body {
   font-family: "Bookman Old Style", serif;
@@ -53,29 +56,36 @@ body {
 /* ================= LAYOUT ================= */
 .container {
   width: 800px;
-  margin: 25px auto;
   max-width: 100%;
+  margin: 25px auto;
 }
 
 label {
   font-size: 18px;
+  display: block;
+  margin-bottom: 4px;
 }
 
-input, select {
-    border: 1px solid #cfcfcf;
-    padding: 8px;
-    border-radius: 5px;
-    outline: none;
-    background: #fff;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-    transition: border-color .2s ease, box-shadow .2s ease;
+/* 🔥 INPUT FIX */
+input,
+select {
+  width: 100%;              /* ✅ sab input responsive */
+  border: 1px solid #cfcfcf;
+  padding: 8px;
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-input:hover, select:hover {
+input:hover,
+select:hover {
   border-color: #b5b5b5;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   border-color: #0d6efd;
   box-shadow: 0 0 3px rgba(13,110,253,.2);
 }
@@ -90,12 +100,21 @@ input:focus, select:focus {
 .row {
   margin: 14px 0;
 }
-/* Right align specific inputs */
-.right-align {
-    margin-left: auto;
-    display: block;
+
+/* ================= FLEX FIX (MOST IMPORTANT) ================= */
+.flex {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
 }
-.flex { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; }
+
+.flex > div:first-child {
+  flex: 1;   /* left side full */
+}
+
+.flex > div:last-child {
+  width: 160px;   /* right side (date etc) */
+}
 
 /* ================= BARS ================= */
 .yellow-bar {
@@ -110,7 +129,8 @@ input:focus, select:focus {
 
 .note {
   margin-bottom: 10px;
-  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #007bff; /* 🔥 full blue line */
 }
 
 /* ================= BUTTON AREA ================= */
@@ -119,7 +139,6 @@ input:focus, select:focus {
   margin-top: 30px;
 }
 
-/* 🔥 COMMON BUTTON STYLE */
 .button-area button {
   min-width: 150px;
   padding: 10px 0;
@@ -134,25 +153,21 @@ input:focus, select:focus {
   margin: 0 8px;
 }
 
-/* ✅ SUBMIT BUTTON */
 #submitBtn {
   background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
 }
 
-/* ✅ RESET BUTTON */
 .reset-btn {
   background: linear-gradient(135deg, #ffc107, #ff9800);
   color: black;
 }
 
-/* 🔥 HOVER EFFECT (COMMON) */
 .button-area button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
-/* 🔥 INDIVIDUAL HOVER COLORS */
 #submitBtn:hover {
   background: linear-gradient(135deg, #218838, #1abc9c);
 }
@@ -161,7 +176,7 @@ input:focus, select:focus {
   background: linear-gradient(135deg, #e0a800, #f57c00);
 }
 
-/* 🔥 LOADING FIX */
+/* ================= LOADING ================= */
 #submitBtn.loading {
   pointer-events: none;
   color: transparent;
@@ -273,6 +288,7 @@ input:focus, select:focus {
   animation: progressBar 4s linear forwards;
 }
 
+/* ================= ANIMATION ================= */
 @keyframes progressBar {
   from { transform: scaleX(1); }
   to { transform: scaleX(0); }
@@ -292,10 +308,12 @@ input:focus, select:focus {
   .container {
     width: 95%;
   }
+
   .flex {
     flex-direction: column;
   }
-  .half {
-    width: 100%;
+
+  .flex > div:last-child {
+    width: 100%;  /* mobile fix */
   }
 }
