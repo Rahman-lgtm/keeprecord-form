@@ -92,7 +92,8 @@ input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 3px rgba(13,1
     box-shadow: 2px 3px 6px gray;
 }
 
-.note { margin-bottom: 10px; }
+.note { margin-bottom: 10px;
+        border-bottom: 2px solid #007bff;}
 /* ================= BUTTON AREA ================= */
 .button-area {
     text-align: center;
