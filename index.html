@@ -84,26 +84,30 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <label>F.P.S Code <span style="color:red;">*</span>:</label>
 <input type="text" id="fpsCode" name="fpsCode" maxlength="12" inputmode="numeric" pattern="\d{12}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Enter 12 digit FPS Code">
 </div>
-<div class="field">
+<div class="row flex">
+<div>
+<label>F.P.S ID <span style="color:red;">*</span>:</label>
+<input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
+</div>
+<div>
 <label>FPS Name:</label>
-<input type="text" id="fpsName" readonly class="locked">
+<input type="text" id="fpsCode" name="fpsCode" maxlength="12" inputmode="numeric" pattern="\d{12}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Enter 12 digit FPS Code">
 </div>
 </div>
 <div class="row flex">
-<div class="field full">
+<div>
 <label>Name of GPSS:</label>
-<input type="text" id="gpss" readonly class="locked">
+<input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
 </div>
-<div class="field">
+<div>
 <label>Area Officer:</label>
-<input type="text" id="areaOfficer" readonly class="locked">
+<input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:2000px;">
 </div>
 </div>
 <div class="row">
-<div class="field">
 <label>LAC Name:</label>
-<input type="text" id="lacManual" readonly class="locked">
-</div>
+<input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
+</div>  
 </div>
 <div class="button-area">
 <button id="submitBtn" type="submit">
