@@ -89,7 +89,7 @@ input:focus, select:focus {
 }
 
 .row {
-  margin: 14px 0;
+  margin: 10px 0;
 }
 /* Right align specific inputs */
 .right-align {
@@ -316,7 +316,7 @@ input:focus, select:focus {
 }
 .row.flex {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     align-items: center;
 }
 
