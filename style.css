@@ -329,3 +329,7 @@ input:focus, select:focus {
 .field label {
     white-space: nowrap;
 }
+#fpsName {
+    width: 300px;
+    flex: none;
+}
