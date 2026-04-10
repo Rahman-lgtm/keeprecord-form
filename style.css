@@ -316,14 +316,14 @@ input:focus, select:focus {
 }
 .row.flex {
     display: flex;
-    gap: 15px;
+    gap: 25px;
     align-items: center;
 }
 
 .field {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 
 .field label {
