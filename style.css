@@ -314,3 +314,18 @@ input:focus, select:focus {
     width: 100%;
   }
 }
+.row.flex {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.field label {
+    white-space: nowrap;
+}
