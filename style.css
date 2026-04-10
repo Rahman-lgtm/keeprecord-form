@@ -99,7 +99,7 @@ input:focus, select:focus {
 .flex {
   display: flex;
   align-items: flex-end;
-  gap: 20px;
+  gap: 5px;
 }
 
 /* DEO wala */
@@ -136,7 +136,7 @@ input:focus, select:focus {
 
 /* 🔥 COMMON BUTTON STYLE */
 .button-area button {
-  min-width: 150px;
+  min-width: 100px;
   padding: 10px 0;
   border: none;
   border-radius: 10px;
