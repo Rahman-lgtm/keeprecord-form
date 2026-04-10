@@ -124,7 +124,7 @@ async function handleFormSubmit(e) {
     document.getElementById("hiddenAppType").value = currentAppType;
 
     toggleLoading(btn, true);
-    showToast("Submitting data...", true);
+    
 
     try {
         const formData = new FormData(form);
@@ -165,7 +165,7 @@ async function handleFormSubmit(e) {
 
             showToast(
                 currentAppType === "ADD"
-                    ? `Member ${count}/3 submitted successfully`
+                    ? `submitted successfully`
                     : "Data saved successfully ✔",
                 true
             );
