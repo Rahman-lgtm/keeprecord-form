@@ -24,35 +24,33 @@
         </span>
     </div>
 
-    <div class="container">
-
-        <!-- Application Type -->
+    div class="container">
+        <!-- 🔥 SIMPLE APP TYPE - SAME AS OTHER INPUTS -->
         <div class="row">
-            <label>Application Type <span class="required">*</span>:</label>
-            <select id="appType" name="appType" required>
+            <label>Application Type <span style="color:red;">*</span>:</label>
+            <select id="appType" name="appType" required style="width:350px;">
                 <option value="">Select</option>
-                <option value="NEW">NEW RC Application</option>
-                <option value="ADD">Existing RC Application</option>
+                <option value="NEW">NEW (20 digits)</option>
+                <option value="ADD">ADD (21 digits)</option>
             </select>
         </div>
 
-        <!-- MAIN FORM -->
+        <!-- 🔥 MAIN FORM - HIDDEN TILL APP TYPE SELECTED -->
         <div id="mainForm" class="main-form">
             <form id="dataForm" novalidate>
-
                 <input type="hidden" name="appType" id="hiddenAppType">
 
                 <div class="row">
-                    <label>Application Number <span class="required">*</span> <span id="appFormat"></span>:</label>
-                    <div class="input-box">
-                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required>
+                    <label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
+                    <div style="position: relative; display: inline-block; width: 350px;">
+                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
                         <span id="appStatus"></span>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Name of Inspector <span class="required">*</span>:</label>
-                    <select id="inspector" name="inspector" required>
+                    <label>Name of Inspector <span style="color:red;">*</span>:</label>
+                    <select id="inspector" name="inspector" required style="width:350px;">
                         <option value="">Select</option>
                         <option>Abhijit Bora</option>
                         <option>Durga Bodo</option>
@@ -63,77 +61,70 @@
                     </select>
                 </div>
 
-                <!-- DEO + DATE SAME LINE -->
                 <div class="row flex">
                     <div>
-                        <label>Data Entry Operator <span class="required">*</span>:</label>
-                        <input type="text" id="deo" name="deo" required>
+                        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
+                        <input type="text" id="deo" name="deo" required style="width:200px;">
                     </div>
-
                     <div>
-                        <label>Date <span class="required">*</span>:</label>
-                        <input type="date" id="date" name="date" required>
+                        <label>Date <span style="color:red;">*</span>:</label>
+                        <input type="date" id="date" name="date" required style="width:170px;">
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Mobile Number <span class="required">*</span>:</label>
-                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required>
+                    <label>Mobile Number <span style="color:red;">*</span>:</label>
+                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
                 </div>
 
-                <!-- HOF + GP SAME LINE -->
                 <div class="row flex">
                     <div class="half">
-                        <label>Head of Family <span class="required">*</span>:</label>
-                        <input type="text" id="hof" name="hof" required>
+                        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
+                        <input type="text" id="hof" name="hof" required style="width:80%;">
                     </div>
-
                     <div class="half">
-                        <label>GP/Ward No <span class="required">*</span>:</label>
-                        <input type="text" id="gp" name="gp" required>
+                        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
+                        <input type="text" id="gp" name="gp" required style="width:80%;">
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Total Members <span class="required">*</span>:</label>
-                    <input type="number" id="totalMembers" name="totalMembers" min="1" required>
+                    <label>Total Members <span style="color:red;">*</span>:</label>
+                    <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
                 </div>
 
-                <!-- FPS SECTION -->
                 <div class="yellow-bar">Fair Price Shop Detail</div>
 
                 <div class="note">
-                    <b>N.B.:</b> Enter the FPS ID – remaining fields will auto-fill
+                    <b>N.B.:</b> FPS Code भरें - बाकी fields auto-fill होंगे
                 </div>
 
                 <div class="row flex">
                     <div>
-                        <label>FPS ID <span class="required">*</span>:</label>
-                        <input type="text" id="fpsCode" name="fpsCode" maxlength="12" required>
+                        <label>F.P.S Code <span style="color:red;">*</span>:</label>
+                        <input type="text" id="fpsCode" name="fpsCode" placeholder="130500500001" required style="width:200px;">
                     </div>
-
                     <div>
                         <label>FPS Name:</label>
-                        <input type="text" id="fpsName" readonly class="locked">
+                        <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
                     </div>
                 </div>
 
                 <div class="row flex">
                     <div>
-                        <label>GPSS:</label>
-                        <input type="text" id="gpss" readonly class="locked">
+                        <label>Name of GPSS:</label>
+                        <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
                     </div>
-
                     <div>
                         <label>Area Officer:</label>
-                        <input type="text" id="areaOfficer" readonly class="locked">
+                        <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:280px;">
                     </div>
                 </div>
 
                 <div class="row">
                     <label>LAC Name:</label>
-                    <input type="text" id="lacManual" readonly class="locked">
-                </div>
+                    <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
+                </div> 
 
                 <!-- BUTTONS -->
                 <div class="button-area">
