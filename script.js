@@ -173,7 +173,7 @@ async function handleFormSubmit(e) {
             resetForm();
         } else {
             showToast(
-                result.message || result.error || "Submission failed!",
+                result.message || result.error || "Please check the Application Number!",
                 false
             );
         }
