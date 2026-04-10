@@ -10,7 +10,25 @@ document.addEventListener("DOMContentLoaded", function () {
     initForm();
     initEventListeners();
     loadFPSData();
+    initFPSAutoFill(); // 🔥 FIXED: Separate init function
 });
+
+function initFPSAutoFill() {
+    const fpsCodeField = document.getElementById("fpsCode");
+    if (!fpsCodeField) return;
+
+    // Clear existing listeners to avoid duplicates
+    fpsCodeField.removeEventListener("input", handleFPSInput);
+    
+    // Add numeric only + FPS autofill
+    fpsCodeField.addEventListener("input", function () {
+        // Numeric only + max 12 digits
+        this.value = this.value.replace(/\D/g, "").slice(0, 12);
+        
+        // Trigger FPS autofill
+        handleFPSInput.call(this);
+    });
+}
 
 // ================= INIT =================
 function initForm() {
@@ -43,6 +61,38 @@ function initEventListeners() {
     }
 }
 
+// ================= FPS =================
+function loadFPSData() {
+    fetch(`${API_URL}?action=getFPS`)
+        .then(r => r.json())
+        .then(data => {
+            fpsData = data;
+            console.log("FPS data loaded:", fpsData.length, "records"); // Debug
+        })
+        .catch(() => console.log("FPS data unavailable"));
+}
+
+function handleFPSInput() {
+    const code = this.value.trim(); // 'this' refers to fpsCodeField
+    
+    if (code.length !== 12) return;
+
+    const fps = fpsData.find(item => item.code === code);
+    if (fps) {
+        document.getElementById("fpsName").value = fps.fpsName || '';
+        document.getElementById("gpss").value = fps.gpss || '';
+        document.getElementById("areaOfficer").value = fps.areaOfficer || '';
+        document.getElementById("lacManual").value = fps.lac || '';
+        showToast("FPS details loaded successfully!", true);
+    } else {
+        // Optional: Clear fields if no match
+        // document.getElementById("fpsName").value = '';
+        // document.getElementById("gpss").value = '';
+        // document.getElementById("areaOfficer").value = '';
+        // document.getElementById("lacManual").value = '';
+    }
+}
+
 // ================= APP TYPE =================
 function handleAppTypeChange(type) {
     currentAppType = type;
@@ -70,33 +120,6 @@ function handleAppTypeChange(type) {
     } else {
         mainForm.style.display = "none";
     }
-}
-
-// ================= FPS =================
-function loadFPSData() {
-    fetch(`${API_URL}?action=getFPS`)
-        .then(r => r.json())
-        .then(data => fpsData = data)
-        .catch(() => console.log("FPS data unavailable"));
-}
-
-function handleFPSInput() {
-    const fpsCodeField = document.getElementById("fpsCode");
-    if (!fpsCodeField) return;
-
-    fpsCodeField.addEventListener("input", function () {
-        const code = this.value.trim();
-        if (code.length !== 12) return;
-
-        const fps = fpsData.find(item => item.code === code);
-        if (fps) {
-            document.getElementById("fpsName").value = fps.fpsName || '';
-            document.getElementById("gpss").value = fps.gpss || '';
-            document.getElementById("areaOfficer").value = fps.areaOfficer || '';
-            document.getElementById("lacManual").value = fps.lac || '';
-            showToast("FPS details loaded successfully!", true);
-        }
-    });
 }
 
 // ================= SUBMIT =================
@@ -315,11 +338,8 @@ function toggleLoading(btn, show) {
         btn.disabled = false;
     }
 }
-document.getElementById("fpsCode").addEventListener("input", function () {
-    this.value = this.value.replace(/\D/g, "").slice(0, 12);
-})
+
 // ================= START =================
 setTimeout(() => {
     initAppNumValidation();
-    handleFPSInput();
-}, 200);
+}, 200); // 🔥 REMOVED handleFPSInput() - now handled by initFPSAutoFill()
