@@ -48,32 +48,40 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </select>
 </div>
 <div class="row flex">
-<div class="field">
-<label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
-<input type="text" id="deo" name="deo" required style="width:280px;">
+    <div class="field">
+        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
+        <input type="text" id="deo" name="deo" required style="width:280px;">
+    </div>
+
+    <div class="field">
+        <label>Date <span style="color:red;">*</span>:</label>
+        <input type="date" id="date" name="date" required style="width:150px;">
+    </div>
 </div>
-<div class="field">
-<label>Date <span style="color:red;">*</span>:</label>
-<input type="date" id="date" name="date" required style="width:150px;">
-</div>
-</div>
+
+<!-- MOBILE -->
 <div class="row">
-<label>Mobile Number <span style="color:red;">*</span>:</label>
-<input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
+    <label>Mobile Number <span style="color:red;">*</span>:</label>
+    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
 </div>
+
+<!-- HOF + GP -->
 <div class="row flex">
-<div class="half">
-<label>Name of Head of the Family <span style="color:red;">*</span>:</label>
-<input type="text" id="hof" name="hof" required style="width:50%;">
+    <div class="field">
+        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
+        <input type="text" id="hof" name="hof" required style="width:250px;">
+    </div>
+
+    <div class="field">
+        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
+<input type="text" id="gp" name="gp" required style="width:250px;">
 </div>
+</div>
+
+<!-- TOTAL MEMBERS -->
 <div class="row">
 <label>Total Members <span style="color:red;">*</span>:</label>
 <input type="number" id="totalMembers" name="totalMembers" min="1" required style="width:100px;">
-</div>
-<div class="field">
-<label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
-<input type="text" id="gp" name="gp" required style="width:80%;">
-</div>
 </div>
 <div class="yellow-bar">Fair Price Shop Detail</div>
 <div class="note">
