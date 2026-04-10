@@ -8,9 +8,10 @@
 </head>
 
 <body>
+
+<div class="page-wrapper">
+
     <!-- TOP HEADER -->
-    <div class="page-wrapper">
-    <body>
     <div class="top-title">
         This form is only for maintaining the DEO work record<br>
         It is not a SmartPDS portal data entry page
@@ -18,36 +19,40 @@
 
     <div class="title">
         Please complete the data entry process in the SmartPDS portal first<br>
-        <span class="subtitle">After generating the application number, enter it here and submit it</span>
+        <span class="subtitle">
+            After generating the application number, enter it here and submit it
+        </span>
     </div>
-    <div class="page-wrapper">
+
     <div class="container">
-        <!-- 🔥 SIMPLE APP TYPE - SAME AS OTHER INPUTS -->
+
+        <!-- Application Type -->
         <div class="row">
-            <label>Application Type <span style="color:red;">*</span>:</label>
-            <select id="appType" name="appType" required style="width:350px;">
+            <label>Application Type <span class="required">*</span>:</label>
+            <select id="appType" name="appType" required>
                 <option value="">Select</option>
                 <option value="NEW">NEW RC Application</option>
                 <option value="ADD">Existing RC Application</option>
             </select>
         </div>
 
-        <!-- 🔥 MAIN FORM - HIDDEN TILL APP TYPE SELECTED -->
+        <!-- MAIN FORM -->
         <div id="mainForm" class="main-form">
             <form id="dataForm" novalidate>
+
                 <input type="hidden" name="appType" id="hiddenAppType">
 
                 <div class="row">
-                    <label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
-                    <div style="position: relative; display: inline-block; width: 350px;">
-                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
+                    <label>Application Number <span class="required">*</span> <span id="appFormat"></span>:</label>
+                    <div class="input-box">
+                        <input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required>
                         <span id="appStatus"></span>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Name of Inspector <span style="color:red;">*</span>:</label>
-                    <select id="inspector" name="inspector" required style="width:350px;">
+                    <label>Name of Inspector <span class="required">*</span>:</label>
+                    <select id="inspector" name="inspector" required>
                         <option value="">Select</option>
                         <option>Abhijit Bora</option>
                         <option>Durga Bodo</option>
@@ -58,97 +63,106 @@
                     </select>
                 </div>
 
+                <!-- DEO + DATE SAME LINE -->
                 <div class="row flex">
                     <div>
-                        <label>Name of Data Entry Operator <span style="color:red;">*</span>:</label>
-                        <input type="text" id="deo" name="deo" required style="width:200px;">
+                        <label>Data Entry Operator <span class="required">*</span>:</label>
+                        <input type="text" id="deo" name="deo" required>
                     </div>
+
                     <div>
-                        <label>Date <span style="color:red;">*</span>:</label>
-                        <input type="date" id="date" name="date" required style="width:170px;">
+                        <label>Date <span class="required">*</span>:</label>
+                        <input type="date" id="date" name="date" required>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Mobile Number <span style="color:red;">*</span>:</label>
-                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required style="width:200px;">
+                    <label>Mobile Number <span class="required">*</span>:</label>
+                    <input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit" required>
                 </div>
 
+                <!-- HOF + GP SAME LINE -->
                 <div class="row flex">
                     <div class="half">
-                        <label>Name of Head of the Family <span style="color:red;">*</span>:</label>
-                        <input type="text" id="hof" name="hof" required style="width:80%;">
+                        <label>Head of Family <span class="required">*</span>:</label>
+                        <input type="text" id="hof" name="hof" required>
                     </div>
+
                     <div class="half">
-                        <label>Name of GP/Ward No <span style="color:red;">*</span>:</label>
-                        <input type="text" id="gp" name="gp" required style="width:80%;">
+                        <label>GP/Ward No <span class="required">*</span>:</label>
+                        <input type="text" id="gp" name="gp" required>
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Total Members <span style="color:red;">*</span>:</label>
-                    <input type="number" id="totalMembers" name="totalMembers" required style="width:150px;" min="1">
+                    <label>Total Members <span class="required">*</span>:</label>
+                    <input type="number" id="totalMembers" name="totalMembers" min="1" required>
                 </div>
 
-
+                <!-- FPS SECTION -->
                 <div class="yellow-bar">Fair Price Shop Detail</div>
 
                 <div class="note">
-                    <b>N.B.:</b> Enter the FPS ID – the remaining fields will be auto-filled
+                    <b>N.B.:</b> Enter the FPS ID – remaining fields will auto-fill
                 </div>
 
                 <div class="row flex">
                     <div>
-                        <label>F.P.S ID <span style="color:red;">*</span>:</label>
-                        <input type="text"id="fpsCode"name="fpsCode"placeholder="130500500001"maxlength="12"inputmode="numeric"pattern="\d{12}"required>
+                        <label>FPS ID <span class="required">*</span>:</label>
+                        <input type="text" id="fpsCode" name="fpsCode" maxlength="12" required>
                     </div>
+
                     <div>
                         <label>FPS Name:</label>
-                        <input type="text" id="fpsName" name="fpsName" readonly class="locked" style="width:250px;">
+                        <input type="text" id="fpsName" readonly class="locked">
                     </div>
                 </div>
 
                 <div class="row flex">
                     <div>
-                        <label>Name of GPSS:</label>
-                        <input type="text" id="gpss" name="gpss" readonly class="locked" style="width:390px;">
+                        <label>GPSS:</label>
+                        <input type="text" id="gpss" readonly class="locked">
                     </div>
+
                     <div>
                         <label>Area Officer:</label>
-                        <input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" style="width:175px;">
+                        <input type="text" id="areaOfficer" readonly class="locked">
                     </div>
                 </div>
 
                 <div class="row">
                     <label>LAC Name:</label>
-                    <input type="text" id="lacManual" name="lacManual" readonly class="locked" style="width:300px;">
-                </div>             
+                    <input type="text" id="lacManual" readonly class="locked">
+                </div>
 
+                <!-- BUTTONS -->
                 <div class="button-area">
                     <button id="submitBtn" type="submit">
-                    <span class="btn-text">Submit</span>
-                 <span class="spinner"></span>
-                 </button>
+                        <span class="btn-text">Submit</span>
+                        <span class="spinner"></span>
+                    </button>
+
                     <button class="reset-btn" type="button">Reset</button>
                 </div>
 
-                <div class="caution-bar">
-                    📌 
-                </div>
+                <div class="caution-bar">📌</div>
+
             </form>
         </div>
-    </div>
-  </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">
-  <div class="toast-content">
-    <div class="toast-icon">✔</div>
-    <div class="toast-message">Message</div>
-  </div>
-  <div class="toast-progress"></div>
+    </div>
 </div>
 
-    <script src="script.js"></script>
+<!-- Toast -->
+<div id="toast" class="toast">
+    <div class="toast-content">
+        <div class="toast-icon">✔</div>
+        <div class="toast-message">Message</div>
+    </div>
+    <div class="toast-progress"></div>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
