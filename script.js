@@ -311,8 +311,8 @@ function showToast(message, isSuccess = true) {
     toast.className = `toast ${isSuccess ? 'toast-success' : 'toast-error'} show`;
 
     setTimeout(() => {
-        toast.classList.remove("show");
-    }, 4000);
+    toast.classList.remove("show");
+}, isSuccess ? 5000 : 7000);
 }
 
 function toggleLoading(btn, show) {
