@@ -31,23 +31,70 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 .status-checking { color: orange; }
 .status-ok { color: green; }
 .status-dup { color: red; }
-.toast {    position: fixed;    top: 20px;    right: -400px;    min-width: 320px;    max-width: 360px;    padding: 16px 18px;    border-radius: 16px;   background: rgba(60, 60, 60, 0.55); backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);color: #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.4),inset 0 0 0 1px rgba(255,255,255,0.05); display: flex; align-items: center;overflow: hidden;
-    transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);}
-.toast.show {right: 20px;}
-.toast-left {width: 5px;height: 100%; background: linear-gradient(180deg, #ff416c, #ff4b2b); position: absolute; left: 0;top: 0;}
-.toast-content {    display: flex; align-items: center; gap: 14px;}
-.toast-icon {    width: 36px;    height: 36px; background: rgba(255, 75, 43, 0.15); border-radius: 50%;display: flex; align-items: center;justify-content: center;font-weight: bold;color: #ff4b2b;box-shadow: 
-        0 0 12px rgba(255,75,43,0.6), inset 0 0 6px rgba(255,255,255,0.1);animation: pop 0.4s ease;}
-.toast-message {font-size: 14px;font-weight: 500;line-height: 1.4;}
-.toast-progress {    position: absolute;
+.toast {
+    position: fixed;
+    top: 20px;
+    right: -400px;
+
+    min-width: 300px;
+    max-width: 340px;
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    /* Match portal grey */
+    background: rgba(80, 80, 80, 0.85);
+
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    transition: all 0.4s ease;
+}
+
+.toast.show {
+    right: 20px;
+}
+
+/* LEFT BORDER (dynamic color) */
+.toast-left {
+    width: 4px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* ICON */
+.toast-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* TEXT */
+.toast-message {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* PROGRESS BAR */
+.toast-progress {
+    position: absolute;
     bottom: 0;
     left: 0;
-
     height: 3px;
     width: 100%;
-
-    background: linear-gradient(90deg, #ff416c, #2ecc71);
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -56,12 +103,10 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
     animation: progress 4s linear forwards;
 }
 
-/* Progress Animation */
 @keyframes progress {
     from { transform: scaleX(1); }
     to { transform: scaleX(0); }
 }
-
 /* Icon pop effect */
 @keyframes pop {
     0% {
@@ -82,4 +127,4 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 .field {  display: flex; align-items: center;    gap: 5px;}
 .field label {    white-space: nowrap;}
 #fpsName {    width: 270px;    flex: none;}
-#gp {    width: 200px;    flex: none;}
+#gp {    width: 180px;    flex: none;}
