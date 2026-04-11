@@ -55,12 +55,15 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 #fpsName {width: 270px;    flex: none;}
 #gp {width: 280px; flex: none;}
 .select2-container--default .select2-selection--single {
-    height: 38px;
-    border-radius: 5px;
-    border: 1px solid #cfcfcf;}
+    height: 38px !important;
+    display: flex;
+    align-items: center;
+    padding-right: 25px; /* cross button ke liye space */
+}
 
-.select2-selection__rendered {
-    line-height: 38px !important;}
-
-.select2-selection__arrow {
-    height: 38px !important;}
+.select2-container--default .select2-selection__rendered {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px; /* control text area */
+}
