@@ -165,8 +165,8 @@ async function handleFormSubmit(e) {
 
             showToast(
                 currentAppType === "ADD"
-                    ? `submitted successfully`
-                    : "Data saved successfully ✔",
+                    ? `Data saved successfully`
+                    : "Data saved successfully",
                 true
             );
 
