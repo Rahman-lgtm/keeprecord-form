@@ -298,6 +298,9 @@ $(document).ready(function() {
     $('#gp').select2({
     placeholder: "Select GP/Ward",
     allowClear: false,width: '180px'});});
+$(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').placeholder = 'Search here...';
+});
 </script>
 <script src="script.js"></script>
 </body>
