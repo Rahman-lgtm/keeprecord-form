@@ -1,333 +1,52 @@
 * { box-sizing: border-box; }
-
-body {
-  font-family: "Bookman Old Style", serif;
-  background: #cfcfcf;
-  margin: 0;
-}
-
-/* ================= MAIN WRAPPER ================= */
-.page-wrapper {
-  width: calc(100% - 20px);   /* 🔥 left + right 10px gap */
-  max-width: 850px;
-  margin: 5px auto;
-  background: #e5e5e5;
-  padding: 15px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-
-/* ================= TITLE ================= */
-.top-title {
-  width: 600px;
-  max-width: 100%;
-  margin: 5px auto;
-  background: #bfbfbf;
-  text-align: center;
-  padding: 8px;
-  font-style: italic;
-  border-radius: 6px;
-  box-shadow: 2px 3px 6px gray;
-}
-
-.title {
-  width: 100%;
-  max-width: 800px;
-  margin: 5px auto;
-  padding: 10px;
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-  background: linear-gradient(to right, red, #ffc107);
-  color: white;
-  border-radius: 6px;
-  box-shadow: 2px 3px 6px gray;
-}
-
-.subtitle {
-  font-size: 16px;
-  font-weight: normal;
-}
-
-/* ================= LAYOUT ================= */
-.container {
-  width: 800px;
-  margin-top: 5px;
-  margin: 10px auto;
-  max-width: 100%;
-}
-
-label {
-  font-size: 18px;
-}
-
-input, select {
-    border: 1px solid #cfcfcf;
-    padding: 8px;
-    border-radius: 5px;
-    outline: none;
-    background: #fff;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-    transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-input:hover, select:hover {
-  border-color: #b5b5b5;
-}
-
-input:focus, select:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 3px rgba(13,110,253,.2);
-}
-
-.locked {
-  background: #e6e6e6;
-  color: #666;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-.row {
-  margin: 10px 0;
-}
-/* Right align specific inputs */
-.right-align {
-    margin-left: auto;
-    display: block;
-}
-.flex {
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-}
-
-/* DEO wala */
-.flex .half {
-  flex: 1;   /* full width le */
-}
-
-/* DATE wala */
-.flex > div:last-child {
-  width: 170px;  /* fixed size */
-}
-
-/* ================= BARS ================= */
-.yellow-bar {
-  background: #ffc107;
-  padding: 8px;
-  text-align: center;
-  font-weight: bold;
-  margin: 25px 0 15px;
-  box-shadow: 2px 3px 6px gray;
-  border-radius: 4px;
-}
-
-.note {
-  margin-bottom: 10px;
-  border-bottom: 2px solid #007bff;
-}
-
-/* ================= BUTTON AREA ================= */
-.button-area {
-  text-align: center;
-  margin-top: 30px;
-}
-
-/* 🔥 COMMON BUTTON STYLE */
-.button-area button {
-  min-width: 100px;
-  padding: 10px 0;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 2px 3px 6px gray;
-  position: relative;
-  margin: 0 8px;
-}
-
-/* ✅ SUBMIT BUTTON */
-#submitBtn {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-}
-
-/* ✅ RESET BUTTON */
-.reset-btn {
-  background: linear-gradient(135deg, #ffc107, #ff9800);
-  color: black;
-}
-
-/* 🔥 HOVER EFFECT (COMMON) */
-.button-area button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-/* 🔥 INDIVIDUAL HOVER COLORS */
-#submitBtn:hover {
-  background: linear-gradient(135deg, #218838, #1abc9c);
-}
-
-.reset-btn:hover {
-  background: linear-gradient(135deg, #e0a800, #f57c00);
-}
-
-/* 🔥 LOADING FIX */
-#submitBtn.loading {
-  pointer-events: none;
-  color: transparent;
-}
-
-#submitBtn.loading::after {
-  content: "";
-  width: 18px;
-  height: 18px;
-  border: 3px solid white;
-  border-top: 3px solid transparent;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: spin 1.2s linear infinite;
-}
-
-/* ================= STATUS ================= */
-#appStatus {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  font-weight: bold;
-}
-
+body {font-family: "Bookman Old Style", serif;background: #cfcfcf;margin: 0;}
+.page-wrapper {width: calc(100% - 20px);max-width: 850px;margin: 5px auto;background: #e5e5e5;padding: 15px;border-radius: 12px;overflow: hidden;box-shadow: 0 8px 25px rgba(0,0,0,0.2);}
+.top-title {width: 600px;max-width: 100%;  margin: 5px auto;  background: #bfbfbf;  text-align: center;  padding: 8px;  font-style: italic;  border-radius: 6px;  box-shadow: 2px 3px 6px gray;}
+.title {width: 100%;max-width: 800px;margin: 5px auto;padding: 10px;font-size: 22px;font-weight:bold;text-align:center;background: linear-gradient(to right, red, #ffc107);color:white;border-radius: 6px;
+      box-shadow: 2px 3px 6px gray;}
+.subtitle {font-size: 16px; font-weight: normal;}
+.container {  width: 800px;  margin-top: 5px;  margin: 10px auto;  max-width: 100%;}
+label {font-size: 18px;}
+input, select {border: 1px solid #cfcfcf;padding: 8px;border-radius: 5px;outline: none;background: #fff;box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);transition: border-color .2s ease, box-shadow .2s ease;}
+input:hover, select:hover {border-color: #b5b5b5;}
+input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110,253,.2);}
+.locked {background: #e6e6e6;color: #666;pointer-events: none;cursor: not-allowed;}
+.row {margin: 10px 0;}
+.right-align {margin-left: auto;display: block;}
+.flex {display: flex;align-items: flex-end;gap: 5px;}
+.flex .half {flex: 1;}
+.flex > div:last-child {width: 170px;}
+.yellow-bar {background: #ffc107;padding: 8px;text-align: center;font-weight: bold;margin: 25px 0 15px;box-shadow: 2px 3px 6px gray;border-radius: 4px;}
+.note {margin-bottom: 10px;border-bottom: 2px solid #007bff;}
+.button-area {text-align: center;margin-top: 30px;}
+.button-area button {min-width: 100px;padding:10px 0;border:none;border-radius:10px;font-weight:bold;font-size:15px;cursor:pointer;transition:all 0.3s ease;box-shadow: 2px 3px 6px gray;position: relative;margin: 0 8px;}
+#submitBtn {background: linear-gradient(135deg, #28a745, #20c997);color: white;}
+.reset-btn {background: linear-gradient(135deg, #ffc107, #ff9800);color: black;}
+.button-area button:hover {transform: translateY(-2px);box-shadow: 0 6px 15px rgba(0,0,0,0.2);}
+#submitBtn:hover {background: linear-gradient(135deg, #218838, #1abc9c);}
+.reset-btn:hover {background: linear-gradient(135deg, #e0a800, #f57c00);}
+#submitBtn.loading {pointer-events: none;color: transparent;}
+#submitBtn.loading::after {content: "";width: 18px;height: 18px;border: 3px solid white;border-top: 3px solid transparent;border-radius: 50%;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);animation: spin 1.2s linear infinite;}
+#appStatus {position: absolute;right: 10px;  top: 50%;  transform: translateY(-50%);  font-size: 13px;  font-weight: bold;}
 .status-checking { color: orange; }
 .status-ok { color: green; }
 .status-dup { color: red; }
-
-/* ================= TOAST ================= */
-.toast {
-    position: fixed;
-    top: 20px;
-    right: -400px;
-    min-width: 300px;
-    max-width: 350px;
-    padding: 16px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #2c2c2c, #3a3a3a);
-    color: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    transition: all 0.4s ease;
-}
-
-.toast.show {
-    right: 20px;
-}
-
-/* left color strip */
-.toast-left {
-    width: 4px;
-    height: 100%;
-    background: #e74c3c;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-/* content */
-.toast-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* icon */
-.toast-icon {
-    width: 34px;
-    height: 34px;
-    background: rgba(231, 76, 60, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #e74c3c;
-    box-shadow: 0 0 10px rgba(231,76,60,0.5);
-}
-
-/* text */
-.toast-message {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-/* progress bar */
-.toast-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    background: #e74c3c;
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-/* animation */
-.toast.show .toast-progress {
-    animation: progress 4s linear forwards;
-}
-
-@keyframes progress {
-    from { transform: scaleX(1); }
-    to { transform: scaleX(0); }
-}
-
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* ================= RESPONSIVE ================= */
-.main-form {
-  display: none;
-}
-
-@media screen and (max-width: 960px) {
-  .container {
-    width: 95%;
-  }
-  .flex {
-    flex-direction: column;
-  }
-  .half {
-    width: 100%;
-  }
-}
-.row.flex {
-    display: flex;
-    gap: 25px;
-    align-items: center;
-}
-
-.field {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.field label {
-    white-space: nowrap;
-}
-#fpsName {
-    width: 270px;
-    flex: none;
-}
+.toast {position: fixed;    top: 20px;    right: -400px;    min-width: 300px;    max-width: 350px;    padding: 16px;    border-radius: 14px;    background: linear-gradient(135deg, #2c2c2c, #3a3a3a);
+        color: #fff;    box-shadow: 0 10px 30px rgba(0,0,0,0.3);    display: flex;    align-items: center;    overflow: hidden;    transition: all 0.4s ease;}
+.toast.show {right: 20px;}
+.toast-left {width: 4px;    height: 100%;    background: #e74c3c;    position: absolute;    left: 0;    top: 0;}
+.toast-content {    display: flex;    align-items: center;    gap: 12px;}
+.toast-icon {width: 34px;height: 34px;background: rgba(231, 76, 60, 0.2);border-radius: 50%;display: flex;align-items: center;justify-content: center;font-weight: bold;color: #e74c3c;box-shadow: 0 0 10px rgba(231,76,60,0.5);}
+.toast-message {font-size: 14px;    font-weight: 500;}
+.toast-progress {    position: absolute;    bottom: 0;    left: 0;    height: 3px;    width: 100%;    background: #e74c3c;    transform: scaleX(1);    transform-origin: left;}
+.toast.show .toast-progress {animation: progress 4s linear forwards;}
+@keyframes progress {    from { transform: scaleX(1); }    to { transform: scaleX(0); }}
+@keyframes spin {  0% { transform: translate(-50%, -50%) rotate(0deg); }  100% { transform: translate(-50%, -50%) rotate(360deg); }}
+.main-form {  display: none;}
+@media screen and (max-width: 960px) {  .container {    width: 95%;  }
+.flex { flex-direction: column;  }
+.half {    width: 100%;  }}
+.row.flex {    display: flex;    gap: 25px;    align-items: center;}
+.field {  display: flex; align-items: center;    gap: 5px;}
+.field label {    white-space: nowrap;}
+#fpsName {    width: 270px;    flex: none;}
