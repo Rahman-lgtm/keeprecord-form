@@ -40,7 +40,7 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 .toast-icon {width: 36px;height: 36px;background: rgba(255, 75, 43, 0.15);border-radius: 50%;display: flex;align-items: center;justify-content: center;font-weight: bold;color: #ff4b2b;
     box-shadow: 0 0 12px rgba(255,75,43,0.6),inset 0 0 6px rgba(255,255,255,0.1);animation: pop 0.4s ease;}
 .toast-message {font-size: 14px;font-weight: 500;line-height: 1.4;}
-.toast-progress {position: absolute;bottom: 0;left: 0;height: 3px;width: 100%;background: linear-gradient(90deg, #ff416c, #ff4b2b);transform: scaleX(1);transform-origin: left;
+.toast-progress {position: absolute;bottom: 0;left: 0;height: 3px;width: 100%;background: linear-gradient(90deg, #ff416c, #ff4b2b);transform: scaleX(1);transform-origin: left;}
 .toast.show .toast-progress {animation: progress 4s linear forwards;}
 @keyframes progress {from { transform: scaleX(1); }to { transform: scaleX(0); }}
 @keyframes pop {0% {transform: scale(0.5);opacity: 0;}100% {transform: scale(1);opacity: 1;}}
