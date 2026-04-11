@@ -82,3 +82,25 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 .select2-container--default .select2-selection__arrow {
     height: 38px !important;
 }
+/* All input placeholders */
+input::placeholder {
+    font-family: "Bookman Old Style", serif;
+}
+
+/* Browser support */
+input::-webkit-input-placeholder {
+    font-family: "Bookman Old Style", serif;
+}
+input:-ms-input-placeholder {
+    font-family: "Bookman Old Style", serif;
+}
+
+/* Select2 main placeholder */
+.select2-container--default .select2-selection__placeholder {
+    font-family: "Bookman Old Style", serif !important;
+}
+
+/* Select2 search box placeholder */
+.select2-container--default .select2-search__field::placeholder {
+    font-family: "Bookman Old Style", serif;
+}
