@@ -77,9 +77,9 @@ const isSuccess =result.success === true ||
 if (isSuccess) {const appNum = appNumField.value.trim();
 const count =currentAppType === "ADD"? (submitCounts.get(appNum) || 0) + 1: 1;
 submitCounts.set(appNum, count);
-showToast(currentAppType === "ADD"? `Data saved successfully`: "Data saved successfully", true);
+showToast(currentAppType === "ADD"? `Form saved successfully!`: "Form saved successfully!", true);
 resetForm();
-} else {showToast(result.message || result.error || "Please check the Application Number!", false);}
+} else {showToast(result.message || result.error || "Check your input once!", false);}
 } catch (error) {console.error("Submit error:", error);showToast("Network error. Please try again.", false); } finally {toggleLoading(btn, false);    }}
 function validateRequiredFields(form) {
 const requiredFields = form.querySelectorAll("[required]");
