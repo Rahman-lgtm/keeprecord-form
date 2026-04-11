@@ -47,7 +47,7 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
-    color: #fff;
+   color: #0f2e1c;
 
     /* Soft shadow */
     box-shadow: 
