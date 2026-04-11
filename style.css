@@ -2,8 +2,7 @@
 body {font-family: "Bookman Old Style", serif;background: #cfcfcf;margin: 0;}
 .page-wrapper {width: calc(100% - 20px);max-width: 850px;margin: 5px auto;background: #e5e5e5;padding: 15px;border-radius: 12px;overflow: hidden;box-shadow: 0 8px 25px rgba(0,0,0,0.2);}
 .top-title {width: 600px;max-width: 100%;  margin: 5px auto;  background: #bfbfbf;  text-align: center;  padding: 8px;  font-style: italic;  border-radius: 6px;  box-shadow: 2px 3px 6px gray;}
-.title {width: 100%;max-width: 800px;margin: 5px auto;padding: 10px;font-size: 22px;font-weight:bold;text-align:center;background: linear-gradient(to right, red, #ffc107);color:white;border-radius: 6px;
-      box-shadow: 2px 3px 6px gray;}
+.title {width: 100%;max-width: 800px;margin: 5px auto;padding: 10px;font-size: 22px;font-weight:bold;text-align:center;background: linear-gradient(to right, red, #ffc107);color:white;border-radius: 6px;box-shadow: 2px 3px 6px gray;}
 .subtitle {font-size: 16px; font-weight: normal;}
 .container {  width: 800px;  margin-top: 5px;  margin: 10px auto;  max-width: 100%;}
 label {font-size: 18px;}
@@ -31,130 +30,27 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 .status-checking { color: orange; }
 .status-ok { color: green; }
 .status-dup { color: red; }
-.toast {
-    position: fixed;
-    top: 20px;
-    right: -400px;
-
-    min-width: 320px;
-    max-width: 360px;
-    padding: 16px 18px;
-
-    border-radius: 16px;
-
-    /* Glass effect */
-    background: rgba(46, 204, 113, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-   color: #0f2e1c;
-
-    /* Soft shadow */
-    box-shadow: 
-        0 10px 25px rgba(0,0,0,0.4),
-        inset 0 0 0 1px rgba(255,255,255,0.05);
-
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-
-    transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Show Animation */
-.toast.show {
-    right: 20px;
-}
-
-/* Left Accent Line (Gradient) */
-.toast-left {
-    width: 5px;
-    height: 100%;
-    background: linear-gradient(180deg, #ff416c, #ff4b2b);
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-/* Content */
-.toast-content {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-/* Icon */
-.toast-icon {
-    width: 36px;
-    height: 36px;
-
-    background: rgba(255, 75, 43, 0.15);
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: bold;
-    color: #ff4b2b;
-
-    box-shadow: 
-        0 0 12px rgba(255,75,43,0.6),
-        inset 0 0 6px rgba(255,255,255,0.1);
-
-    animation: pop 0.4s ease;
-}
-
-/* Text */
-.toast-message {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
-}
-
-/* Progress bar */
-.toast-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    height: 3px;
-    width: 100%;
-
-    background: linear-gradient(90deg, #ff416c, #ff4b2b);
-
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-.toast.show .toast-progress {
-    animation: progress 4s linear forwards;
-}
-
-/* Progress Animation */
-@keyframes progress {
-    from { transform: scaleX(1); }
-    to { transform: scaleX(0); }
-}
-
-/* Icon pop effect */
-@keyframes pop {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
+.toast {position: fixed;top: 20px; right: -400px;min-width: 320px;max-width: 360px;padding: 16px 18px;border-radius: 16px;
+    background: rgba(46, 204, 113, 0.15);backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px);color: #0f2e1c;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4),inset 0 0 0 1px rgba(255,255,255,0.05);display: flex;align-items: center;
+    overflow: hidden;transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);}
+.toast.show {right: 20px;}
+.toast-left {width: 5px;height: 100%;background: linear-gradient(180deg, #ff416c, #ff4b2b);position: absolute;left: 0;top: 0;}
+.toast-content {display: flex;align-items: center;gap: 14px;}
+.toast-icon {width: 36px;height: 36px;background: rgba(255, 75, 43, 0.15);border-radius: 50%;display: flex;align-items: center;justify-content: center;font-weight: bold;color: #ff4b2b;
+    box-shadow: 0 0 12px rgba(255,75,43,0.6),inset 0 0 6px rgba(255,255,255,0.1);animation: pop 0.4s ease;}
+.toast-message {font-size: 14px;font-weight: 500;line-height: 1.4;}
+.toast-progress {position: absolute;bottom: 0;left: 0;height: 3px;width: 100%;background: linear-gradient(90deg, #ff416c, #ff4b2b);transform: scaleX(1);transform-origin: left;
+.toast.show .toast-progress {animation: progress 4s linear forwards;}
+@keyframes progress {from { transform: scaleX(1); }to { transform: scaleX(0); }}
+@keyframes pop {0% {transform: scale(0.5);opacity: 0;}100% {transform: scale(1);opacity: 1;}}
 @keyframes spin {  0% { transform: translate(-50%, -50%) rotate(0deg); }  100% { transform: translate(-50%, -50%) rotate(360deg); }}
 .main-form {  display: none;}
-@media screen and (max-width: 960px) {  .container {    width: 95%;  }
+@media screen and (max-width: 960px) {.container {    width: 95%;  }
 .flex { flex-direction: column;  }
-.half {    width: 100%;  }}
-.row.flex {    display: flex;    gap: 25px;    align-items: center;}
-.field {  display: flex; align-items: center;    gap: 5px;}
-.field label {    white-space: nowrap;}
-#fpsName {    width: 270px;    flex: none;}
-#gp {    width: 120px;    flex: none;}
+.half {width: 100%;  }}
+.row.flex {display: flex;gap: 25px;align-items: center;}
+.field {display: flex; align-items: center;    gap: 5px;}
+.field label {white-space: nowrap;}
+#fpsName {width: 270px;    flex: none;}
+#gp {width: 120px; flex: none;}
