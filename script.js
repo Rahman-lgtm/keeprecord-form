@@ -146,7 +146,8 @@ document.querySelectorAll("input, select").forEach(el => {
 el.style.borderColor = "";
 el.style.boxShadow = ""; });
 const today = new Date().toISOString().split('T')[0];
-document.getElementById("date").value = today;}
+document.getElementById("date").value = today;
+$('#gp').val(null).trigger('change');}
 function showToast(message, isSuccess = true) {
 const toast = document.getElementById("toast");
 const messageEl = toast.querySelector(".toast-message");
