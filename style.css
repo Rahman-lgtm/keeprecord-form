@@ -36,42 +36,59 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
     top: 20px;
     right: -400px;
 
-    min-width: 300px;
-    max-width: 340px;
-    padding: 14px 16px;
+    min-width: 320px;
+    max-width: 360px;
+    padding: 16px 18px;
 
-    border-radius: 12px;
+    border-radius: 16px;
 
-    /* Match portal grey */
-    background: rgba(80, 80, 80, 0.85);
+    /* Glass effect */
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
     color: #fff;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+    /* Soft shadow */
+    box-shadow: 
+        0 10px 25px rgba(0,0,0,0.4),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
 
     display: flex;
     align-items: center;
-    gap: 12px;
+    overflow: hidden;
 
-    transition: all 0.4s ease;
+    transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Show Animation */
 .toast.show {
     right: 20px;
 }
 
-/* LEFT BORDER (dynamic color) */
+/* Left Accent Line (Gradient) */
 .toast-left {
-    width: 4px;
+    width: 5px;
     height: 100%;
+    background: linear-gradient(180deg, #ff416c, #ff4b2b);
     position: absolute;
     left: 0;
     top: 0;
 }
 
-/* ICON */
+/* Content */
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Icon */
 .toast-icon {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
+
+    background: rgba(255, 75, 43, 0.15);
     border-radius: 50%;
 
     display: flex;
@@ -79,22 +96,33 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
     justify-content: center;
 
     font-weight: bold;
-    font-size: 14px;
+    color: #ff4b2b;
+
+    box-shadow: 
+        0 0 12px rgba(255,75,43,0.6),
+        inset 0 0 6px rgba(255,255,255,0.1);
+
+    animation: pop 0.4s ease;
 }
 
-/* TEXT */
+/* Text */
 .toast-message {
     font-size: 14px;
     font-weight: 500;
+    line-height: 1.4;
 }
 
-/* PROGRESS BAR */
+/* Progress bar */
 .toast-progress {
     position: absolute;
     bottom: 0;
     left: 0;
+
     height: 3px;
     width: 100%;
+
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -103,10 +131,12 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
     animation: progress 4s linear forwards;
 }
 
+/* Progress Animation */
 @keyframes progress {
     from { transform: scaleX(1); }
     to { transform: scaleX(0); }
 }
+
 /* Icon pop effect */
 @keyframes pop {
     0% {
