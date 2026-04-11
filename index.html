@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DEO Work Record - Data Entry Form</title>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -68,8 +71,13 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </div>
 <div class="field">
 <label>GP/Ward No <span style="color:red;">*</span>:</label>
-<input type="text" id="gp" name="gp" placeholder="GP Name or Ward No"required style="width:250px;">
-</div>
+<select id="gp" name="gp" style="width:250px;" required>
+<option value="">Select GP/Ward</option>
+<option>Aibheti</option>
+<option>Akashiganga</option>
+<option>Alitangani-Jamuguri</option>
+<option>Ambagan</option>
+</select>
 </div>
 <div class="row">
 <label>Total Members <span style="color:red;">*</span>:</label>
@@ -124,6 +132,14 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </div>
 <div class="toast-progress"></div>
 </div>
+<script>
+$(document).ready(function() {
+    $('#gp').select2({
+        placeholder: "Search GP or Ward...",
+        allowClear: true
+    });
+});
+</script>
 <script src="script.js"></script>
 </body>
 </html>
