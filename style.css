@@ -62,11 +62,6 @@ input::-webkit-input-placeholder {    font-family: "Bookman Old Style", serif;}
 input:-ms-input-placeholder {    font-family: "Bookman Old Style", serif;}
 .select2-container--default .select2-selection__placeholder {    font-family: "Bookman Old Style", serif !important;}
 .select2-container--default .select2-search__field::placeholder {    font-family: "Bookman Old Style", serif;}
-
-
-.caution-bar {
-    animation: glow 1.5s infinite;
-}
 .caution-bar {
     color: #d9534f; /* red warning color */
     font-family: "Bookman Old Style", serif;
