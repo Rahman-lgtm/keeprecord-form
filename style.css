@@ -53,54 +53,12 @@ input:focus, select:focus {border-color: #0d6efd;box-shadow: 0 0 3px rgba(13,110
 .field { display: flex; align-items: center;    gap: 5px;}
 .field label { white-space: nowrap;}
 #fpsName {width: 270px;    flex: none;}
-
-/* Fix overall width */
-#gp, .select2-container {
-    width: 280px !important;
-    min-width: 280px !important;
-    max-width: 280px !important;
-}
-
-/* Fix box size */
-.select2-container--default .select2-selection--single {
-    height: 38px !important;
-    display: flex;
-    align-items: center;
-    border: 1px solid #cfcfcf;
-    border-radius: 5px;
-    padding: 0 8px;
-}
-
-/* Fix text (no resize, clean cut) */
-.select2-container--default .select2-selection__rendered {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Fix arrow */
-.select2-container--default .select2-selection__arrow {
-    height: 38px !important;
-}
-/* All input placeholders */
-input::placeholder {
-    font-family: "Bookman Old Style", serif;
-}
-
-/* Browser support */
-input::-webkit-input-placeholder {
-    font-family: "Bookman Old Style", serif;
-}
-input:-ms-input-placeholder {
-    font-family: "Bookman Old Style", serif;
-}
-
-/* Select2 main placeholder */
-.select2-container--default .select2-selection__placeholder {
-    font-family: "Bookman Old Style", serif !important;
-}
-
-/* Select2 search box placeholder */
-.select2-container--default .select2-search__field::placeholder {
-    font-family: "Bookman Old Style", serif;
-}
+#gp, .select2-container {    width: 180px !important;    min-width: 180px !important;    max-width: 180px !important;}
+.select2-container--default .select2-selection--single {    height: 38px !important;    display: flex;    align-items: center;    border: 1px solid #cfcfcf;    border-radius: 5px;    padding: 0 8px;}
+.select2-container--default .select2-selection__rendered {    white-space: nowrap;    overflow: hidden;    text-overflow: ellipsis;}
+.select2-container--default .select2-selection__arrow {    height: 38px !important;}
+input::placeholder {    font-family: "Bookman Old Style", serif;}
+input::-webkit-input-placeholder {    font-family: "Bookman Old Style", serif;}
+input:-ms-input-placeholder {    font-family: "Bookman Old Style", serif;}
+.select2-container--default .select2-selection__placeholder {    font-family: "Bookman Old Style", serif !important;}
+.select2-container--default .select2-search__field::placeholder {    font-family: "Bookman Old Style", serif;}
