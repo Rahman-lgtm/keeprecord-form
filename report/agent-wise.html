@@ -161,25 +161,27 @@ fetch(url)
 
     let tableBody = document.getElementById("tableBody");
 
-    Object.entries(fpsData).forEach(([id, val]) => {
+Object.entries(fpsData)
+.sort((a, b) => b[1].totalUnits - a[1].totalUnits)
+.forEach(([id, val]) => {
 
-        let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(2) : 0;
+    let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(2) : 0;
 
-        let row = `
-        <tr>
-            <td>${index++}</td>
-            <td>${id}</td>
-            <td>${val.name || ""}</td>
-            <td>${val.newCount}</td>
-            <td>${val.newUnits}</td>
-            <td>${val.addUnits}</td>
-            <td>${val.totalUnits}</td>
-            <td>${ratio}</td>
-        </tr>
-        `;
+    let row = `
+    <tr>
+        <td>${index++}</td>
+        <td>${id}</td>
+        <td>${val.name || ""}</td>
+        <td>${val.newCount}</td>
+        <td>${val.newUnits}</td>
+        <td>${val.addUnits}</td>
+        <td>${val.totalUnits}</td>
+        <td>${ratio}</td>
+    </tr>
+    `;
 
-        tableBody.innerHTML += row;
-    });
+    tableBody.innerHTML += row;
+});
 
     // hide loading
     document.getElementById("loadingText").style.display = "none";
