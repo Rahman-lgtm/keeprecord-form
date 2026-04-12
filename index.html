@@ -333,9 +333,27 @@ $(document).ready(function() {
     });
 
     
-    setTimeout(function() {
-        $(".caution-bar").fadeOut(500); 
-    }, 10000);
+    $(document).ready(function() {
+
+    function showCaution() {
+        $(".caution-bar").stop(true, true).show(); // show again
+        setTimeout(function() {
+            $(".caution-bar").fadeOut(500); // hide after 10 sec
+        }, 10000);
+    }
+
+    // Page load pe run
+    showCaution();
+
+    // Form submit ke baad
+    $("#dataForm").on("submit", function() {
+        showCaution();
+    });
+
+    // Form reset ke baad
+    $("#dataForm").on("reset", function() {
+        setTimeout(showCaution, 100); // thoda delay for reset
+    });
 
 });
 
