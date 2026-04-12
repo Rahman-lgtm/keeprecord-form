@@ -329,6 +329,12 @@ $(document).ready(function() {
     allowClear: false,width: '180px'});});
 $(document).on('select2:open', () => {
     document.querySelector('.select2-search__field').placeholder = 'Search here...';
+setTimeout(() => {
+    const bar = document.querySelector(".caution-bar");
+    if (bar) {
+      bar.style.display = "none";
+    }
+  }, 10000);
 });
 </script>
 <script src="script.js"></script>
