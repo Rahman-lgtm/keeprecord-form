@@ -306,6 +306,9 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <span class="spinner"></span>
 </button>
 <button class="reset-btn" type="button">Reset</button>
+ <button class="report-btn" type="button" onclick="openReport()">
+        View Report
+    </button>
 </div>
 <div class="caution-bar">
 <b>Important:</b><br>
@@ -347,7 +350,9 @@ $(document).ready(function() { $('#gp').select2({ placeholder: "Select GP/Ward",
     });
 
 });
-
+function openReport() {
+    window.location.href = "report/report.html";
+}
 // Select2 search placeholder
 $(document).on('select2:open', function() {
     document.querySelector('.select2-search__field').placeholder = 'Search here...';
