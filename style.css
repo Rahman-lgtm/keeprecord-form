@@ -63,20 +63,17 @@ input:-ms-input-placeholder {    font-family: "Bookman Old Style", serif;}
 .select2-container--default .select2-selection__placeholder {    font-family: "Bookman Old Style", serif !important;}
 .select2-container--default .select2-search__field::placeholder {    font-family: "Bookman Old Style", serif;}
 .caution-bar {
-    color: #d9534f; /* red warning color */
+    color: #d9534f;
     font-family: "Bookman Old Style", serif;
     font-size: 15px;
     font-weight: bold;
-
     margin: 10px 0;
 
-    /* Blinking animation */
-    animation: blinkText 1.2s infinite;
+    transition: opacity 0.5s ease;
 }
 
-/* Smooth blink */
-@keyframes blinkText {
-    0%   { opacity: 1; }
-    50%  { opacity: 0.3; }
-    100% { opacity: 1; }
+/* hidden state */
+.caution-hide {
+    opacity: 0;
+    display: none;
 }
