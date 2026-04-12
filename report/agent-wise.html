@@ -17,14 +17,12 @@ body {
     width: 70%;              /* ❌ full screen nahi */
     max-width: 1100px;       /* 🔥 zyada bada na ho */
     margin: 10px auto;       /* center me */
-
+    padding-bottom: 50px;
     background: #d3d3d3;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
-
     position: relative;
-
     height: 90vh;            /* 🔥 full height */
     display: flex;
     flex-direction: column;
@@ -42,16 +40,28 @@ body {
 /* DOWNLOAD BUTTON */
 .download-btn {
     display: none;
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    background: #e3a373;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-}
 
+    position: absolute;
+    bottom: 10px;          /* 🔥 bottom me */
+    left: 50%;
+    transform: translateX(-50%);  /* 🔥 center align */
+
+    background: #4CAF50;   /* green */
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    font-family: "Bookman Old Style", serif;
+    font-size: 14px;
+
+    transition: all 0.3s ease;
+}
+.download-btn:hover {
+    background: #2e7d32;   /* 🔥 dark green */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 /* TABLE WRAPPER (SCROLL) */
 .table-wrapper {
     flex: 1;              /* 🔥 baki height le lega */
