@@ -5,25 +5,33 @@
 <title>FPS Report</title>
 
 <style>
+
 /* BODY */
 body {
     font-family: "Bookman Old Style", serif;
     background: white;
     margin: 0;
 }
-
+.title {
+    text-align: center;
+    margin: 5px 0 15px 0;
+    font-size: 26px;
+    font-weight: bold;
+    color: #6b3e26; /* brown tone */
+}
 /* CONTAINER */
 .container {
-    width: 70%;              /* ❌ full screen nahi */
-    max-width: 1100px;       /* 🔥 zyada bada na ho */
-    margin: 10px auto;       /* center me */
-    padding-bottom: 50px;
+    width: 70%;
+    max-width: 1100px;
+    margin: 10px auto;
+    padding-bottom: 60px;
     background: #d3d3d3;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
     position: relative;
-    height: 90vh;            /* 🔥 full height */
+
+    height: 90vh;
     display: flex;
     flex-direction: column;
 }
@@ -40,49 +48,53 @@ body {
 /* DOWNLOAD BUTTON */
 .download-btn {
     display: none;
-
     position: absolute;
-    bottom: 10px;          /* 🔥 bottom me */
+    bottom: 10px;
     left: 50%;
-    transform: translateX(-50%);  /* 🔥 center align */
+    transform: translateX(-50%);
 
-    background: #4CAF50;   /* green */
+    background: #4CAF50;
     color: white;
     border: none;
     padding: 8px 18px;
     border-radius: 8px;
     cursor: pointer;
 
-    font-family: "Bookman Old Style", serif;
-    font-size: 14px;
-
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 .download-btn:hover {
-    background: #2e7d32;   /* 🔥 dark green */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    background: #2e7d32;
 }
-/* TABLE WRAPPER (SCROLL) */
+
+/* TABLE WRAPPER */
 .table-wrapper {
-    flex: 1;              /* 🔥 baki height le lega */
-    overflow-y: auto;
-    overflow-x: auto;
+    flex: 1;
+    overflow: auto;
 }
 
 /* TABLE */
 table {
-    width: 100%;          /* container ke andar full */
+    width: 100%;
     border-collapse: collapse;
-    background: #d3d3d3;
     table-layout: fixed;
+    background: #d3d3d3;
 }
 
-/* HEADER FIX */
+/* HEADER */
 thead th {
     position: sticky;
     top: 0;
-    background: #8b5e3c;   /* 🔥 brown color */
-    color: white;          /* text visible rahe */
+    background: #8b5e3c;
+    color: white;
+    z-index: 2;
+}
+
+/* FOOTER (TOTAL) */
+tfoot th {
+    position: sticky;
+    bottom: 0;
+    background: #8b5e3c;
+    color: white;
     z-index: 2;
 }
 
@@ -91,40 +103,33 @@ th, td {
     border: 1px solid black;
     padding: 6px;
     text-align: center;
-    vertical-align: middle;
 }
+
+/* SL NO */
 th:nth-child(1), td:nth-child(1) {
-    width: 40px;      /* 🔥 kam width */
-    min-width: 40px;
-    max-width: 40px;
-    padding: 4px;     /* 🔥 padding bhi kam */
-    font-size: 13px;  /* optional */
+    width: 35px;
 }
-/* FPS ID column (12 digit) */
+
+/* FPS ID */
 th:nth-child(2), td:nth-child(2) {
     width: 110px;
-    min-width: 110px;
     white-space: nowrap;
 }
 
-/* FPS NAME column (wrap) */
+/* FPS NAME */
 th:nth-child(3), td:nth-child(3) {
     width: 230px;
-    min-width: 230px;
-    white-space: normal;
     word-break: break-word;
     text-align: left;
-    padding-left: 8px;
 }
 
-/* बाकी columns fixed */
+/* बाकी */
 th:not(:nth-child(2)):not(:nth-child(3)),
 td:not(:nth-child(2)):not(:nth-child(3)) {
     width: 60px;
-    min-width: 60px;
 }
 
-/* HOVER ROW (optional premium feel) */
+/* HOVER */
 tbody tr:hover {
     background: #c8e6c9;
 }
@@ -133,11 +138,16 @@ tbody tr:hover {
 </head>
 
 <body>
-<div class="loading" id="loadingText">Loading.......</div>
-    <button class="download-btn" id="downloadBtn">Download</button>
+
 <div class="container">
+
+    <div class="loading" id="loadingText">Loading.......</div>
+    <h1 class="title">Data Entry Report Agent Wise</h1>
+    <button class="download-btn" id="downloadBtn">Download</button>
+
     <div class="table-wrapper">
         <table id="reportTable">
+
             <thead>
                 <tr>
                     <th>Sl No</th>
@@ -147,10 +157,23 @@ tbody tr:hover {
                     <th>New Units</th>
                     <th>Add units</th>
                     <th>Total Units</th>
-                    <th>Ratio </th>
+                    <th>Ratio</th>
                 </tr>
             </thead>
+
             <tbody id="tableBody"></tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="3">TOTAL</th>
+                    <th id="tNewCount">0</th>
+                    <th id="tNewUnits">0</th>
+                    <th id="tAddUnits">0</th>
+                    <th id="tTotalUnits">0</th>
+                    <th>-</th>
+                </tr>
+            </tfoot>
+
         </table>
     </div>
 
@@ -158,7 +181,7 @@ tbody tr:hover {
 
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbxUUuOfgvi5n0ltz6BjsLaBDKze3c56T7RNncBC_NzvurYwIPE5iSMPxZqnRQLMsRBE/exec?key=mySecret1774123";
+const url = "YOUR_SCRIPT_URL?key=mySecret1774123";
 
 fetch(url)
 .then(res => res.json())
@@ -189,7 +212,7 @@ fetch(url)
         }
 
         if (type.includes("NEW")) {
-            fpsData[id].newCount += 1;
+            fpsData[id].newCount++;
             fpsData[id].newUnits += members;
             fpsData[id].totalUnits += members;
         }
@@ -201,47 +224,56 @@ fetch(url)
 
     });
 
+    let totalNewCount = 0;
+    let totalNewUnits = 0;
+    let totalAddUnits = 0;
+    let totalUnitsAll = 0;
+
     let tableBody = document.getElementById("tableBody");
 
-Object.entries(fpsData)
-.sort((a, b) => b[1].totalUnits - a[1].totalUnits)
-.forEach(([id, val]) => {
+    Object.entries(fpsData)
+    .sort((a, b) => b[1].totalUnits - a[1].totalUnits)
+    .forEach(([id, val]) => {
 
-    let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(2) : 0;
+        let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(2) : 0;
 
-    let row = `
-    <tr>
-        <td>${index++}</td>
-        <td>${id}</td>
-        <td>${val.name || ""}</td>
-        <td>${val.newCount}</td>
-        <td>${val.newUnits}</td>
-        <td>${val.addUnits}</td>
-        <td>${val.totalUnits}</td>
-        <td>${ratio}</td>
-    </tr>
-    `;
+        totalNewCount += val.newCount;
+        totalNewUnits += val.newUnits;
+        totalAddUnits += val.addUnits;
+        totalUnitsAll += val.totalUnits;
 
-    tableBody.innerHTML += row;
-});
+        let row = `
+        <tr>
+            <td>${index++}</td>
+            <td>${id}</td>
+            <td>${val.name || ""}</td>
+            <td>${val.newCount}</td>
+            <td>${val.newUnits}</td>
+            <td>${val.addUnits}</td>
+            <td>${val.totalUnits}</td>
+            <td>${ratio}</td>
+        </tr>
+        `;
 
-    // hide loading
+        tableBody.innerHTML += row;
+    });
+
+    // TOTAL UPDATE
+    document.getElementById("tNewCount").innerText = totalNewCount;
+    document.getElementById("tNewUnits").innerText = totalNewUnits;
+    document.getElementById("tAddUnits").innerText = totalAddUnits;
+    document.getElementById("tTotalUnits").innerText = totalUnitsAll;
+
     document.getElementById("loadingText").style.display = "none";
-
-    // show download button
     document.getElementById("downloadBtn").style.display = "block";
 
 });
 
-
-// DOWNLOAD EXCEL
+// DOWNLOAD
 document.getElementById("downloadBtn").addEventListener("click", function () {
-
     let table = document.getElementById("reportTable").outerHTML;
-
     let blob = new Blob([table], { type: "application/vnd.ms-excel" });
     let url = URL.createObjectURL(blob);
-
     let a = document.createElement("a");
     a.href = url;
     a.download = "FPS_Report.xls";
