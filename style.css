@@ -2,7 +2,7 @@
 body {font-family: "Bookman Old Style", serif;background: #cfcfcf;margin-top: 50px;}
 .page-wrapper {width: calc(100% - 20px);max-width: 850px;margin: 10px auto;background: #e5e5e5;padding: 15px;border-radius: 12px;overflow: hidden;box-shadow: 0 8px 25px rgba(0,0,0,0.2);}
 .top-title {width: 600px;max-width: 100%;  margin: 10px auto;  background: #bfbfbf;  text-align: center;  padding: 8px;  font-style: italic;  border-radius: 6px;  box-shadow: 2px 3px 6px gray;}
-.title {width: 100%;max-width: 800px;margin: 5px auto;padding: 10px;font-size: 22px;font-weight:bold;text-align:center;background: linear-gradient(to right, #ffc107, #ffc107);color:white;border-radius: 6px;box-shadow: 2px 3px 6px gray;}
+.title {width: 100%;max-width: 800px;margin: 5px auto;padding: 10px;font-size: 22px;font-weight:bold;text-align:center;background: linear-gradient(to right, #ffc107, #ffc107);color:Black;border-radius: 6px;box-shadow: 2px 3px 6px gray;}
 .subtitle {font-size: 16px; font-weight: normal;}
 .container {  width: 800px;  margin-top: 5px;  margin: 10px auto;  max-width: 100%;}
 label {font-size: 18px;}
