@@ -14,8 +14,8 @@ body {
 
 /* CONTAINER */
 .container {
-    width: 90%;
-    margin: 40px auto;
+    width: 70%;
+    margin: 100% auto;
     background: #d3d3d3;
     padding: 15px;
     border-radius: 10px;
@@ -76,7 +76,13 @@ th, td {
     text-align: center;
     vertical-align: middle;
 }
-
+th:nth-child(1), td:nth-child(1) {
+    width: 40px;      /* 🔥 kam width */
+    min-width: 40px;
+    max-width: 40px;
+    padding: 4px;     /* 🔥 padding bhi kam */
+    font-size: 13px;  /* optional */
+}
 /* FPS ID column (12 digit) */
 th:nth-child(2), td:nth-child(2) {
     width: 140px;
