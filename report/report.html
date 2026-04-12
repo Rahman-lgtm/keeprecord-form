@@ -1,178 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PDS Application Dashboard</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report Dashboard</title>
+
+<style>
+body {
+    font-family: "Bookman Old Style", serif;
+    background: #dcdcdc;
+    margin: 0;
+}
+
+/* MAIN CONTAINER */
+.container {
+    max-width: 1100px;
+    margin: 20px auto;
+    background: #cfcfcf;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 8px 8px 20px rgba(0,0,0,0.25),
+                -5px -5px 15px rgba(255,255,255,0.5);
+}
+
+/* SECTION TITLE */
+.section-title {
+    background: #e3a373;
+    text-align: center;
+    padding: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 10px;
+
+    margin: 25px 0 15px 0; /* 🔥 TOP & BOTTOM GAP FIX */
+
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+.section-title + .grid {
+    margin-bottom: 20px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)); /* 🔥 FIX */
+    gap: 15px;
+}
+
+/* ================= CARD ================= */
+.card {
+    background: #e6d7b3;
+    padding: 12px 15px;
+    border-radius: 12px;
+    position: relative;
+    min-height: 70px;
+
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.2),
+                -3px -3px 8px rgba(255,255,255,0.5);
+
+    transition: background 0.3s ease;
+}
+
+/* HOVER */
+.card:hover {
+    background: #e3a373;
+}
+
+/* TITLE */
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+    padding-right: 80px;
+}
+
+/* VIEW DETAILS */
+.view {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 13px;
+    color: blue;
+    text-decoration: underline;
+}
+
+/* ================= LAC CARD ================= */
+.lac-card {
+    background: #e6d7b3;
+    padding: 12px 15px;
+    border-radius: 12px;
+    position: relative;
+    min-height: 100px;
+
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.2),
+                -3px -3px 8px rgba(255,255,255,0.5);
+
+    transition: background 0.3s ease;
+}
+.card, .lac-card {
+    margin-bottom: 5px; /* 🔥 extra breathing space */
+}
+/* HOVER */
+.lac-card:hover {
+    background: #e3a373;
+}
+
+/* TITLE TOP LEFT */
+.lac-card h4 {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* LEFT - RIGHT LAYOUT */
+.lac-row {
+    display: flex;
+    justify-content: space-between; /* 🔥 LEFT & RIGHT */
+    margin-top: 35px;
+    padding: 0 10px;
+}
+
+/* LEFT SIDE */
+.left-box {
+    text-align: left;
+}
+
+/* RIGHT SIDE */
+.right-box {
+    text-align: right;
+}
+
+/* NUMBER */
+.num {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* LABEL */
+.label {
+    font-size: 13px;
+    color: blue;
+    text-decoration: underline;
+    margin-top: 3px;
+}
+
+/* TOTAL CARD */
+.total {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 35px;
+}
+.divider {
+    width: 100%;
+    height: 6px; /* 🔥 mota line */
+    background: #e3a373; /* same theme color */
+    border-radius: 5px;
+    margin: 25px 0; /* upar niche gap */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-    body {
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f6f9;
-      color: #333;
-    }
-    h1, h2, h3 {
-      color: #2c3e50;
-    }
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .stat-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .stat {
-      flex: 1 1 200px;
-      text-align: center;
-      padding: 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      background: #f8faff;
-    }
-    .stat h3 {
-      margin: 0 0 4px 0;
-      font-size: 1rem;
-    }
-    .stat h2 {
-      margin: 4px 0 0 0;
-      font-size: 1.6rem;
-      color: #2980b9;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table th, table td {
-      text-align: left;
-      padding: 8px;
-      border-bottom: 1px solid #ddd;
-    }
-    table th {
-      background-color: #2c3e50;
-      color: #fff;
-    }
-    table tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    .subsection {
-      margin-top: 16px;
-      padding-top: 12px;
-      border-top: 1px dashed #ccc;
-    }
-  </style>
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>PDS Application Dashboard</h1>
 
-    <!-- Main ADD / NEW stats -->
-    <div class="card">
-      <h2>Main Counts</h2>
-      <div class="stat-row">
-        <div class="stat">
-          <h3>Total ADD Applications</h3>
-          <h2 id="totalAddCount">0</h2>
+<div class="container">
+
+    <div class="section-title">Report</div>
+
+    <div class="grid">
+        <div class="card">
+    <h3>Agent-wise</h3>
+    <a href="agent.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>GP-Wise</h3>
+    <a href="gp.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>Inspector-wise</h3>
+    <a href="inspector.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>Operator-wise</h3>
+    <a href="operator.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>Date-wise</h3>
+    <a href="date.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>New RC</h3>
+    <a href="new.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>Existing RC</h3>
+    <a href="existing.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>GPSS-wise</h3>
+    <a href="gpss.html" class="view">View details</a>
+</div>
+<div class="card">
+    <h3>Below 4 members Family</h3>
+    <a href="below4.html" class="view">View details</a>
+</div>
+
+<div class="card">
+    <h3>Above 4 members Family</h3>
+    <a href="above4.html" class="view">View details</a>
+</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="grid">
+
+        <!-- LAC CARD -->
+        <div class="lac-card">
+            <h4>Nagaon-Batadraba</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
         </div>
-        <div class="stat">
-          <h3>Total ADD Members</h3>
-          <h2 id="totalAddMembers">0</h2>
+
+        <div class="lac-card">
+            <h4>Barhampur</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
         </div>
-        <div class="stat">
-          <h3>Total NEW Applications</h3>
-          <h2 id="totalNewCount">0</h2>
+
+        <div class="lac-card">
+            <h4>Samaguri</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
         </div>
-        <div class="stat">
-          <h3>Total NEW Members</h3>
-          <h2 id="totalNewMembers">0</h2>
+
+        <div class="lac-card">
+            <h4>Raha (SC)</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="lac-card">
+            <h4>Rupahihat</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lac-card">
+            <h4>Kaliabor</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lac-card">
+            <h4>Dhing</h4>
+            <div class="lac-row">
+                <div class="left-box">
+                    <div class="num">00</div>
+                    <div class="label">New Unite</div>
+                </div>
+                <div class="right-box">
+                    <div class="num">00</div>
+                    <div class="label">ADD Unite</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="lac-card">
+            <h4>Total Unit</h4>
+            <div class="total">00</div>
+        </div>
+
     </div>
 
-    <!-- LAC‑wise NEW -->
-    <div class="card">
-      <h2>LAC‑wise NEW Applications (Total Members)</h2>
-      <div class="subsection">
-        <table id="lacNewTable">
-          <thead>
-            <tr>
-              <th>LAC</th>
-              <th>NEW Count</th>
-              <th>NEW Members</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+</div>
+<script>
 
-    <!-- LAC‑wise ADD -->
-    <div class="card">
-      <h2>LAC‑wise ADD Applications (Total Members)</h2>
-      <div class="subsection">
-        <table id="lacAddTable">
-          <thead>
-            <tr>
-              <th>LAC</th>
-              <th>ADD Count</th>
-              <th>ADD Members</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+const url = "https://script.google.com/macros/s/AKfycbxSw-pH_kHlH9GKkBJUShKJ5BdUxV_57K6QfozlQBGx-OSxtBjs892p79H1mWfaDAER/exec";
 
-    <!-- GP‑wise ADD (top to bottom) -->
-    <div class="card">
-      <h2>GP‑wise ADD Applications (Top → Bottom)</h2>
-      <div class="subsection">
-        <table id="gpAddTable">
-          <thead>
-            <tr>
-              <th>GP</th>
-              <th>ADD Count</th>
-              <th>ADD Members</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+fetch(url)
+.then(res => res.json())
+.then(data => {
 
-    <!-- GP‑wise NEW (top to bottom) -->
-    <div class="card">
-      <h2>GP‑wise NEW Applications (Top → Bottom)</h2>
-      <div class="subsection">
-        <table id="gpNewTable">
-          <thead>
-            <tr>
-              <th>GP</th>
-              <th>NEW Count</th>
-              <th>NEW Members</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    let lacData = {};
+    let totalUnit = 0;
 
-  <script>
-   
-  </script>
+    data.forEach(row => {
+
+        let type = row["Application type (NEW or ADD RC)"];
+        let lac = row["Name of LAC"];
+        let members = parseInt(row["Total Number of included Members"]) || 0;
+
+        if (!lac) return;
+
+        // normalize text
+        type = type ? type.toString().toUpperCase().trim() : "";
+        lac = lac.toString().trim();
+
+        // create object if not exist
+        if (!lacData[lac]) {
+            lacData[lac] = { ADD: 0, NEW: 0 };
+        }
+
+        // 🔥 SUM LOGIC (IMPORTANT FIX)
+        if (type.includes("ADD")) {
+            lacData[lac].ADD += members;
+            totalUnit += members;
+        }
+
+        if (type.includes("NEW")) {
+            lacData[lac].NEW += members;
+            totalUnit += members;
+        }
+
+    });
+
+    // 🔥 UPDATE UI
+    document.querySelectorAll(".lac-card").forEach(card => {
+
+        let name = card.querySelector("h4").innerText.trim();
+
+        let newBox = card.querySelector(".left-box .num");
+        let addBox = card.querySelector(".right-box .num");
+
+        // default 0 (important)
+        if (newBox) newBox.innerText = "0";
+        if (addBox) addBox.innerText = "0";
+
+        if (lacData[name]) {
+            if (newBox) newBox.innerText = lacData[name].NEW;
+            if (addBox) addBox.innerText = lacData[name].ADD;
+        }
+    });
+
+    // 🔥 TOTAL SUM
+    document.querySelector(".total").innerText = totalUnit;
+
+})
+.catch(err => {
+    console.error("Error fetching data:", err);
+});
+
+</script>
 </body>
 </html>
