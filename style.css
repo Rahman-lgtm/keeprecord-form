@@ -62,12 +62,26 @@ input::-webkit-input-placeholder {    font-family: "Bookman Old Style", serif;}
 input:-ms-input-placeholder {    font-family: "Bookman Old Style", serif;}
 .select2-container--default .select2-selection__placeholder {    font-family: "Bookman Old Style", serif !important;}
 .select2-container--default .select2-search__field::placeholder {    font-family: "Bookman Old Style", serif;}
-@keyframes glow {
-    0% { box-shadow: 0 0 5px rgba(255,152,0,0.3); }
-    50% { box-shadow: 0 0 15px rgba(255,152,0,0.8); }
-    100% { box-shadow: 0 0 5px rgba(255,152,0,0.3); }
-}
+
 
 .caution-bar {
     animation: glow 1.5s infinite;
+}
+.caution-bar {
+    color: #d9534f; /* red warning color */
+    font-family: "Bookman Old Style", serif;
+    font-size: 15px;
+    font-weight: bold;
+
+    margin: 10px 0;
+
+    /* Blinking animation */
+    animation: blinkText 1.2s infinite;
+}
+
+/* Smooth blink */
+@keyframes blinkText {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.3; }
+    100% { opacity: 1; }
 }
