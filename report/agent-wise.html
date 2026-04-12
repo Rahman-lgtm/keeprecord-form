@@ -14,13 +14,20 @@ body {
 
 /* CONTAINER */
 .container {
-    width: 70%;
-    margin: 10px auto;
+    width: 70%;              /* ❌ full screen nahi */
+    max-width: 1100px;       /* 🔥 zyada bada na ho */
+    margin: 10px auto;       /* center me */
+
     background: #d3d3d3;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
+
     position: relative;
+
+    height: 90vh;            /* 🔥 full height */
+    display: flex;
+    flex-direction: column;
 }
 
 /* LOADING */
@@ -47,14 +54,14 @@ body {
 
 /* TABLE WRAPPER (SCROLL) */
 .table-wrapper {
-    max-height: 420px;
+    flex: 1;              /* 🔥 baki height le lega */
     overflow-y: auto;
     overflow-x: auto;
 }
 
 /* TABLE */
 table {
-    width: 70%;
+    width: 100%;          /* container ke andar full */
     border-collapse: collapse;
     background: #d3d3d3;
     table-layout: fixed;
