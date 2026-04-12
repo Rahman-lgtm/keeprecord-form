@@ -323,15 +323,7 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <div class="toast-progress"></div>
 </div>
 <script>
-$(document).ready(function() {
-
-    // Select2 init
-    $('#gp').select2({
-        placeholder: "Select GP/Ward",
-        allowClear: false,
-        width: '180px'
-    });
-
+$(document).ready(function() { $('#gp').select2({ placeholder: "Select GP/Ward", allowClear: false, width: '180px' });
     // Caution show/hide function
     function showCaution() {
         $(".caution-bar").stop(true, true).show();
