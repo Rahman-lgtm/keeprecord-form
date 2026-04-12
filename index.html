@@ -325,39 +325,38 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <script>
 $(document).ready(function() {
 
-   
+    // Select2 init
     $('#gp').select2({
         placeholder: "Select GP/Ward",
         allowClear: false,
         width: '180px'
     });
 
-    
-    $(document).ready(function() {
-
+    // Caution show/hide function
     function showCaution() {
-        $(".caution-bar").stop(true, true).show(); // show again
+        $(".caution-bar").stop(true, true).show();
+
         setTimeout(function() {
-            $(".caution-bar").fadeOut(500); // hide after 10 sec
+            $(".caution-bar").fadeOut(500);
         }, 10000);
     }
 
-    // Page load pe run
+    // Page load
     showCaution();
 
-    // Form submit ke baad
+    // Form submit
     $("#dataForm").on("submit", function() {
         showCaution();
     });
 
-    // Form reset ke baad
+    // Form reset
     $("#dataForm").on("reset", function() {
-        setTimeout(showCaution, 100); // thoda delay for reset
+        setTimeout(showCaution, 100);
     });
 
 });
 
-
+// Select2 search placeholder
 $(document).on('select2:open', function() {
     document.querySelector('.select2-search__field').placeholder = 'Search here...';
 });
