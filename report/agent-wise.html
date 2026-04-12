@@ -5,24 +5,25 @@
 <title>FPS Report</title>
 
 <style>
+
 body {
     font-family: "Bookman Old Style", serif;
-    background: #dcdcdc;
+    background: #b7dfb9;
     margin: 0;
 }
 
-/* MAIN BOX */
+/* CONTAINER */
 .container {
-    max-width: 95%;
-    margin: 30px auto;
-    background: #cfcfcf;
+    width: 90%;
+    margin: 40px auto;
+    background: #d3d3d3;
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 8px 8px 20px rgba(0,0,0,0.25);
+    box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
     position: relative;
 }
 
-/* LOADING TEXT */
+/* LOADING */
 .loading {
     position: absolute;
     top: 5px;
@@ -44,8 +45,10 @@ body {
     cursor: pointer;
 }
 
-/* TABLE WRAPPER (SCROLL) */
+/* TABLE WRAPPER */
 .table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
     overflow-x: auto;
 }
 
@@ -53,28 +56,33 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    background: #cfcfcf;
+    background: #d3d3d3;
 }
 
-/* HEADER */
-th {
-    border: 1px solid #000;
-    padding: 8px;
-    font-weight: bold;
-    background: #cfcfcf;
+/* HEADER FIX */
+thead th {
+    position: sticky;
+    top: 0;
+    background: #d3d3d3;
+    z-index: 2;
 }
 
-/* BODY */
-td {
-    border: 1px solid #000;
+/* CELL */
+th, td {
+    border: 1px solid black;
     padding: 6px;
     text-align: center;
 }
 
+/* HEADER FONT */
+th {
+    font-weight: bold;
+}
+
 /* COLUMN WIDTH */
-th:nth-child(1), td:nth-child(1) { width: 50px; }
-th:nth-child(2), td:nth-child(2) { width: 150px; }
-th:nth-child(3), td:nth-child(3) { width: 150px; }
+th:nth-child(1) { width: 50px; }
+th:nth-child(2) { width: 150px; }
+th:nth-child(3) { width: 200px; }
 
 </style>
 </head>
@@ -94,15 +102,13 @@ th:nth-child(3), td:nth-child(3) { width: 150px; }
                     <th>FPS ID</th>
                     <th>FPS Name</th>
                     <th>New RC count</th>
-                    <th>Units</th>
+                    <th>New Units</th>
                     <th>Add units</th>
                     <th>Total Units</th>
-                    <th>Ratio</th>
+                    <th>Ratio = (Total units / new RC count)</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                <!-- Data will come here -->
-            </tbody>
+            <tbody id="tableBody"></tbody>
         </table>
     </div>
 
@@ -116,69 +122,69 @@ fetch(url)
 .then(res => res.json())
 .then(data => {
 
-    let tableBody = document.getElementById("tableBody");
-
     let fpsData = {};
     let index = 1;
 
     data.forEach(row => {
 
-        let fpsId = row["F.P.S Code 13050050......."];
-        let fpsName = row["FPS Name"];
+        let id = row["F.P.S Code 13050050......."];
+        let name = row["FPS Name"];
         let type = row["Application type (NEW or ADD RC)"];
         let members = parseInt(row["Total Number of included Members"]) || 0;
 
-        if (!fpsId) return;
+        if (!id) return;
 
         type = type ? type.toString().toUpperCase().trim() : "";
 
-        if (!fpsData[fpsId]) {
-            fpsData[fpsId] = {
-                name: fpsName,
+        if (!fpsData[id]) {
+            fpsData[id] = {
+                name: name,
                 newCount: 0,
+                newUnits: 0,
                 addUnits: 0,
                 totalUnits: 0
             };
         }
 
         if (type.includes("NEW")) {
-            fpsData[fpsId].newCount += 1;
-            fpsData[fpsId].totalUnits += members;
+            fpsData[id].newCount += 1;
+            fpsData[id].newUnits += members;
+            fpsData[id].totalUnits += members;
         }
 
         if (type.includes("ADD")) {
-            fpsData[fpsId].addUnits += members;
-            fpsData[fpsId].totalUnits += members;
+            fpsData[id].addUnits += members;
+            fpsData[id].totalUnits += members;
         }
 
     });
 
-    // ADD ROWS
+    let tableBody = document.getElementById("tableBody");
+
     Object.entries(fpsData).forEach(([id, val]) => {
 
-        let ratio = val.addUnits ? (val.totalUnits / val.addUnits).toFixed(2) : 0;
+        let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(2) : 0;
 
         let row = `
-            <tr>
-                <td>${index++}</td>
-                <td>${id}</td>
-                <td>${val.name || ""}</td>
-                <td>${val.newCount}</td>
-                <td>${val.totalUnits}</td>
-                <td>${val.addUnits}</td>
-                <td>${val.totalUnits}</td>
-                <td>${ratio}</td>
-            </tr>
+        <tr>
+            <td>${index++}</td>
+            <td>${id}</td>
+            <td>${val.name || ""}</td>
+            <td>${val.newCount}</td>
+            <td>${val.newUnits}</td>
+            <td>${val.addUnits}</td>
+            <td>${val.totalUnits}</td>
+            <td>${ratio}</td>
+        </tr>
         `;
 
         tableBody.innerHTML += row;
-
     });
 
-    // HIDE LOADING
+    // hide loading
     document.getElementById("loadingText").style.display = "none";
 
-    // SHOW DOWNLOAD BUTTON
+    // show download button
     document.getElementById("downloadBtn").style.display = "block";
 
 });
@@ -194,7 +200,7 @@ document.getElementById("downloadBtn").addEventListener("click", function () {
 
     let a = document.createElement("a");
     a.href = url;
-    a.download = "report.xls";
+    a.download = "FPS_Report.xls";
     a.click();
 });
 
