@@ -46,43 +46,34 @@ body {
 }
 
 /* TABLE WRAPPER */
-.table-wrapper {
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: auto;
+/* FPS ID column (12 digit) */
+th:nth-child(2), td:nth-child(2) {
+    width: 140px;
+    min-width: 140px;
+    white-space: nowrap; /* line break na ho */
 }
 
-/* TABLE */
+/* FPS NAME column (long text wrap) */
+th:nth-child(3), td:nth-child(3) {
+    width: 220px;
+    min-width: 220px;
+    white-space: normal;   /* wrap allow */
+    word-break: break-word;
+    text-align: left;
+    padding-left: 8px;
+}
+
+/* बाकी columns fixed size */
+th:not(:nth-child(2)):not(:nth-child(3)),
+td:not(:nth-child(2)):not(:nth-child(3)) {
+    width: 100px;
+    min-width: 100px;
+}
+
+/* table layout fix (important) */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #d3d3d3;
+    table-layout: fixed;
 }
-
-/* HEADER FIX */
-thead th {
-    position: sticky;
-    top: 0;
-    background: #d3d3d3;
-    z-index: 2;
-}
-
-/* CELL */
-th, td {
-    border: 1px solid black;
-    padding: 6px;
-    text-align: center;
-}
-
-/* HEADER FONT */
-th {
-    font-weight: bold;
-}
-
-/* COLUMN WIDTH */
-th:nth-child(1) { width: 50px; }
-th:nth-child(2) { width: 150px; }
-th:nth-child(3) { width: 200px; }
 
 </style>
 </head>
