@@ -38,20 +38,8 @@ body {
 
 /* CONTAINER */
 .container {
-    width: min(70%, 1100px);
-    margin: 0 auto 10px;
-    padding: 15px;
-    background: #d3d3d3;
-    border-radius: 10px;
-    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
-    position: relative;
-
-    flex: 1;
-    min-height: 0;   /* IMPORTANT for inner scrolling */
     display: flex;
     flex-direction: column;
-
-    overflow: hidden; /* only table-wrapper should scroll */
 }
 
 /* LOADING */
@@ -69,8 +57,6 @@ body {
     flex: 1;
     min-height: 0;
     overflow: auto;
-
-    padding-bottom: 60px; /* button ke liye space */
 }
 
 /* TABLE */
@@ -136,11 +122,17 @@ tbody tr:hover {
 
 /* DOWNLOAD BUTTON */
 .download-btn {
-    position: absolute;
-    left: 50%;
-    bottom: 10px;
-    transform: translateX(-50%);
-    z-index: 10;
+    margin-top: 10px;
+    align-self: center;
+
+    display: inline-block;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #4CAF50;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
 }
 .download-btn:hover {
     background: #2e7d32;
