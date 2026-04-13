@@ -239,8 +239,7 @@ tbody tr:hover {
 <button class="download-btn" id="downloadBtn">Download</button>
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbxUUuOfgvi5n0ltz6BjsLaBDKze3c56T7RNncBC_NzvurYwIPE5iSMPxZqnRQLMsRBE/exec?key=mySecret1774123";
-
+const API_URL = "/.netlify/functions/data";
 fetch(url)
 .then(res => res.json())
 .then(data => {
