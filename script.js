@@ -257,6 +257,7 @@ async function handleFormSubmit(e) {
             showToast("Already submitted!", false);
         } else {
             showToast(result.message || "Submit failed!", false);
+            console.log("Server response:", result);
         }
 
     } catch (error) {
