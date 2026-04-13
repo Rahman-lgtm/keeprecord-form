@@ -25,35 +25,35 @@ export default async function handler(req, res) {
     }
 
     // ✅ SUBMIT
-    if (action === "submit") {
+if (action === "submit") {
 
-      const formData = req.body;
+  let body = "";
 
-      const url = process.env.SHEET_URL;
+  await new Promise((resolve) => {
+    req.on("data", chunk => {
+      body += chunk.toString();
+    });
+    req.on("end", resolve);
+  });
 
-      const params = new URLSearchParams(formData);
+  const url = process.env.SHEET_URL;
 
-      const response = await fetch(url, {
-        method: "POST",
-        body: params
-      });
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: body
+  });
 
-      const text = await response.text();
+  const text = await response.text();
 
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        return res.status(500).json({ error: "Invalid response from sheet" });
-      }
-
-      return res.json(data);
-    }
-
-    return res.status(400).json({ error: "Invalid action" });
-
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Server error" });
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    return res.status(500).json({ error: "Invalid response from sheet" });
   }
+
+  return res.json(data);
 }
