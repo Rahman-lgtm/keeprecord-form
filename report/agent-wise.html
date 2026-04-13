@@ -67,10 +67,11 @@ body {
 /* TABLE WRAPPER - ONLY SCROLL AREA */
 .table-wrapper {
     flex: 1;
-    min-height: 0; /* IMPORTANT */
+    min-height: 0;
     overflow: auto;
     border-radius: 6px;
-    padding-bottom: 55px; /* button ke liye safe space */
+
+    padding-bottom: 90px;  /* 🔥 FIX: button + total row space */
 }
 
 /* TABLE */
@@ -97,7 +98,7 @@ tfoot td {
     bottom: 0;
     background: #8b5e3c;
     color: white;
-    z-index: 3;
+    z-index: 5;   /* 👈 button se neeche */
 }
 
 /* CELLS */
@@ -138,9 +139,9 @@ tbody tr:hover {
 .download-btn {
     position: absolute;
     left: 50%;
-    bottom: 12px;
+    bottom: 20px;   /* 🔥 FIX */
     transform: translateX(-50%);
-    z-index: 10;
+    z-index: 20;
 
     display: inline-block;
     padding: 10px 18px;
@@ -151,7 +152,6 @@ tbody tr:hover {
     font-size: 14px;
     cursor: pointer;
 }
-
 .download-btn:hover {
     background: #2e7d32;
 }
