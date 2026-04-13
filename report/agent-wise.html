@@ -223,6 +223,16 @@ document.getElementById("tTotalUnits").innerText=tTotal;
 
 });
 });
+ // Hide loading, show download
+        document.getElementById("loadingText").style.display = "none";
+        document.getElementById("downloadBtn").style.display = "inline-flex";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById("loadingText").textContent = "Error loading data";
+        document.getElementById("loadingText").style.color = "#e74c3c";
+    });
+});
 
 // DOWNLOAD
 document.getElementById("downloadBtn").onclick = function(){
