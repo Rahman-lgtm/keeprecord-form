@@ -329,18 +329,6 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </div>
 <script>
 $(document).ready(function() { $('#gp').select2({ placeholder: "Select GP/Ward", allowClear: false, width: '180px' });
-    // Caution show/hide function
-    function showCaution() {
-        $(".caution-bar").stop(true, true).show();
-
-        setTimeout(function() {
-            $(".caution-bar").fadeOut(500);
-        }, 10000);
-    }
-
-    // Page load
-    showCaution();
-
     // Form submit
     $("#dataForm").on("submit", function() {
         showCaution();
