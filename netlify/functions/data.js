@@ -4,19 +4,33 @@ exports.handler = async function (event) {
   const SHEET_URL = process.env.SHEET_URL;
 
   try {
-    // 🔥 fetch data from Google Sheet
+    // 🔥 Fetch data from Google Script
     const res = await fetch(`${SHEET_URL}?key=${API_KEY}`);
-    const data = await res.json();
+    const text = await res.text();
 
-    // ✅ अगर duplicate check है
+    // ❗ अगर JSON नहीं आया तो भी crash नहीं होगा
+    let data = [];
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("Invalid JSON from Google:", text);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Invalid JSON from source" })
+      };
+    }
+
+    // ✅ DUPLICATE CHECK
     if (event.queryStringParameters?.action === "checkDuplicate") {
 
-      const appNum = event.queryStringParameters.appNum;
+      const appNum = (event.queryStringParameters.appNum || "").trim();
 
-      const exists = data.some(row =>
-        row["Application Number"] &&
-        row["Application Number"].toString().trim() === appNum
-      );
+      console.log("Checking duplicate for:", appNum);
+
+      const exists = data.some(row => {
+        const sheetValue = (row["Application Number"] || "").toString().trim();
+        return sheetValue === appNum;
+      });
 
       return {
         statusCode: 200,
@@ -24,7 +38,7 @@ exports.handler = async function (event) {
       };
     }
 
-    // ✅ normal GET (full data)
+    // ✅ NORMAL GET
     if (event.httpMethod === "GET") {
       return {
         statusCode: 200,
@@ -32,25 +46,25 @@ exports.handler = async function (event) {
       };
     }
 
-    // ❌ अगर POST logic नहीं है अभी
+    // ✅ TEMP POST (safe fallback)
     if (event.httpMethod === "POST") {
       return {
         statusCode: 200,
-        body: JSON.stringify({ success: true }) // temp
+        body: JSON.stringify({ success: true })
       };
     }
 
     return {
       statusCode: 400,
-      body: "Invalid request"
+      body: JSON.stringify({ error: "Invalid request" })
     };
 
   } catch (err) {
-    console.error("Server Error:", err);
+    console.error("🔥 SERVER ERROR:", err);
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Server error" }) // 🔥 FIXED JSON
+      body: JSON.stringify({ error: "Server crash" })
     };
   }
 };
