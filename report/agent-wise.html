@@ -18,10 +18,9 @@ html, body {
 
 /* BODY */
 body {
-    font-family: "Bookman Old Style", serif;
-    background: white;
+    font-family: "Segoe UI", "Bookman Old Style", -apple-system, serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100dvh;
-    overflow: hidden; /* full page scroll band */
     display: flex;
     flex-direction: column;
 }
@@ -29,31 +28,55 @@ body {
 /* TITLE */
 .title {
     text-align: center;
-    margin: 6px 0 8px;
-    font-size: 26px;
-    font-weight: bold;
+    margin: 20px 0 15px;
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 700;
     color: #6b3e26;
+    letter-spacing: 1px;
     flex: 0 0 auto;
 }
 
 /* CONTAINER */
-.container { width: min(70%, 1100px); margin: 0 auto 10px; padding: 15px; background: #d3d3d3; border-radius: 10px; box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3); position: relative; flex: 1; min-height: 0; /* IMPORTANT for inner scrolling */ display: flex; flex-direction: column; overflow: hidden; /* only table-wrapper should scroll */ }
+.container { 
+    width: min(95%, 1200px); 
+    margin: 0 auto 20px; 
+    padding: 25px; 
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px; 
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative; 
+    flex: 1; 
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
 
 /* LOADING */
 .loading {
     position: absolute;
-    top: 8px;
-    right: 15px;
-    color: green;
+    top: 20px;
+    right: 25px;
+    color: #27ae60;
     font-size: 14px;
+    font-weight: 500;
     z-index: 20;
+    animation: pulse 2s infinite;
 }
 
-/* TABLE WRAPPER - ONLY SCROLL AREA */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* TABLE WRAPPER */
 .table-wrapper {
     flex: 1;
     min-height: 0;
     overflow: auto;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
 }
 
 /* TABLE */
@@ -61,282 +84,346 @@ table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    background: #d3d3d3;
+    background: white;
+    font-size: 14px;
 }
 
 /* HEADER */
 thead th {
     position: sticky;
     top: 0;
-    background: #8b5e3c;
+    background: linear-gradient(135deg, #8b5e3c 0%, #a67c52 100%);
     color: white;
-    z-index: 3;
+    z-index: 10;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    border: none;
 }
 
-/* FOOTER / TOTAL ROW */
-tfoot th,
-tfoot td {
-    position: static;   /* 🔥 FIX */
-    background: #8b5e3c;
-    color: white;
+/* BODY ROWS */
+tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+    background: linear-gradient(90deg, #e8f5e8 0%, #f1f8e9 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* TOTAL ROW */
+.total-row {
+    background: linear-gradient(135deg, #8b5e3c 0%, #a67c52 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 40px 80px 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background-color: #ddd;
+}
+
+.total-row .col {
+    background: white;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 700;
+    color: #6b3e26;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 15px;
+}
+
+.total-row .col3 {
+    text-align: right !important;
+    font-size: 18px;
+    color: #8b5e3c;
+    background: linear-gradient(135deg, #fff3e0 0%, #fff8e1 100%);
 }
 
 /* CELLS */
 th, td {
-    border: 1px solid black;
-    padding: 6px;
+    border: 1px solid #ddd;
+    padding: 12px 8px;
     text-align: center;
     vertical-align: middle;
 }
 
-/* COLUMN WIDTHS */
-th:nth-child(1), td:nth-child(1) {
-    width: 40px;
-}
-
-th:nth-child(2), td:nth-child(2) {
-    width: 80px;
-    white-space: nowrap;
-}
-
-th:nth-child(3), td:nth-child(3) {
-    width: 240px;
-    word-break: break-word;
+td:nth-child(3) {
     text-align: left;
+    word-break: break-word;
 }
 
-th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)),
-td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
-    width: 60px;
-}
+/* COLUMN WIDTHS */
+th:nth-child(1), td:nth-child(1) { width: 5%; }
+th:nth-child(2), td:nth-child(2) { width: 8%; font-family: monospace; }
+th:nth-child(3), td:nth-child(3) { width: 25%; }
+th:nth-child(4), td:nth-child(4) { width: 10%; }
+th:nth-child(5), td:nth-child(5) { width: 12%; }
+th:nth-child(6), td:nth-child(6) { width: 12%; }
+th:nth-child(7), td:nth-child(7) { width: 12%; font-weight: 600; }
+th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #666; }
 
-/* ROW HOVER */
-tbody tr:hover {
-    background: #c8e6c9;
-}
-.total-row .col3 {
-    text-align: center;
-}
 /* DOWNLOAD BUTTON */
 .download-btn {
-    margin-top: 10px;
     align-self: center;
-
-    display: inline-block;
-    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
     border: none;
-    border-radius: 6px;
-    background: #4CAF50;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-}
-.download-btn:hover {
-    background: #2e7d32;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
-/* OPTIONAL SCROLLBAR STYLING */
+.download-btn:hover {
+    background: linear-gradient(135deg, #45a049 0%, #2e7d32 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(76, 175, 80, 0.4);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+}
+
+/* SCROLLBAR */
 .table-wrapper::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #8b5e3c;
+    background: linear-gradient(135deg, #8b5e3c, #a67c52);
     border-radius: 10px;
+    border: 2px solid #f1f1f1;
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-    background: #e0e0e0;
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-/* MOBILE / SMALL SCREEN */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .container {
-        width: 96%;
-        padding: 10px;
-        margin-bottom: 6px;
+        width: 98%;
+        padding: 15px;
+        margin-bottom: 15px;
     }
-
+    
     .title {
-        font-size: 20px;
-        margin: 6px 0;
+        margin: 15px 0 10px;
     }
-
+    
     th, td {
-        padding: 5px;
+        padding: 8px 4px;
         font-size: 12px;
     }
-
+    
+    .total-row {
+        padding: 15px;
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .total-row .col {
+        padding: 10px;
+        margin: 2px 0;
+    }
+    
     .download-btn {
-        font-size: 13px;
-        padding: 8px 14px;
+        padding: 12px 20px;
+        font-size: 14px;
     }
 }
-   
-.total-row .col {
-    border: 1px solid black;
-    padding: 6px;
-    text-align: center;
-}
 
-.total-row .col3 {
-    text-align: left;
+@media (max-width: 480px) {
+    th:nth-child(8), td:nth-child(8) {
+        display: none;
+    }
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
-
     <!-- LOADING -->
-    <div class="loading" id="loadingText">Loading.......</div>
+    <div class="loading" id="loadingText">Loading Report...</div>
 
     <!-- TITLE -->
-    <h1 class="title">Data Entry Report Agent Wise</h1>
+    <h1 class="title">📊 FPS Data Entry Report - Agent Wise</h1>
 
     <!-- TABLE AREA -->
     <div class="table-wrapper">
         <table id="reportTable">
-
             <thead>
                 <tr>
                     <th>Sl No</th>
                     <th>FPS ID</th>
                     <th>FPS Name</th>
-                    <th>New RC count</th>
-                    <th>New Units</th>
-                    <th>Add units</th>
-                    <th>Total Units</th>
+                    <th>New RC<br>Count</th>
+                    <th>New<br>Units</th>
+                    <th>Add<br>Units</th>
+                    <th>Total<br>Units</th>
                     <th>Ratio</th>
                 </tr>
             </thead>
-
             <tbody id="tableBody">
                 <!-- Dynamic data -->
-           </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TOTAL ROW -->
+    <div class="total-row">
+        <div class="col"></div> <!-- Sl No -->
+        <div class="col"></div> <!-- FPS ID -->
+        <div class="col col3">📈 GRAND TOTAL</div>
+        <div class="col" id="tNewCount">0</div>
+        <div class="col" id="tNewUnits">0</div>
+        <div class="col" id="tAddUnits">0</div>
+        <div class="col" id="tTotalUnits">0</div>
+        <div class="col">-</div>
+    </div>
+
+    <!-- DOWNLOAD BUTTON -->
+    <button class="download-btn" id="downloadBtn">
+        💾 Download Excel Report
+    </button>
 </div>
 
-<!-- ✅ TOTAL ROW (FULL COLUMN MATCH) -->
-<div class="total-row">
-
-    <div class="col col1"></div> <!-- Sl No empty -->
-    <div class="col col2"></div> <!-- FPS ID empty -->
-
-    <div class="col col3">TOTAL</div>
-
-    <div class="col" id="tNewCount">0</div>
-    <div class="col" id="tNewUnits">0</div>
-    <div class="col" id="tAddUnits">0</div>
-    <div class="col" id="tTotalUnits">0</div>
-    <div class="col">-</div>
-
-</div>
-
-<!-- DOWNLOAD BUTTON -->
-<button class="download-btn" id="downloadBtn">Download</button>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch("/api/report")
+    .then(res => {
+        if (!res.ok) throw new Error('Network error');
+        return res.json();
+    })
+    .then(data => {
+        let fpsData = {};
+        let index = 1;
 
+        // Process data
+        data.forEach(row => {
+            let id = row["F.P.S Code 13050050......."];
+            let name = row["FPS Name"];
+            let type = row["Application type (NEW or ADD RC)"];
+            let members = parseInt(row["Total Number of included Members"]) || 0;
 
-fetch("/api/report")
-.then(res => res.json())
-.then(data => {
+            if (!id) return;
 
-    let fpsData = {};
-    let index = 1;
+            type = type ? type.toString().toUpperCase().trim() : "";
 
-    data.forEach(row => {
+            if (!fpsData[id]) {
+                fpsData[id] = {
+                    name: name || "Unnamed FPS",
+                    newCount: 0,
+                    newUnits: 0,
+                    addUnits: 0,
+                    totalUnits: 0
+                };
+            }
 
-        let id = row["F.P.S Code 13050050......."];
-        let name = row["FPS Name"];
-        let type = row["Application type (NEW or ADD RC)"];
-        let members = parseInt(row["Total Number of included Members"]) || 0;
+            if (type.includes("NEW")) {
+                fpsData[id].newCount++;
+                fpsData[id].newUnits += members;
+                fpsData[id].totalUnits += members;
+            }
 
-        if (!id) return;
+            if (type.includes("ADD")) {
+                fpsData[id].addUnits += members;
+                fpsData[id].totalUnits += members;
+            }
+        });
 
-        type = type ? type.toString().toUpperCase().trim() : "";
+        let totalNewCount = 0;
+        let totalNewUnits = 0;
+        let totalAddUnits = 0;
+        let totalUnitsAll = 0;
 
-        if (!fpsData[id]) {
-            fpsData[id] = {
-                name: name,
-                newCount: 0,
-                newUnits: 0,
-                addUnits: 0,
-                totalUnits: 0
-            };
-        }
+        let tableBody = document.getElementById("tableBody");
 
-        if (type.includes("NEW")) {
-            fpsData[id].newCount++;
-            fpsData[id].newUnits += members;
-            fpsData[id].totalUnits += members;
-        }
+        // Sort by total units (descending)
+        Object.entries(fpsData)
+        .sort((a, b) => b[1].totalUnits - a[1].totalUnits)
+        .forEach(([id, val]) => {
+            let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(1) : "-";
+            
+            totalNewCount += val.newCount;
+            totalNewUnits += val.newUnits;
+            totalAddUnits += val.addUnits;
+            totalUnitsAll += val.totalUnits;
 
-        if (type.includes("ADD")) {
-            fpsData[id].addUnits += members;
-            fpsData[id].totalUnits += members;
-        }
+            let row = `
+            <tr>
+                <td>${index++}</td>
+                <td>${id}</td>
+                <td>${val.name}</td>
+                <td>${val.newCount}</td>
+                <td>${val.newUnits}</td>
+                <td>${val.addUnits}</td>
+                <td><strong>${val.totalUnits}</strong></td>
+                <td>${ratio}</td>
+            </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
 
+        // Update totals
+        document.getElementById("tNewCount").textContent = totalNewCount;
+        document.getElementById("tNewUnits").textContent = totalNewUnits.toLocaleString();
+        document.getElementById("tAddUnits").textContent = totalAddUnits.toLocaleString();
+        document.getElementById("tTotalUnits").textContent = totalUnitsAll.toLocaleString();
+
+        // Hide loading, show download
+        document.getElementById("loadingText").style.display = "none";
+        document.getElementById("downloadBtn").style.display = "inline-flex";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById("loadingText").textContent = "Error loading data";
+        document.getElementById("loadingText").style.color = "#e74c3c";
     });
-
-    let totalNewCount = 0;
-    let totalNewUnits = 0;
-    let totalAddUnits = 0;
-    let totalUnitsAll = 0;
-
-    let tableBody = document.getElementById("tableBody");
-
-    Object.entries(fpsData)
-    .sort((a, b) => b[1].totalUnits - a[1].totalUnits)
-    .forEach(([id, val]) => {
-
-        let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(2) : 0;
-
-        totalNewCount += val.newCount;
-        totalNewUnits += val.newUnits;
-        totalAddUnits += val.addUnits;
-        totalUnitsAll += val.totalUnits;
-
-        let row = `
-        <tr>
-            <td>${index++}</td>
-            <td>${id}</td>
-            <td>${val.name || ""}</td>
-            <td>${val.newCount}</td>
-            <td>${val.newUnits}</td>
-            <td>${val.addUnits}</td>
-            <td>${val.totalUnits}</td>
-            <td>${ratio}</td>
-        </tr>
-        `;
-
-        tableBody.innerHTML += row;
-    });
-
-    // TOTAL UPDATE
-    document.getElementById("tNewCount").innerText = totalNewCount;
-    document.getElementById("tNewUnits").innerText = totalNewUnits;
-    document.getElementById("tAddUnits").innerText = totalAddUnits;
-    document.getElementById("tTotalUnits").innerText = totalUnitsAll;
-
-    document.getElementById("loadingText").style.display = "none";
-    document.getElementById("downloadBtn").style.display = "block";
-
 });
 
-// DOWNLOAD
+// Download functionality
 document.getElementById("downloadBtn").addEventListener("click", function () {
-    let table = document.getElementById("reportTable").outerHTML;
-    let blob = new Blob([table], { type: "application/vnd.ms-excel" });
+    const table = document.getElementById("reportTable");
+    const totalRow = document.querySelector(".total-row").outerHTML;
+    
+    // Create enhanced table for export
+    const exportTable = table.cloneNode(true);
+    const exportTbody = exportTable.querySelector("tbody");
+    const totalRowClone = document.querySelector(".total-row").cloneNode(true);
+    
+    // Add total row to export
+    const tfoot = document.createElement("tfoot");
+    tfoot.innerHTML = totalRowClone.outerHTML.replace(/class="col"/g, 'class="col" style="font-weight: bold; background: #f0f0f0;"');
+    exportTable.appendChild(tfoot);
+    
+    let blob = new Blob([`
+        <html><head><meta charset="UTF-8"><title>FPS Report</title>
+        <style>table{font-family:Arial,sans-serif;border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:center}th{background:#8b5e3c;color:white}</style></head>
+        <body>${exportTable.outerHTML}</body></html>
+    `], { type: "application/vnd.ms-excel" });
+    
     let url = URL.createObjectURL(blob);
     let a = document.createElement("a");
     a.href = url;
-    a.download = "FPS_Report.xls";
+    a.download = `FPS_Report_${new Date().toISOString().slice(0,10)}.xls`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 });
-
 </script>
 
 </body>
