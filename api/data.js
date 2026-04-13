@@ -1,70 +1,54 @@
 export default async function handler(req, res) {
+
+  const SHEET_URL = process.env.SHEET_URL;
+
   try {
 
-    const action = req.method === "POST"
-      ? req.body?.action
-      : req.query?.action;
+    // ✅ GET (duplicate check)
+    if (req.method === "GET") {
+      const { action, appNum } = req.query;
 
-    if (!action) {
-      return res.status(400).json({ error: "Missing action" });
-    }
+      const url = `${SHEET_URL}?action=${action}&appNum=${encodeURIComponent(appNum || "")}`;
 
-    const url = process.env.SHEET_URL;
-
-    // ✅ DUPLICATE CHECK
-    if (action === "checkDuplicate") {
-
-      const appNum = req.query.appNum;
-
-      const response = await fetch(
-        url + "?action=checkDuplicate&appNum=" + encodeURIComponent(appNum)
-      );
-
+      const response = await fetch(url);
       const text = await response.text();
 
-      try {
-        const data = JSON.parse(text);
-        return res.json(data);
-      } catch {
-        console.log("Duplicate RAW:", text);
-        return res.status(500).json({ error: text });
-      }
+      return res.status(200).send(text);
     }
 
-
-    // ✅ SUBMIT
-    if (action === "submit") {
+    // ✅ POST (submit)
+    if (req.method === "POST") {
 
       let body = "";
 
+      // 🔥 IMPORTANT FIX (read raw body)
       await new Promise((resolve) => {
-        req.on("data", chunk => body += chunk);
+        req.on("data", chunk => {
+          body += chunk.toString();
+        });
         req.on("end", resolve);
       });
 
-      const response = await fetch(url, {
+      // 🔥 DEBUG (optional)
+      console.log("RAW BODY:", body);
+
+      const response = await fetch(SHEET_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: body
+        body: body   // 🔥 directly forward
       });
 
       const text = await response.text();
 
-      try {
-        const data = JSON.parse(text);
-        return res.json(data);
-      } catch {
-        console.log("Submit RAW:", text);
-        return res.status(500).json({ error: text });
-      }
+      return res.status(200).send(text);
     }
 
-    return res.status(400).json({ error: "Invalid action" });
+    return res.status(400).json({ error: "Invalid request" });
 
   } catch (err) {
-    console.error("SERVER ERROR:", err);
-    return res.status(500).json({ error: "Server crash" });
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
   }
 }
