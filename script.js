@@ -329,3 +329,15 @@ function toggleLoading(btn, show) {
         btn.disabled = false;
     }
 }
+// show caution on load
+showCaution();
+
+// Form submit
+$("#dataForm").on("submit", function() {
+    showCaution();
+});
+
+// Form reset
+$("#dataForm").on("reset", function() {
+    setTimeout(showCaution, 100);
+})
