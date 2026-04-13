@@ -4,34 +4,47 @@ export default async function handler(req, res) {
   const SHEET_URL = process.env.SHEET_URL;
 
   try {
-    const response = await fetch(`${SHEET_URL}?key=${API_KEY}`);
-    const data = await response.json();
 
-    // duplicate check
-    if (req.query.action === "checkDuplicate") {
-      const appNum = (req.query.appNum || "").trim();
+    // ✅ GET REQUEST
+    if (req.method === "GET") {
 
-      const exists = data.some(row =>
-        (row["Application Number"] || "").toString().trim() === appNum
-      );
+      const { action, appNum } = req.query;
 
-      return res.status(200).json({ exists });
+      // 🔥 FETCH DATA FROM GOOGLE SHEET
+      const response = await fetch(`${SHEET_URL}?key=${API_KEY}`);
+      const data = await response.json();
+
+      // ✅ DUPLICATE CHECK
+      if (action === "checkDuplicate") {
+        const exists = data.some(row =>
+          row["Application Number"] === appNum
+        );
+
+        return res.status(200).json({ exists });
+      }
+
+      // ✅ DEFAULT RETURN (jab direct open kare)
+      return res.status(200).json(data);
     }
 
-    // submit
+    // ✅ POST (FORM SUBMIT)
     if (req.method === "POST") {
-      await fetch(SHEET_URL, {
+
+      const response = await fetch(`${SHEET_URL}?key=${API_KEY}`, {
         method: "POST",
-        body: JSON.stringify(req.body),
-        headers: { "Content-Type": "application/json" }
+        body: req.body
       });
 
-      return res.status(200).json({ success: true });
+      const text = await response.text();
+
+      return res.status(200).json({
+        success: true,
+        message: text
+      });
     }
 
-    res.status(200).json(data);
-
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
   }
 }
