@@ -13,18 +13,21 @@ body {
     font-family: "Bookman Old Style", serif;
     background: #ffffff;
     padding: 20px;
+    
 }
 
 /* CONTAINER */
 .container {
     width: min(95%, 1200px);
     margin: auto;
+    
 }
 
 /* TITLE */
 .title {
     text-align: center;
     margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 /* TABLE WRAPPER */
@@ -75,6 +78,15 @@ tfoot td {
 td:nth-child(2), td:nth-child(3) {
     text-align: left;
 }
+/* COLUMN WIDTHS */
+th:nth-child(1), td:nth-child(1) { width: 5%; }
+th:nth-child(2), td:nth-child(2) { width: 8%; font-family: monospace; }
+th:nth-child(3), td:nth-child(3) { width: 25%; }
+th:nth-child(4), td:nth-child(4) { width: 10%; }
+th:nth-child(5), td:nth-child(5) { width: 12%; }
+th:nth-child(6), td:nth-child(6) { width: 12%; }
+th:nth-child(7), td:nth-child(7) { width: 12%; font-weight: 600; }
+th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #666; }
 
 /* LOADING */
 .loading {
