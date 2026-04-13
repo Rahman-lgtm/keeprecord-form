@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       return res.status(200).send(text);
     }
 
-    // ✅ POST (🔥 FIXED)
+    // ✅ POST
     if (req.method === "POST") {
 
       let body = "";
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         req.on("end", resolve);
       });
 
-      console.log("BODY SENT:", body); // 🔍 debug
+      console.log("BODY SENT:", body);
 
       const response = await fetch(SHEET_URL, {
         method: "POST",
@@ -50,14 +50,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Server error" });
   }
 }
-showCaution();
-
-    // Form submit
-    $("#dataForm").on("submit", function() {
-        showCaution();
-    });
-
-    // Form reset
-    $("#dataForm").on("reset", function() {
-        setTimeout(showCaution, 100);
-    })
