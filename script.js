@@ -10,8 +10,9 @@ let currentAppType = '';
 document.addEventListener("DOMContentLoaded", function () {
     initForm();
     initEventListeners();
-    loadFPSData();          // ✅ fixed
+    loadFPSData();
     initFPSAutoFill();
+    initAppNumValidation();   // 🔥 duplicate check ON
 });
 
 
@@ -29,7 +30,7 @@ function loadFPSData() {
 }
 
 
-// ✅ AUTO FILL
+// ✅ AUTO FILL FPS
 function initFPSAutoFill() {
     const fpsCodeField = document.getElementById("fpsCode");
     if (!fpsCodeField) return;
@@ -44,18 +45,101 @@ function handleFPSInput() {
     const code = this.value.trim();
     if (code.length !== 12) return;
 
-    // 🔥 IMPORTANT: column name check karo
-    const fps = fpsData.find(item => item["FPS ID"] == code);
+    const fps = fpsData.find(item =>
+        item.code && item.code.toString().trim() === code
+    );
 
     console.log("MATCH:", fps);
 
     if (fps) {
-        document.getElementById("fpsName").value = fps["FPS Name"] || '';
-        document.getElementById("gpss").value = fps["Name of GPSS"] || '';
-        document.getElementById("areaOfficer").value = fps["Area Officer"] || '';
-        document.getElementById("lacManual").value = fps["LAC Name"] || '';
+        document.getElementById("fpsName").value = fps.fpsName || '';
+        document.getElementById("gpss").value = fps.gpss || '';
+        document.getElementById("areaOfficer").value = fps.areaOfficer || '';
+        document.getElementById("lacManual").value = fps.lac || '';
 
         showToast("FPS details loaded successfully!", true);
+    }
+}
+
+
+// ✅ APPLICATION NUMBER VALIDATION + DUPLICATE CHECK
+function initAppNumValidation() {
+    const appNumField = document.getElementById("applicationNumber");
+    if (!appNumField) return;
+
+    appNumField.addEventListener("input", function () {
+
+        const value = this.value.trim();
+        const status = document.getElementById("appStatus");
+
+        clearTimeout(debounceTimer);
+
+        status.textContent = "";
+        status.className = "status";
+
+        if (!value || !currentAppType) return;
+
+        // RC check
+        if (!value.startsWith("RC")) {
+            status.textContent = "Must start with RC";
+            status.className = "status status-dup";
+            return;
+        }
+
+        // length check
+        const expectedLength = currentAppType === "NEW" ? 20 : 21;
+
+        if (value.length !== expectedLength) {
+            status.textContent = `${value.length}/${expectedLength}`;
+            return;
+        }
+
+        // format check
+        const pattern = currentAppType === "NEW"
+            ? /^RC\d{18}$/
+            : /^RC\d{19}$/;
+
+        if (!pattern.test(value)) {
+            status.textContent = "Invalid format";
+            status.className = "status status-dup";
+            return;
+        }
+
+        // checking...
+        status.textContent = "Checking...";
+        status.className = "status status-checking";
+
+        debounceTimer = setTimeout(() => {
+            checkDuplicate(value);
+        }, 300);
+    });
+}
+
+
+// ✅ CHECK DUPLICATE
+async function checkDuplicate(appNum) {
+    try {
+        const response = await fetch(
+            `${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(appNum)}`
+        );
+
+        const data = await response.json();
+
+        const status = document.getElementById("appStatus");
+        const appNumField = document.getElementById("applicationNumber");
+
+        if (data.exists || data.duplicate) {
+            status.textContent = "Already submitted";
+            status.className = "status status-dup";
+            appNumField.style.borderColor = "#e74c3c";
+        } else {
+            status.textContent = "Available";
+            status.className = "status status-ok";
+            appNumField.style.borderColor = "#27ae60";
+        }
+
+    } catch (error) {
+        console.error("Duplicate check failed:", error);
     }
 }
 
@@ -96,7 +180,7 @@ function initEventListeners() {
 }
 
 
-// ✅ APP TYPE
+// ✅ APP TYPE CHANGE
 function handleAppTypeChange(type) {
     currentAppType = type;
 
@@ -109,9 +193,8 @@ function handleAppTypeChange(type) {
 
         appNumField.value = "";
         appNumField.maxLength = type === "NEW" ? 20 : 21;
-        appNumField.placeholder = type === "NEW"
-            ? "RC + 18 digits"
-            : "RC + 19 digits";
+        appNumField.placeholder =
+            type === "NEW" ? "RC + 18 digits" : "RC + 19 digits";
 
         status.textContent = "";
         checkedAppNums.clear();
@@ -163,30 +246,6 @@ async function handleFormSubmit(e) {
 }
 
 
-// ✅ DUPLICATE CHECK
-async function checkDuplicate(appNum) {
-    try {
-        const response = await fetch(
-            `${API_URL}?action=checkDuplicate&appNum=${encodeURIComponent(appNum)}`
-        );
-
-        const data = await response.json();
-        const status = document.getElementById("appStatus");
-
-        if (data.exists) {
-            status.textContent = "Already submitted";
-            status.className = "status status-dup";
-        } else {
-            status.textContent = "Available";
-            status.className = "status status-ok";
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-
 // ✅ VALIDATION
 function validateRequiredFields(form) {
     let isValid = true;
@@ -210,6 +269,9 @@ function resetForm() {
     form.reset();
 
     document.getElementById("mainForm").style.display = "none";
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById("date").value = today;
 }
 
 
