@@ -13,26 +13,22 @@ body {
     font-family: "Bookman Old Style", serif;
     background: #ffffff;
     padding: 20px;
-    
 }
 
 /* CONTAINER */
 .container {
-    width: min(95%, 1200px);
+    width: 95%;
     margin: auto;
-    
 }
 
 /* TITLE */
 .title {
     text-align: center;
-    margin-bottom: 15px;
-    margin-top: 10px;
+    margin: 10px 0 15px;
 }
 
 /* TABLE WRAPPER */
 .table-wrapper {
-    height: calc(100vh - 180px);
     overflow-y: auto;
     border: 1px solid #ccc;
 }
@@ -41,7 +37,6 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
 }
 
 /* STICKY HEADER */
@@ -78,7 +73,8 @@ tfoot td {
 td:nth-child(2), td:nth-child(3) {
     text-align: left;
 }
-/* COLUMN WIDTHS */
+
+/* ✅ ONLY COLUMN WIDTHS (as you wanted) */
 th:nth-child(1), td:nth-child(1) { width: 5%; }
 th:nth-child(2), td:nth-child(2) { width: 8%; font-family: monospace; }
 th:nth-child(3), td:nth-child(3) { width: 25%; }
@@ -96,12 +92,6 @@ th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #6
     color: #27ae60;
     font-size: 14px;
     font-weight: 500;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
 }
 
 /* BUTTON */
