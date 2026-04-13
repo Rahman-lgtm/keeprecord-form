@@ -207,35 +207,32 @@ async function handleFormSubmit(e) {
     const form = e.target;
     const status = document.getElementById("appStatus");
 
-    // ❌ already loading
     if (btn.classList.contains("loading")) return;
 
-    // ❌ validation fail
     if (!validateRequiredFields(form)) {
         showToast("Please fill all required fields!", false);
         return;
     }
 
-    // ❌ duplicate block
     if (status && status.classList.contains("status-dup")) {
         showToast("Application already submitted!", false);
         return;
     }
 
+    // 🔥 IMPORTANT FIX
+    document.getElementById("hiddenAppType").value = currentAppType;
+
     toggleLoading(btn, true);
 
     try {
-        // 🔥 FORM DATA
         const formData = new FormData(form);
         formData.append("action", "submit");
-        formData.append("appType", currentAppType);
-        // 🔥 CONVERT (IMPORTANT FIX)
+
         const params = new URLSearchParams();
         formData.forEach((value, key) => {
             params.append(key, value);
         });
 
-        // 🔥 API CALL
         const response = await fetch(API_URL, {
             method: "POST",
             headers: {
@@ -254,8 +251,6 @@ async function handleFormSubmit(e) {
             throw new Error("Invalid JSON");
         }
 
-        console.log("Server response:", result);
-
         if (result.status === "Success") {
             showToast("Form saved successfully!", true);
             resetForm();
@@ -268,7 +263,7 @@ async function handleFormSubmit(e) {
         }
 
     } catch (error) {
-        console.error("Submit error:", error);
+        console.error(error);
         showToast("Server error!", false);
     } finally {
         toggleLoading(btn, false);
