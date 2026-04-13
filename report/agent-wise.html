@@ -5,20 +5,35 @@
 <title>FPS Report</title>
 
 <style>
-box-sizing: border-box; } 
-html, body { margin: 0; padding: 0; height: 100%; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: "Bookman Old Style", serif;
     background: #ffffff;
-    margin: 0;
     padding: 20px;
 }
-/* CONTAINER */ .container { width: min(95%, 1200px); margin: 0 auto 20px; padding: 25px; background: rgba(255, 255, 255, 0.95); border-radius: 16px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; } 
-    /* LOADING */ .loading { position: absolute; top: 20px; right: 25px; color: #27ae60; font-size: 14px; font-weight: 500; z-index: 20; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } } /* TABLE WRAPPER */ 
-    .table-wrapper { flex: 1; min-height: 0; overflow: auto; border-radius: 12px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-    /* TABLE */ table { width: 100%; border-collapse: collapse; table-layout: fixed; background: white; font-size: 14px; }
+
+/* CONTAINER */
+.container {
+    width: min(95%, 1200px);
+    margin: auto;
+}
+
+/* TITLE */
+.title {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    max-height: 500px;   /* 🔥 scroll area */
+    overflow: auto;
+    border: 1px solid #ccc;
+}
+
 /* TABLE */
 table {
     width: 100%;
@@ -26,11 +41,13 @@ table {
     font-size: 14px;
 }
 
-/* HEADER */
+/* 🔥 STICKY HEADER */
 thead th {
-    background: #4f77b5;   /* blue header */
-    color: #fff;
-    font-weight: bold;
+    position: sticky;
+    top: 0;
+    background: #4f77b5;
+    color: white;
+    z-index: 10;
     padding: 10px;
     border: 1px solid #2f5597;
 }
@@ -42,52 +59,25 @@ tbody td {
     text-align: center;
 }
 
-/* ZEBRA ROWS */
-tbody tr:nth-child(odd) {
-    background: #d9e1f2;   /* light blue */
-}
+/* ZEBRA */
+tbody tr:nth-child(odd) { background: #d9e1f2; }
+tbody tr:nth-child(even) { background: #fff; }
 
-tbody tr:nth-child(even) {
-    background: #ffffff;
-}
-
-/* TOTAL ROW */
+/* FOOTER */
 tfoot td {
+    position: sticky;
+    bottom: 0;
     background: #d9e1f2;
     font-weight: bold;
-    text-align: center;
-    padding: 10px;
     border: 1px solid #2f5597;
 }
 
-/* FIRST COLUMN */
-td:first-child, th:first-child {
-    width: 60px;
-}
-
-/* GP NAME COLUMN */
-td:nth-child(2) {
+/* ALIGNMENTS */
+td:nth-child(2), td:nth-child(3) {
     text-align: left;
-    padding-left: 10px;
-}
-.total-row .col3 { text-align: right !important; font-size: 18px;
-.total-row .col {text-align: center;}
-td:nth-child(3) {
-    text-align: left;
-    word-break: break-word;
 }
 
-/* COLUMN WIDTHS */
-th:nth-child(1), td:nth-child(1) { width: 5%; }
-th:nth-child(2), td:nth-child(2) { width: 10%; font-family: monospace; }
-th:nth-child(3), td:nth-child(3) { width: 50%; }
-th:nth-child(4), td:nth-child(4) { width: 10%; }
-th:nth-child(5), td:nth-child(5) { width: 12%; }
-th:nth-child(6), td:nth-child(6) { width: 12%; }
-th:nth-child(7), td:nth-child(7) { width: 12%; font-weight: 600; }
-th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #666; }
-
-/* DOWNLOAD BUTTON */
+/* BUTTON */
 .download-btn {
     display: block;
     margin: 20px auto;
@@ -99,186 +89,136 @@ th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #6
     font-weight: bold;
     cursor: pointer;
 }
-
-.download-btn:hover {
-    background: #218838;
-}
 </style>
 </head>
 
 <body>
+
 <div class="container">
-    <!-- LOADING -->
-    <div class="loading" id="loadingText">Loading Report...</div>
 
-    <!-- TITLE -->
-    <h1 class="title">📊 FPS Data Entry Report - Agent Wise</h1>
+<h1 class="title">📊 FPS Data Entry Report - Agent Wise</h1>
 
-    <!-- TABLE AREA -->
-    <div class="table-wrapper">
+<div class="table-wrapper">
 
-    <table>
-        <thead>
-            <tr>
-                <th>Sl No</th>
-                <th>FPS ID</th>
-                <th>FPS Name</th>
-                <th>New RC count</th>
-                <th>New Units</th>
-                <th>Add units</th>
-                <th>Total Units</th>
-                <th>Ratio</th>
-            </tr>
-        </thead>
+<table id="reportTable">
+<thead>
+<tr>
+<th>Sl No</th>
+<th>FPS ID</th>
+<th>FPS Name</th>
+<th>New RC count</th>
+<th>New Units</th>
+<th>Add units</th>
+<th>Total Units</th>
+<th>Ratio</th>
+</tr>
+</thead>
 
-        <tbody id="tableBody">
-            <!-- dynamic rows -->
-        </tbody>
+<tbody id="tableBody"></tbody>
 
-        <!-- ✅ SINGLE TOTAL ROW -->
-        <tfoot>
-            <tr>
-                <td colspan="3"><b>Grand Total</b></td>
-                <td id="tNewCount">0</td>
-                <td id="tNewUnits">0</td>
-                <td id="tAddUnits">0</td>
-                <td id="tTotalUnits">0</td>
-                <td>-</td>
-            </tr>
-        </tfoot>
-    </table>
+<tfoot>
+<tr>
+<td colspan="3">Grand Total</td>
+<td id="tNewCount">0</td>
+<td id="tNewUnits">0</td>
+<td id="tAddUnits">0</td>
+<td id="tTotalUnits">0</td>
+<td>-</td>
+</tr>
+</tfoot>
 
-    <!-- ✅ SINGLE DOWNLOAD BUTTON -->
-    <button class="download-btn" id="downloadBtn">
-        Download
-    </button>
+</table>
+</div>
+
+<button class="download-btn" id="downloadBtn">Download</button>
 
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    fetch("/api/report")
-    .then(res => {
-        if (!res.ok) throw new Error('Network error');
-        return res.json();
-    })
-    .then(data => {
-        let fpsData = {};
-        let index = 1;
 
-        // Process data
-        data.forEach(row => {
-            let id = row["F.P.S Code 13050050......."];
-            let name = row["FPS Name"];
-            let type = row["Application type (NEW or ADD RC)"];
-            let members = parseInt(row["Total Number of included Members"]) || 0;
+fetch("/api/report")
+.then(res => res.json())
+.then(data => {
 
-            if (!id) return;
+let fpsData = {};
+let index = 1;
 
-            type = type ? type.toString().toUpperCase().trim() : "";
+data.forEach(row => {
+    let id = row["F.P.S Code 13050050......."];
+    let name = row["FPS Name"];
+    let type = row["Application type (NEW or ADD RC)"];
+    let members = parseInt(row["Total Number of included Members"]) || 0;
 
-            if (!fpsData[id]) {
-                fpsData[id] = {
-                    name: name || "Unnamed FPS",
-                    newCount: 0,
-                    newUnits: 0,
-                    addUnits: 0,
-                    totalUnits: 0
-                };
-            }
+    if (!id) return;
 
-            if (type.includes("NEW")) {
-                fpsData[id].newCount++;
-                fpsData[id].newUnits += members;
-                fpsData[id].totalUnits += members;
-            }
+    type = type ? type.toUpperCase().trim() : "";
 
-            if (type.includes("ADD")) {
-                fpsData[id].addUnits += members;
-                fpsData[id].totalUnits += members;
-            }
-        });
+    if (!fpsData[id]) {
+        fpsData[id] = {
+            name,
+            newCount: 0,
+            newUnits: 0,
+            addUnits: 0,
+            totalUnits: 0
+        };
+    }
 
-        let totalNewCount = 0;
-        let totalNewUnits = 0;
-        let totalAddUnits = 0;
-        let totalUnitsAll = 0;
+    if (type.includes("NEW")) {
+        fpsData[id].newCount++;
+        fpsData[id].newUnits += members;
+        fpsData[id].totalUnits += members;
+    }
 
-        let tableBody = document.getElementById("tableBody");
-
-        // Sort by total units (descending)
-        Object.entries(fpsData)
-        .sort((a, b) => b[1].totalUnits - a[1].totalUnits)
-        .forEach(([id, val]) => {
-            let ratio = val.newCount ? (val.totalUnits / val.newCount).toFixed(1) : "-";
-            
-            totalNewCount += val.newCount;
-            totalNewUnits += val.newUnits;
-            totalAddUnits += val.addUnits;
-            totalUnitsAll += val.totalUnits;
-
-            let row = `
-            <tr>
-                <td>${index++}</td>
-                <td>${id}</td>
-                <td>${val.name}</td>
-                <td>${val.newCount}</td>
-                <td>${val.newUnits}</td>
-                <td>${val.addUnits}</td>
-                <td><strong>${val.totalUnits}</strong></td>
-                <td>${ratio}</td>
-            </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-
-        // Update totals
-        document.getElementById("tNewCount").textContent = totalNewCount;
-        document.getElementById("tNewUnits").textContent = totalNewUnits.toLocaleString();
-        document.getElementById("tAddUnits").textContent = totalAddUnits.toLocaleString();
-        document.getElementById("tTotalUnits").textContent = totalUnitsAll.toLocaleString();
-
-        // Hide loading, show download
-        document.getElementById("loadingText").style.display = "none";
-        document.getElementById("downloadBtn").style.display = "inline-flex";
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById("loadingText").textContent = "Error loading data";
-        document.getElementById("loadingText").style.color = "#e74c3c";
-    });
+    if (type.includes("ADD")) {
+        fpsData[id].addUnits += members;
+        fpsData[id].totalUnits += members;
+    }
 });
 
-// Download functionality
-document.getElementById("downloadBtn").addEventListener("click", function () {
-    const table = document.getElementById("reportTable");
-    const totalRow = document.querySelector(".total-row").outerHTML;
-    
-    // Create enhanced table for export
-    const exportTable = table.cloneNode(true);
-    const exportTbody = exportTable.querySelector("tbody");
-    const totalRowClone = document.querySelector(".total-row").cloneNode(true);
-    
-    // Add total row to export
-    const tfoot = document.createElement("tfoot");
-    tfoot.innerHTML = totalRowClone.outerHTML.replace(/class="col"/g, 'class="col" style="font-weight: bold; background: #f0f0f0;"');
-    exportTable.appendChild(tfoot);
-    
-    let blob = new Blob([`
-        <html><head><meta charset="UTF-8"><title>FPS Report</title>
-        <style>table{font-family:Arial,sans-serif;border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:center}th{background:#8b5e3c;color:white}</style></head>
-        <body>${exportTable.outerHTML}</body></html>
-    `], { type: "application/vnd.ms-excel" });
-    
-    let url = URL.createObjectURL(blob);
-    let a = document.createElement("a");
-    a.href = url;
-    a.download = `FPS_Report_${new Date().toISOString().slice(0,10)}.xls`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+let tNewCount=0, tNewUnits=0, tAddUnits=0, tTotal=0;
+
+Object.entries(fpsData)
+.sort((a,b)=>b[1].totalUnits-a[1].totalUnits)
+.forEach(([id,val])=>{
+
+let ratio = val.newCount ? (val.totalUnits/val.newCount).toFixed(1) : "-";
+
+tNewCount+=val.newCount;
+tNewUnits+=val.newUnits;
+tAddUnits+=val.addUnits;
+tTotal+=val.totalUnits;
+
+document.getElementById("tableBody").innerHTML += `
+<tr>
+<td>${index++}</td>
+<td>${id}</td>
+<td>${val.name}</td>
+<td>${val.newCount}</td>
+<td>${val.newUnits}</td>
+<td>${val.addUnits}</td>
+<td><b>${val.totalUnits}</b></td>
+<td>${ratio}</td>
+</tr>`;
 });
+
+document.getElementById("tNewCount").innerText=tNewCount;
+document.getElementById("tNewUnits").innerText=tNewUnits;
+document.getElementById("tAddUnits").innerText=tAddUnits;
+document.getElementById("tTotalUnits").innerText=tTotal;
+
+});
+});
+
+// DOWNLOAD
+document.getElementById("downloadBtn").onclick = function(){
+let table = document.getElementById("reportTable").outerHTML;
+let blob = new Blob([table], {type:"application/vnd.ms-excel"});
+let a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "FPS_Report.xls";
+a.click();
+};
 </script>
 
 </body>
