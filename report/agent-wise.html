@@ -29,7 +29,7 @@ body {
 
 /* TABLE WRAPPER */
 .table-wrapper {
-    height: calc(100vh - 180px); /* 🔥 full screen height */
+    height: calc(100vh - 180px);
     overflow-y: auto;
     border: 1px solid #ccc;
 }
@@ -41,7 +41,7 @@ table {
     font-size: 14px;
 }
 
-/* 🔥 STICKY HEADER */
+/* STICKY HEADER */
 thead th {
     position: sticky;
     top: 0;
@@ -68,13 +68,15 @@ tfoot td {
     background: #d9e1f2;
     font-weight: bold;
     border: 1px solid #2f5597;
-    text-align: center;   /* 🔥 center align */
+    text-align: center;
 }
 
-/* ALIGNMENTS */
+/* ALIGN */
 td:nth-child(2), td:nth-child(3) {
     text-align: center;
 }
+
+/* LOADING */
 .loading {
     position: absolute;
     top: 20px;
@@ -82,7 +84,6 @@ td:nth-child(2), td:nth-child(3) {
     color: #27ae60;
     font-size: 14px;
     font-weight: 500;
-    z-index: 20;
     animation: pulse 2s infinite;
 }
 
@@ -107,9 +108,11 @@ td:nth-child(2), td:nth-child(3) {
 </head>
 
 <body>
+
 <div class="container">
-    <!-- LOADING -->
-    <div class="loading" id="loadingText">Loading Report...</div>
+
+<div class="loading" id="loadingText">Loading Report...</div>
+
 <h1 class="title">📊 FPS Data Entry Report - Agent Wise</h1>
 
 <div class="table-wrapper">
@@ -221,17 +224,16 @@ document.getElementById("tNewUnits").innerText=tNewUnits;
 document.getElementById("tAddUnits").innerText=tAddUnits;
 document.getElementById("tTotalUnits").innerText=tTotal;
 
+// ✅ FIXED loading hide
+document.getElementById("loadingText").style.display = "none";
+
+})
+.catch(error => {
+    console.error('Error:', error);
+    document.getElementById("loadingText").textContent = "Error loading data";
+    document.getElementById("loadingText").style.color = "#e74c3c";
 });
-});
- // Hide loading, show download
-        document.getElementById("loadingText").style.display = "none";
-        document.getElementById("downloadBtn").style.display = "inline-flex";
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById("loadingText").textContent = "Error loading data";
-        document.getElementById("loadingText").style.color = "#e74c3c";
-    });
+
 });
 
 // DOWNLOAD
