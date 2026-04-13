@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
   try {
 
-    // ✅ GET (duplicate check)
+    // ✅ GET
     if (req.method === "GET") {
       const { action, appNum } = req.query;
 
@@ -16,12 +16,11 @@ export default async function handler(req, res) {
       return res.status(200).send(text);
     }
 
-    // ✅ POST (submit)
+    // ✅ POST (🔥 FIXED)
     if (req.method === "POST") {
 
       let body = "";
 
-      // 🔥 IMPORTANT FIX (read raw body)
       await new Promise((resolve) => {
         req.on("data", chunk => {
           body += chunk.toString();
@@ -29,15 +28,14 @@ export default async function handler(req, res) {
         req.on("end", resolve);
       });
 
-      // 🔥 DEBUG (optional)
-      console.log("RAW BODY:", body);
+      console.log("BODY SENT:", body); // 🔍 debug
 
       const response = await fetch(SHEET_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: body   // 🔥 directly forward
+        body: body
       });
 
       const text = await response.text();
@@ -48,7 +46,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Invalid request" });
 
   } catch (err) {
-    console.error(err);
+    console.error("SERVER ERROR:", err);
     return res.status(500).json({ error: "Server error" });
   }
 }
