@@ -223,12 +223,12 @@ async function handleFormSubmit(e) {
 
     try {
         const formData = new FormData(form);
-        formData.append("action", "submit");
-
+        
         const params = new URLSearchParams();
         formData.forEach((value, key) => {
             params.append(key, value);
         });
+        params.append("action", "submit");  // ✅ SIRF YAHAN
 
         console.log("Form data:", params.toString());
 
@@ -241,20 +241,11 @@ async function handleFormSubmit(e) {
         });
 
         const text = await response.text();
-
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch {
-            console.log("Raw response:", text);
-            throw new Error("Invalid JSON");
-        }
+        let result = JSON.parse(text);
 
         if (result.status === "Success") {
             showToast("Form saved successfully!", true);
             resetForm();
-        } else if (result.status === "Duplicate") {
-            showToast("Already submitted!", false);
         } else {
             showToast(result.message || "Submit failed!", false);
             console.log("Server response:", result);
@@ -320,15 +311,3 @@ function toggleLoading(btn, show) {
         btn.disabled = false;
     }
 }
-// show caution on load
-showCaution();
-
-// Form submit
-$("#dataForm").on("submit", function() {
-    showCaution();
-});
-
-// Form reset
-$("#dataForm").on("reset", function() {
-    setTimeout(showCaution, 100);
-})
