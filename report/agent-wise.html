@@ -73,7 +73,22 @@ tfoot td {
 
 /* ALIGNMENTS */
 td:nth-child(2), td:nth-child(3) {
-    text-align: left;
+    text-align: center;
+}
+.loading {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #27ae60;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 20;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 /* BUTTON */
@@ -92,9 +107,9 @@ td:nth-child(2), td:nth-child(3) {
 </head>
 
 <body>
-
 <div class="container">
-
+    <!-- LOADING -->
+    <div class="loading" id="loadingText">Loading Report...</div>
 <h1 class="title">📊 FPS Data Entry Report - Agent Wise</h1>
 
 <div class="table-wrapper">
