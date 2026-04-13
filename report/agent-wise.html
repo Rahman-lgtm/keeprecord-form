@@ -239,8 +239,8 @@ tbody tr:hover {
 <button class="download-btn" id="downloadBtn">Download</button>
 <script>
 
-const API_URL = "/.netlify/functions/data";
-fetch(url)
+
+fetch("/.netlify/functions/report")
 .then(res => res.json())
 .then(data => {
 
