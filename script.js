@@ -225,12 +225,23 @@ async function handleFormSubmit(e) {
     toggleLoading(btn, true);
 
     try {
+        // 🔥 FORM DATA
         const formData = new FormData(form);
         formData.append("action", "submit");
 
+        // 🔥 CONVERT (IMPORTANT FIX)
+        const params = new URLSearchParams();
+        formData.forEach((value, key) => {
+            params.append(key, value);
+        });
+
+        // 🔥 API CALL
         const response = await fetch(API_URL, {
             method: "POST",
-            body: formData
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: params
         });
 
         const text = await response.text();
@@ -242,6 +253,8 @@ async function handleFormSubmit(e) {
             console.log("Raw:", text);
             throw new Error("Invalid JSON");
         }
+
+        console.log("Server response:", result);
 
         if (result.status === "Success") {
             showToast("Form saved successfully!", true);
@@ -255,7 +268,7 @@ async function handleFormSubmit(e) {
         }
 
     } catch (error) {
-        console.error(error);
+        console.error("Submit error:", error);
         showToast("Server error!", false);
     } finally {
         toggleLoading(btn, false);
