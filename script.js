@@ -1,5 +1,5 @@
-const API_URL = "/.netlify/functions/data";   // submit + duplicate
-const FPS_API = "/.netlify/functions/fps";    // auto-fill
+const API_URL = "/api/data";
+const FPS_API = "/api/fps";
 
 let fpsData = [];
 let checkedAppNums = new Set();
