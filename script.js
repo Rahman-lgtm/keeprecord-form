@@ -219,8 +219,13 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    // 🔥 IMPORTANT FIX
-    document.getElementById("hiddenAppType").value = currentAppType;
+    // 🔥 MAIN FIX: पहले main select का value hidden में copy करें
+    const appTypeSelect = document.getElementById("appType");
+    const hiddenAppType = document.getElementById("hiddenAppType");
+    
+    if (appTypeSelect && hiddenAppType) {
+        hiddenAppType.value = appTypeSelect.value;  // यहाँ NEW/ADD आएगा
+    }
 
     toggleLoading(btn, true);
 
@@ -233,6 +238,8 @@ async function handleFormSubmit(e) {
             params.append(key, value);
         });
 
+        console.log("Form data:", params.toString()); // DEBUG के लिए
+
         const response = await fetch(API_URL, {
             method: "POST",
             headers: {
@@ -240,36 +247,6 @@ async function handleFormSubmit(e) {
             },
             body: params
         });
-
-        const text = await response.text();
-
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch {
-            console.log("Raw:", text);
-            throw new Error("Invalid JSON");
-        }
-
-        if (result.status === "Success") {
-            showToast("Form saved successfully!", true);
-            resetForm();
-        }
-        else if (result.status === "Duplicate") {
-            showToast("Already submitted!", false);
-        }
-        else {
-            showToast(result.message || "Submit failed!", false);
-        }
-
-    } catch (error) {
-        console.error(error);
-        showToast("Server error!", false);
-    } finally {
-        toggleLoading(btn, false);
-    }
-}
-
 
 // ✅ VALIDATION
 function validateRequiredFields(form) {
