@@ -340,10 +340,7 @@ body {
 
 </div>
 <script>
-
-
-
-fetch("/.netlify/functions/report")
+fetch("/api/report")
 .then(res => res.json())
 .then(data => {
 
@@ -358,16 +355,14 @@ fetch("/.netlify/functions/report")
 
         if (!lac) return;
 
-        // normalize text
+        // normalize
         type = type ? type.toString().toUpperCase().trim() : "";
         lac = lac.toString().trim();
 
-        // create object if not exist
         if (!lacData[lac]) {
             lacData[lac] = { ADD: 0, NEW: 0 };
         }
 
-        // 🔥 SUM LOGIC (IMPORTANT FIX)
         if (type.includes("ADD")) {
             lacData[lac].ADD += members;
             totalUnit += members;
@@ -377,10 +372,9 @@ fetch("/.netlify/functions/report")
             lacData[lac].NEW += members;
             totalUnit += members;
         }
-
     });
 
-    // 🔥 UPDATE UI
+    // UI update
     document.querySelectorAll(".lac-card").forEach(card => {
 
         let name = card.querySelector("h4").innerText.trim();
@@ -388,7 +382,6 @@ fetch("/.netlify/functions/report")
         let newBox = card.querySelector(".left-box .num");
         let addBox = card.querySelector(".right-box .num");
 
-        // default 0 (important)
         if (newBox) newBox.innerText = "0";
         if (addBox) addBox.innerText = "0";
 
@@ -398,14 +391,12 @@ fetch("/.netlify/functions/report")
         }
     });
 
-    // 🔥 TOTAL SUM
     document.querySelector(".total").innerText = totalUnit;
 
 })
 .catch(err => {
     console.error("Error fetching data:", err);
 });
-
 </script>
 </body>
 </html>
