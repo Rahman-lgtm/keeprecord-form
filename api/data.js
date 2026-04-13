@@ -6,7 +6,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "SHEET_URL not set" });
     }
 
-    // ✅ GET
     if (req.method === "GET") {
       const { action = "", appNum = "" } = req.query;
 
@@ -18,31 +17,38 @@ export default async function handler(req, res) {
       return res.status(200).send(text);
     }
 
-    // ✅ POST
     if (req.method === "POST") {
       console.log("REQ BODY:", req.body);
 
       const params = new URLSearchParams();
 
-      for (const key in req.body) {
-        params.append(key, req.body[key]);
-      }
+      Object.entries(req.body || {}).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach(v => params.append(key, v));
+        } else {
+          params.append(key, value ?? "");
+        }
+      });
 
-      console.log("FORWARD BODY:", params.toString());
+      const forwardBody = params.toString();
+      console.log("FORWARD BODY:", forwardBody);
 
       const response = await fetch(SHEET_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: params.toString()
+        body: forwardBody
       });
 
       const text = await response.text();
+      console.log("GAS RESPONSE:", text);
+
       return res.status(200).send(text);
     }
 
     return res.status(405).json({ error: "Method not allowed" });
+
   } catch (err) {
     console.error("SERVER ERROR:", err);
     return res.status(500).json({ error: "Server error" });
