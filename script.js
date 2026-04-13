@@ -1,4 +1,4 @@
-const API_URL = ""/.netlify/functions/data";
+const API_URL = "/.netlify/functions/data";
 let fpsData = [];
 let checkedAppNums = new Set();
 let submitCounts = new Map();
