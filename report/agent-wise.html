@@ -29,8 +29,8 @@ body {
 
 /* TABLE WRAPPER */
 .table-wrapper {
-    max-height: 500px;   /* 🔥 scroll area */
-    overflow: auto;
+    height: calc(100vh - 180px); /* 🔥 full screen height */
+    overflow-y: auto;
     border: 1px solid #ccc;
 }
 
@@ -65,11 +65,10 @@ tbody tr:nth-child(even) { background: #fff; }
 
 /* FOOTER */
 tfoot td {
-    position: sticky;
-    bottom: 0;
     background: #d9e1f2;
     font-weight: bold;
     border: 1px solid #2f5597;
+    text-align: center;   /* 🔥 center align */
 }
 
 /* ALIGNMENTS */
