@@ -341,9 +341,9 @@ body {
 </div>
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbxSw-pH_kHlH9GKkBJUShKJ5BdUxV_57K6QfozlQBGx-OSxtBjs892p79H1mWfaDAER/exec";
 
-fetch(url)
+
+fetch("/.netlify/functions/data")
 .then(res => res.json())
 .then(data => {
 
