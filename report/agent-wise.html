@@ -10,245 +10,80 @@
     box-sizing: border-box;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-
-/* BODY */
 body {
-    font-family: "Segoe UI", "Bookman Old Style", -apple-system, serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* TITLE */
-.title {
-    text-align: center;
-    margin: 20px 0 15px;
-    font-size: clamp(24px, 4vw, 32px);
-    font-weight: 700;
-    color: #6b3e26;
-    letter-spacing: 1px;
-    flex: 0 0 auto;
-}
-
-/* CONTAINER */
-.container { 
-    width: min(95%, 1200px); 
-    margin: 0 auto 20px; 
-    padding: 25px; 
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px; 
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    position: relative; 
-    flex: 1; 
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-/* LOADING */
-.loading {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    color: #27ae60;
-    font-size: 14px;
-    font-weight: 500;
-    z-index: 20;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-/* TABLE WRAPPER */
-.table-wrapper {
-    flex: 1;
-    min-height: 0;
-    overflow: auto;
-    border-radius: 12px;
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
+    font-family: "Bookman Old Style", serif;
+    background: #ffffff;
+    margin: 0;
+    padding: 20px;
 }
 
 /* TABLE */
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
-    background: white;
     font-size: 14px;
 }
 
 /* HEADER */
 thead th {
-    position: sticky;
-    top: 0;
-    background: linear-gradient(135deg, #8b5e3c 0%, #a67c52 100%);
-    color: white;
-    z-index: 10;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    border: none;
+    background: #4f77b5;   /* blue header */
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    border: 1px solid #2f5597;
 }
 
-/* BODY ROWS */
-tbody tr {
-    transition: all 0.2s ease;
-    border-bottom: 1px solid #eee;
+/* BODY */
+tbody td {
+    padding: 8px;
+    border: 1px solid #8ea9db;
+    text-align: center;
 }
 
-tbody tr:hover {
-    background: linear-gradient(90deg, #e8f5e8 0%, #f1f8e9 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+/* ZEBRA ROWS */
+tbody tr:nth-child(odd) {
+    background: #d9e1f2;   /* light blue */
+}
+
+tbody tr:nth-child(even) {
+    background: #ffffff;
 }
 
 /* TOTAL ROW */
-.total-row {
-    background: linear-gradient(135deg, #8b5e3c 0%, #a67c52 100%);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: 40px 80px 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 1px;
-    background-color: #ddd;
-}
-
-.total-row .col {
-    background: white;
-    padding: 12px 8px;
+tfoot td {
+    background: #d9e1f2;
+    font-weight: bold;
     text-align: center;
-    font-weight: 700;
-    color: #6b3e26;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    font-size: 15px;
+    padding: 10px;
+    border: 1px solid #2f5597;
 }
 
-.total-row .col3 {
-    text-align: right !important;
-    font-size: 18px;
-    color: #8b5e3c;
-    background: linear-gradient(135deg, #fff3e0 0%, #fff8e1 100%);
+/* FIRST COLUMN */
+td:first-child, th:first-child {
+    width: 60px;
 }
 
-/* CELLS */
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px 8px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-td:nth-child(3) {
+/* GP NAME COLUMN */
+td:nth-child(2) {
     text-align: left;
-    word-break: break-word;
+    padding-left: 10px;
 }
-
-/* COLUMN WIDTHS */
-th:nth-child(1), td:nth-child(1) { width: 5%; }
-th:nth-child(2), td:nth-child(2) { width: 10%; font-family: monospace; }
-th:nth-child(3), td:nth-child(3) { width: 25%; }
-th:nth-child(4), td:nth-child(4) { width: 10%; }
-th:nth-child(5), td:nth-child(5) { width: 12%; }
-th:nth-child(6), td:nth-child(6) { width: 12%; }
-th:nth-child(7), td:nth-child(7) { width: 12%; font-weight: 600; }
-th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #666; }
 
 /* DOWNLOAD BUTTON */
 .download-btn {
-    align-self: center;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    background: #28a745;
+    color: #000;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
-    transition: all 0.3s ease;
-    text-decoration: none;
 }
 
 .download-btn:hover {
-    background: linear-gradient(135deg, #45a049 0%, #2e7d32 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(76, 175, 80, 0.4);
-}
-
-.download-btn:active {
-    transform: translateY(0);
-}
-
-/* SCROLLBAR */
-.table-wrapper::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #8b5e3c, #a67c52);
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .container {
-        width: 98%;
-        padding: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .title {
-        margin: 15px 0 10px;
-    }
-    
-    th, td {
-        padding: 8px 4px;
-        font-size: 12px;
-    }
-    
-    .total-row {
-        padding: 15px;
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .total-row .col {
-        padding: 10px;
-        margin: 2px 0;
-    }
-    
-    .download-btn {
-        padding: 12px 20px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-    th:nth-child(8), td:nth-child(8) {
-        display: none;
-    }
+    background: #218838;
 }
 </style>
 </head>
@@ -263,41 +98,43 @@ th:nth-child(8), td:nth-child(8) { width: 16%; font-family: monospace; color: #6
 
     <!-- TABLE AREA -->
     <div class="table-wrapper">
-        <table id="reportTable">
-            <thead>
-                <tr>
-                    <th>Sl No</th>
-                    <th>FPS ID</th>
-                    <th>FPS Name</th>
-                    <th>New RC<br>Count</th>
-                    <th>New<br>Units</th>
-                    <th>Add<br>Units</th>
-                    <th>Total<br>Units</th>
-                    <th>Ratio</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- Dynamic data -->
-            </tbody>
-        </table>
-    </div>
 
-    <!-- TOTAL ROW -->
-    <div class="total-row">
-        <div class="col"></div> <!-- Sl No -->
-        <div class="col"></div> <!-- FPS ID -->
-        <div class="col col3">📈 GRAND TOTAL</div>
-        <div class="col" id="tNewCount">0</div>
-        <div class="col" id="tNewUnits">0</div>
-        <div class="col" id="tAddUnits">0</div>
-        <div class="col" id="tTotalUnits">0</div>
-        <div class="col">-</div>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Sl No</th>
+                <th>GP Name/Ward No</th>
+                <th>FPS ID</th>
+                <th>New RC count</th>
+                <th>New Units</th>
+                <th>Add units</th>
+                <th>Total Units</th>
+                <th>Ratio</th>
+            </tr>
+        </thead>
 
-    <!-- DOWNLOAD BUTTON -->
+        <tbody id="tableBody">
+            <!-- dynamic rows -->
+        </tbody>
+
+        <!-- ✅ SINGLE TOTAL ROW -->
+        <tfoot>
+            <tr>
+                <td colspan="3"><b>Grand Total</b></td>
+                <td id="tNewCount">0</td>
+                <td id="tNewUnits">0</td>
+                <td id="tAddUnits">0</td>
+                <td id="tTotalUnits">0</td>
+                <td>-</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- ✅ SINGLE DOWNLOAD BUTTON -->
     <button class="download-btn" id="downloadBtn">
-        💾 Download Excel Report
+        Download
     </button>
+
 </div>
 
 <script>
