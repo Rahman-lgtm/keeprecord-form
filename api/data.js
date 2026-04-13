@@ -1,47 +1,56 @@
 export default async function handler(req, res) {
-
-  const API_KEY = process.env.API_KEY;
-  const SHEET_URL = process.env.SHEET_URL;
-
   try {
 
-    // ✅ GET REQUEST
-    if (req.method === "GET") {
+    const { action } = req.method === "POST"
+      ? req.body
+      : req.query;
 
-      const { action, appNum } = req.query;
-
-      // 🔥 FETCH DATA FROM GOOGLE SHEET
-      const response = await fetch(`${SHEET_URL}?key=${API_KEY}`);
-      const data = await response.json();
-
-      // ✅ DUPLICATE CHECK
-      if (action === "checkDuplicate") {
-        const exists = data.some(row =>
-          row["Application Number"] === appNum
-        );
-
-        return res.status(200).json({ exists });
-      }
-
-      // ✅ DEFAULT RETURN (jab direct open kare)
-      return res.status(200).json(data);
+    if (!action) {
+      return res.status(400).json({ error: "Invalid action" });
     }
 
-    // ✅ POST (FORM SUBMIT)
-    if (req.method === "POST") {
+    // ✅ DUPLICATE CHECK
+    if (action === "checkDuplicate") {
 
-      const response = await fetch(`${SHEET_URL}?key=${API_KEY}`, {
+      const { appNum } = req.query;
+
+      const url = process.env.SHEET_URL;
+
+      const response = await fetch(
+        url + "?action=checkDuplicate&appNum=" + encodeURIComponent(appNum)
+      );
+
+      const data = await response.json();
+      return res.json(data);
+    }
+
+    // ✅ SUBMIT
+    if (action === "submit") {
+
+      const formData = req.body;
+
+      const url = process.env.SHEET_URL;
+
+      const params = new URLSearchParams(formData);
+
+      const response = await fetch(url, {
         method: "POST",
-        body: req.body
+        body: params
       });
 
       const text = await response.text();
 
-      return res.status(200).json({
-        success: true,
-        message: text
-      });
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        return res.status(500).json({ error: "Invalid response from sheet" });
+      }
+
+      return res.json(data);
     }
+
+    return res.status(400).json({ error: "Invalid action" });
 
   } catch (err) {
     console.error(err);
