@@ -188,14 +188,16 @@ function handleAppTypeChange(type) {
 
         appNumField.value = "";
         appNumField.maxLength = type === "NEW" ? 20 : 21;
-        appNumField.placeholder =
-            type === "NEW" ? "RC + 18 digits" : "RC + 19 digits";
+        appNumField.placeholder = type === "NEW" ? "RC + 18 digits" : "RC + 19 digits";
 
         status.textContent = "";
+        status.className = "status";
         appNumField.focus();
     } else {
         mainForm.style.display = "none";
     }
+
+    console.log("Selected appType:", type);
 }
 
 
@@ -206,8 +208,14 @@ async function handleFormSubmit(e) {
     const btn = document.getElementById("submitBtn");
     const form = e.target;
     const status = document.getElementById("appStatus");
+    const appTypeSelect = document.getElementById("appType");
 
     if (btn.classList.contains("loading")) return;
+
+    if (!appTypeSelect || !appTypeSelect.value) {
+        showToast("Please select Application Type!", false);
+        return;
+    }
 
     if (!validateRequiredFields(form)) {
         showToast("Please fill all required fields!", false);
@@ -223,12 +231,14 @@ async function handleFormSubmit(e) {
 
     try {
         const formData = new FormData(form);
-        
+
         const params = new URLSearchParams();
         formData.forEach((value, key) => {
             params.append(key, value);
         });
-        params.append("action", "submit");  // ✅ SIRF YAHAN
+
+        params.set("appType", appTypeSelect.value);   // ✅ force correct value
+        params.set("action", "submit");               // ✅ only one action
 
         console.log("Form data:", params.toString());
 
@@ -241,11 +251,20 @@ async function handleFormSubmit(e) {
         });
 
         const text = await response.text();
-        let result = JSON.parse(text);
+
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch {
+            console.log("Raw response:", text);
+            throw new Error("Invalid JSON");
+        }
 
         if (result.status === "Success") {
             showToast("Form saved successfully!", true);
             resetForm();
+        } else if (result.status === "Duplicate") {
+            showToast("Already submitted!", false);
         } else {
             showToast(result.message || "Submit failed!", false);
             console.log("Server response:", result);
