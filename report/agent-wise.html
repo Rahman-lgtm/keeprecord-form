@@ -54,20 +54,17 @@ body {
 
 /* DOWNLOAD BUTTON */
 .download-btn {
-    display: none;
+    display: block;   /* 👈 check this also */
 
     position: absolute;
     bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
 
+    z-index: 10;  /* 👈 IMPORTANT */
+
     background: #4CAF50;
     color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
 }
 .download-btn:hover {
     background: #2e7d32;
