@@ -50,3 +50,14 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Server error" });
   }
 }
+showCaution();
+
+    // Form submit
+    $("#dataForm").on("submit", function() {
+        showCaution();
+    });
+
+    // Form reset
+    $("#dataForm").on("reset", function() {
+        setTimeout(showCaution, 100);
+    })
