@@ -116,7 +116,9 @@ td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
 tbody tr:hover {
     background: #c8e6c9;
 }
-
+.total-row .col3 {
+    text-align: center;
+}
 /* DOWNLOAD BUTTON */
 .download-btn {
     margin-top: 10px;
@@ -173,6 +175,32 @@ tbody tr:hover {
         padding: 8px 14px;
     }
 }
+    .total-row {
+    display: grid;
+    grid-template-columns: 
+        40px   /* Sl No */
+        80px   /* FPS ID */
+        240px  /* FPS Name */
+        repeat(5, 60px); /* बाकी */
+
+    background: #8b5e3c;
+    color: white;
+    font-weight: bold;
+
+    position: sticky;
+    bottom: 55px;
+    z-index: 5;
+}
+
+.total-row .col {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: center;
+}
+
+.total-row .col3 {
+    text-align: left;
+}
 </style>
 </head>
 
@@ -205,27 +233,28 @@ tbody tr:hover {
 
             <tbody id="tableBody">
                 <!-- Dynamic data -->
-            </tbody>
+           </tbody>
+</table>
+</div>
 
-            <tfoot>
-                <tr>
-                    <th colspan="3">TOTAL</th>
-                    <th id="tNewCount">0</th>
-                    <th id="tNewUnits">0</th>
-                    <th id="tAddUnits">0</th>
-                    <th id="tTotalUnits">0</th>
-                    <th>-</th>
-                </tr>
-            </tfoot>
+<!-- ✅ TOTAL ROW (FULL COLUMN MATCH) -->
+<div class="total-row">
 
-        </table>
-    </div>
+    <div class="col col1"></div> <!-- Sl No empty -->
+    <div class="col col2"></div> <!-- FPS ID empty -->
 
-    <!-- BUTTON (ALWAYS LAST) -->
-    <button class="download-btn" id="downloadBtn">Download</button>
+    <div class="col col3">TOTAL</div>
+
+    <div class="col" id="tNewCount">0</div>
+    <div class="col" id="tNewUnits">0</div>
+    <div class="col" id="tAddUnits">0</div>
+    <div class="col" id="tTotalUnits">0</div>
+    <div class="col">-</div>
 
 </div>
 
+<!-- DOWNLOAD BUTTON -->
+<button class="download-btn" id="downloadBtn">Download</button>
 <script>
 
 const url = "https://script.google.com/macros/s/AKfycbxUUuOfgvi5n0ltz6BjsLaBDKze3c56T7RNncBC_NzvurYwIPE5iSMPxZqnRQLMsRBE/exec?key=mySecret1774123";
