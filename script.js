@@ -297,13 +297,83 @@ function validateRequiredFields(form) {
 // ✅ RESET
 function resetForm() {
     const form = document.getElementById("dataForm");
+    const mainForm = document.getElementById("mainForm");
+    const appType = document.getElementById("appType");
+    const appNumField = document.getElementById("applicationNumber");
+    const status = document.getElementById("appStatus");
+    const today = new Date().toISOString().split("T")[0];
+
+    if (!form) return;
+
     form.reset();
 
-    document.getElementById("mainForm").style.display = "none";
+    currentAppType = "";
+    clearTimeout(debounceTimer);
 
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById("date").value = today;
+    if (mainForm) mainForm.style.display = "none";
+
+    if (appType) {
+        appType.value = "";
+        appType.style.borderColor = "";
+    }
+
+    if (appNumField) {
+        appNumField.value = "";
+        appNumField.placeholder = "";
+        appNumField.maxLength = 20;
+        appNumField.style.borderColor = "";
+    }
+
+    if (status) {
+        status.textContent = "";
+        status.className = "status";
+    }
+
+    const dateField = document.getElementById("date");
+    if (dateField) {
+        dateField.value = today;
+        dateField.min = today;
+        dateField.max = today;
+        dateField.style.borderColor = "";
+    }
+
+    form.querySelectorAll("input, select, textarea").forEach(field => {
+        field.style.borderColor = "";
+    });
+
+    const fieldsToClear = [
+        "fpsCode",
+        "fpsName",
+        "gpss",
+        "areaOfficer",
+        "lacManual",
+        "hof",
+        "mobile",
+        "gp",
+        "totalMembers",
+        "inspector",
+        "deo"
+    ];
+
+    fieldsToClear.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = "";
+            el.style.borderColor = "";
+        }
+    });
 }
+
+function openReport() {
+    window.location.href = "report/report.html";
+}
+
+$(document).on("select2:open", function() {
+    const searchField = document.querySelector(".select2-search__field");
+    if (searchField) {
+        searchField.placeholder = "Search here...";
+    }
+});
 
 
 // ✅ TOAST
