@@ -1,59 +1,70 @@
 export default async function handler(req, res) {
   try {
 
-    const { action } = req.method === "POST"
-      ? req.body
-      : req.query;
+    const action = req.method === "POST"
+      ? req.body?.action
+      : req.query?.action;
 
     if (!action) {
-      return res.status(400).json({ error: "Invalid action" });
+      return res.status(400).json({ error: "Missing action" });
     }
+
+    const url = process.env.SHEET_URL;
 
     // ✅ DUPLICATE CHECK
     if (action === "checkDuplicate") {
 
-      const { appNum } = req.query;
-
-      const url = process.env.SHEET_URL;
+      const appNum = req.query.appNum;
 
       const response = await fetch(
         url + "?action=checkDuplicate&appNum=" + encodeURIComponent(appNum)
       );
 
-      const data = await response.json();
-      return res.json(data);
+      const text = await response.text();
+
+      try {
+        const data = JSON.parse(text);
+        return res.json(data);
+      } catch {
+        console.log("Duplicate RAW:", text);
+        return res.status(500).json({ error: text });
+      }
     }
 
+
     // ✅ SUBMIT
-if (action === "submit") {
+    if (action === "submit") {
 
-  let body = "";
+      let body = "";
 
-  await new Promise((resolve) => {
-    req.on("data", chunk => {
-      body += chunk.toString();
-    });
-    req.on("end", resolve);
-  });
+      await new Promise((resolve) => {
+        req.on("data", chunk => body += chunk);
+        req.on("end", resolve);
+      });
 
-  const url = process.env.SHEET_URL;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: body
+      });
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: body
-  });
+      const text = await response.text();
 
-  const text = await response.text();
+      try {
+        const data = JSON.parse(text);
+        return res.json(data);
+      } catch {
+        console.log("Submit RAW:", text);
+        return res.status(500).json({ error: text });
+      }
+    }
 
-  let data;
-  try {
-    data = JSON.parse(text);
-  } catch {
-    return res.status(500).json({ error: "Invalid response from sheet" });
+    return res.status(400).json({ error: "Invalid action" });
+
+  } catch (err) {
+    console.error("SERVER ERROR:", err);
+    return res.status(500).json({ error: "Server crash" });
   }
-
-  return res.json(data);
 }
