@@ -2,8 +2,6 @@ const API_URL = "/api/data";
 const FPS_API = "/api/fps";
 
 let fpsData = [];
-let checkedAppNums = new Set();
-let submitCounts = new Map();
 let debounceTimer;
 let currentAppType = '';
 
@@ -12,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initEventListeners();
     loadFPSData();
     initFPSAutoFill();
-    initAppNumValidation();   // 🔥 duplicate check ON
+    initAppNumValidation();
 });
 
 
@@ -30,7 +28,7 @@ function loadFPSData() {
 }
 
 
-// ✅ AUTO FILL FPS
+// ✅ FPS AUTO FILL
 function initFPSAutoFill() {
     const fpsCodeField = document.getElementById("fpsCode");
     if (!fpsCodeField) return;
@@ -49,8 +47,6 @@ function handleFPSInput() {
         item.code && item.code.toString().trim() === code
     );
 
-    console.log("MATCH:", fps);
-
     if (fps) {
         document.getElementById("fpsName").value = fps.fpsName || '';
         document.getElementById("gpss").value = fps.gpss || '';
@@ -62,7 +58,7 @@ function handleFPSInput() {
 }
 
 
-// ✅ APPLICATION NUMBER VALIDATION + DUPLICATE CHECK
+// ✅ APPLICATION NUMBER VALIDATION
 function initAppNumValidation() {
     const appNumField = document.getElementById("applicationNumber");
     if (!appNumField) return;
@@ -111,12 +107,12 @@ function initAppNumValidation() {
 
         debounceTimer = setTimeout(() => {
             checkDuplicate(value);
-        }, 300);
+        }, 400);
     });
 }
 
 
-// ✅ CHECK DUPLICATE
+// ✅ DUPLICATE CHECK
 async function checkDuplicate(appNum) {
     try {
         const response = await fetch(
@@ -128,7 +124,7 @@ async function checkDuplicate(appNum) {
         const status = document.getElementById("appStatus");
         const appNumField = document.getElementById("applicationNumber");
 
-        if (data.exists || data.duplicate) {
+        if (data.exists) {
             status.textContent = "Already submitted";
             status.className = "status status-dup";
             appNumField.style.borderColor = "#e74c3c";
@@ -157,7 +153,7 @@ function initForm() {
 }
 
 
-// ✅ EVENT LISTENERS
+// ✅ EVENTS
 function initEventListeners() {
     const appTypeSelect = document.getElementById("appType");
 
@@ -165,7 +161,6 @@ function initEventListeners() {
         appTypeSelect.addEventListener("change", function () {
             handleAppTypeChange(this.value);
         });
-        appTypeSelect.focus();
     }
 
     const dataForm = document.getElementById("dataForm");
@@ -180,7 +175,7 @@ function initEventListeners() {
 }
 
 
-// ✅ APP TYPE CHANGE
+// ✅ APP TYPE
 function handleAppTypeChange(type) {
     currentAppType = type;
 
@@ -197,7 +192,6 @@ function handleAppTypeChange(type) {
             type === "NEW" ? "RC + 18 digits" : "RC + 19 digits";
 
         status.textContent = "";
-        checkedAppNums.clear();
         appNumField.focus();
     } else {
         mainForm.style.display = "none";
@@ -205,15 +199,26 @@ function handleAppTypeChange(type) {
 }
 
 
-// ✅ SUBMIT
+// ✅ SUBMIT (🔥 FULL FIXED)
 async function handleFormSubmit(e) {
     e.preventDefault();
 
     const btn = document.getElementById("submitBtn");
     const form = e.target;
+    const status = document.getElementById("appStatus");
 
+    // ❌ already loading
+    if (btn.classList.contains("loading")) return;
+
+    // ❌ validation fail
     if (!validateRequiredFields(form)) {
         showToast("Please fill all required fields!", false);
+        return;
+    }
+
+    // ❌ duplicate block
+    if (status && status.classList.contains("status-dup")) {
+        showToast("Application already submitted!", false);
         return;
     }
 
@@ -228,18 +233,30 @@ async function handleFormSubmit(e) {
             body: formData
         });
 
-        const result = await response.json();
+        const text = await response.text();
 
-        if (result.success) {
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch {
+            console.log("Raw:", text);
+            throw new Error("Invalid JSON");
+        }
+
+        if (result.status === "Success") {
             showToast("Form saved successfully!", true);
             resetForm();
-        } else {
-            showToast(result.message || "Error!", false);
+        }
+        else if (result.status === "Duplicate") {
+            showToast("Already submitted!", false);
+        }
+        else {
+            showToast(result.message || "Submit failed!", false);
         }
 
     } catch (error) {
         console.error(error);
-        showToast("Network error", false);
+        showToast("Server error!", false);
     } finally {
         toggleLoading(btn, false);
     }
@@ -252,7 +269,7 @@ function validateRequiredFields(form) {
 
     form.querySelectorAll("[required]").forEach(field => {
         if (!field.value.trim()) {
-            field.style.borderColor = "red";
+            field.style.borderColor = "#e74c3c";
             isValid = false;
         } else {
             field.style.borderColor = "";
@@ -278,6 +295,7 @@ function resetForm() {
 // ✅ TOAST
 function showToast(message, isSuccess = true) {
     const toast = document.getElementById("toast");
+
     toast.querySelector(".toast-message").textContent = message;
 
     toast.className = `toast ${isSuccess ? 'toast-success' : 'toast-error'} show`;
@@ -288,7 +306,13 @@ function showToast(message, isSuccess = true) {
 }
 
 
-// ✅ LOADING
+// ✅ LOADING (🔥 FIXED)
 function toggleLoading(btn, show) {
-    btn.disabled = show;
+    if (show) {
+        btn.classList.add("loading");
+        btn.disabled = true;
+    } else {
+        btn.classList.remove("loading");
+        btn.disabled = false;
+    }
 }
