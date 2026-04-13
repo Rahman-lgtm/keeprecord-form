@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw02vDrYaKFL3hA3XZBBf978uh5KrGuwKMbdSYAVPNbT5b6wFgM1EyV4RE_zHV0PRSQqQ/exec";
+const API_URL = ""/.netlify/functions/data";
 let fpsData = [];
 let checkedAppNums = new Set();
 let submitCounts = new Map();
