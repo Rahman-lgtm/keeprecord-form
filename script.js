@@ -228,7 +228,7 @@ async function handleFormSubmit(e) {
         // 🔥 FORM DATA
         const formData = new FormData(form);
         formData.append("action", "submit");
-
+        formData.append("appType", currentAppType);
         // 🔥 CONVERT (IMPORTANT FIX)
         const params = new URLSearchParams();
         formData.forEach((value, key) => {
