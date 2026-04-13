@@ -5,78 +5,72 @@
 <title>FPS Report</title>
 
 <style>
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 /* BODY */
 body {
     font-family: "Bookman Old Style", serif;
     background: white;
-    margin: 1px 0 5px 0;
-    height: 80vh;
-    overflow: hidden;   /* ❌ page scroll band */
+    min-height: 100dvh;
+    overflow: hidden; /* full page scroll band */
+    display: flex;
+    flex-direction: column;
 }
 
 /* TITLE */
 .title {
     text-align: center;
-    margin: 1px 0 5px 0;
+    margin: 6px 0 8px;
     font-size: 26px;
     font-weight: bold;
     color: #6b3e26;
+    flex: 0 0 auto;
 }
 
 /* CONTAINER */
 .container {
-    width: 70%;
-    max-width: 1100px;
-    margin: 10px auto;
-
+    width: min(70%, 1100px);
+    margin: 0 auto 10px;
     padding: 15px;
-    padding-bottom: 70px; /* button space */
-
     background: #d3d3d3;
     border-radius: 10px;
-    box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
-
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
     position: relative;
 
-    height: calc(100vh - 20px);  /* ✅ full fit */
+    flex: 1;
+    min-height: 0;   /* IMPORTANT for inner scrolling */
     display: flex;
     flex-direction: column;
+
+    overflow: hidden; /* only table-wrapper should scroll */
 }
 
 /* LOADING */
 .loading {
     position: absolute;
-    top: 5px;
+    top: 8px;
     right: 15px;
     color: green;
     font-size: 14px;
+    z-index: 20;
 }
 
-/* DOWNLOAD BUTTON */
-.download-btn {
-    display: block;   /* 👈 check this also */
-
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    z-index: 10;  /* 👈 IMPORTANT */
-
-    background: #4CAF50;
-    color: white;
-}
-.download-btn:hover {
-    background: #2e7d32;
-}
-
-/* TABLE WRAPPER (ONLY SCROLL AREA) */
+/* TABLE WRAPPER - ONLY SCROLL AREA */
 .table-wrapper {
     flex: 1;
-    overflow-y: auto;
-    overflow-x: auto;
-
-    padding-bottom: 60px;  /* 👈 IMPORTANT */
+    min-height: 0; /* IMPORTANT */
+    overflow: auto;
+    border-radius: 6px;
+    padding-bottom: 55px; /* button ke liye safe space */
 }
 
 /* TABLE */
@@ -87,29 +81,31 @@ table {
     background: #d3d3d3;
 }
 
-/* HEADER FIX */
+/* HEADER */
 thead th {
     position: sticky;
     top: 0;
     background: #8b5e3c;
     color: white;
-    z-index: 3;   /* ✅ always top */
+    z-index: 3;
 }
 
-/* FOOTER FIX (TOTAL ROW) */
-tfoot th {
+/* FOOTER / TOTAL ROW */
+tfoot th,
+tfoot td {
     position: sticky;
     bottom: 0;
     background: #8b5e3c;
     color: white;
-    z-index: 3;   /* ✅ always visible */
+    z-index: 3;
 }
 
-/* CELL */
+/* CELLS */
 th, td {
     border: 1px solid black;
     padding: 6px;
     text-align: center;
+    vertical-align: middle;
 }
 
 /* COLUMN WIDTHS */
@@ -128,14 +124,75 @@ th:nth-child(3), td:nth-child(3) {
     text-align: left;
 }
 
-th:not(:nth-child(2)):not(:nth-child(3)),
-td:not(:nth-child(2)):not(:nth-child(3)) {
+th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)),
+td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
     width: 60px;
 }
 
 /* ROW HOVER */
 tbody tr:hover {
     background: #c8e6c9;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    z-index: 10;
+
+    display: inline-block;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #4CAF50;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.download-btn:hover {
+    background: #2e7d32;
+}
+
+/* OPTIONAL SCROLLBAR STYLING */
+.table-wrapper::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #8b5e3c;
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: #e0e0e0;
+}
+
+/* MOBILE / SMALL SCREEN */
+@media (max-width: 768px) {
+    .container {
+        width: 96%;
+        padding: 10px;
+        margin-bottom: 6px;
+    }
+
+    .title {
+        font-size: 20px;
+        margin: 6px 0;
+    }
+
+    th, td {
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .download-btn {
+        font-size: 13px;
+        padding: 8px 14px;
+    }
 }
 </style>
 </head>
