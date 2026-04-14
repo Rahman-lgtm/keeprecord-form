@@ -14,16 +14,23 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </div>
 
 <div class="container">
-
-<form id="dataForm">
-
 <div class="row">
-<label>Application Type <span style="color:red;">*</span>:</label>
-<select id="appType" style="width:350px;" required>
-<option value="">Select</option>
-<option value="NEW">NEW RC Application</option>
-<option value="ADD">Existing RC Application</option>
+  <label>Application Type <span style="color:red;">*</span>:</label>
+  <select id="appType" name="appType" required style="width:350px;">
+    <option value="">Select</option>
+    <option value="NEW">NEW RC Application</option>
+    <option value="ADD">Existing RC Application</option>
 </select>
+</div>
+<div id="mainForm" class="main-form">
+<form id="dataForm" novalidate>
+<input type="hidden" name="appType" id="hiddenAppType">
+<div class="row">
+<label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
+<div style="position:relative;display:inline-block;width:350px;">
+<input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
+<span id="appStatus"></span>
+</div>
 </div>
 
 <div class="row">
