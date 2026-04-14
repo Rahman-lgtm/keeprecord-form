@@ -14,28 +14,29 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </div>
 
 <div class="container">
+
 <div class="row">
-  <label>Application Type <span style="color:red;">*</span>:</label>
-  <select id="appType" name="appType" required style="width:350px;">
-    <option value="">Select</option>
-    <option value="NEW">NEW RC Application</option>
-    <option value="ADD">Existing RC Application</option>
+<label>Application Type <span style="color:red;">*</span>:</label>
+<select id="appType" name="appType" required style="width:350px;">
+<option value="">Select</option>
+<option value="NEW">NEW RC Application</option>
+<option value="ADD">Existing RC Application</option>
 </select>
 </div>
+
 <div id="mainForm" class="main-form">
 <form id="dataForm" novalidate>
+
 <input type="hidden" name="appType" id="hiddenAppType">
+
 <div class="row">
-<label>Application Number <span style="color:red;">*</span> <span id="appFormat"></span>:</label>
-<div style="position:relative;display:inline-block;width:350px;">
-<input type="text" id="applicationNumber" name="applicationNumber" placeholder="RCxxxxxxxxxxxxxxx" required style="width:100%;">
-<span id="appStatus"></span>
-</div>
+<label>Application Number <span style="color:red;">*</span>:</label>
+<input type="text" id="applicationNumber" name="applicationNumber" required style="width:350px;">
 </div>
 
 <div class="row">
 <label>Name of Inspector <span style="color:red;">*</span>:</label>
-<select id="inspector" style="width:350px;" required>
+<select id="inspector" name="inspector" style="width:350px;" required>
 <option value="">Select</option>
 <option>Abhijit Bora</option>
 <option>Durga Bodo</option>
@@ -49,29 +50,29 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <div class="row flex">
 <div class="field">
 <label>Name of DEO <span style="color:red;">*</span>:</label>
-<input type="text" id="deo" placeholder="Name of Data Entry Operator" required style="width:280px;">
+<input type="text" id="deo" name="deo" required>
 </div>
 
 <div class="field">
 <label>Date <span style="color:red;">*</span>:</label>
-<input type="date" id="date" required style="width:150px;">
+<input type="date" id="date" name="date" required>
 </div>
 </div>
 
 <div class="row">
 <label>Mobile Number <span style="color:red;">*</span>:</label>
-<input type="tel" id="mobile" maxlength="10" placeholder="10 digit mobile no" required style="width:200px;">
+<input type="tel" id="mobile" name="mobile" maxlength="10" required>
 </div>
 
 <div class="row flex">
 <div class="field">
 <label>Name of HOF <span style="color:red;">*</span>:</label>
-<input type="text" id="hof" placeholder="Head of the Family" required style="width:250px;">
+<input type="text" id="hof" name="hof" required>
 </div>
 
 <div class="field">
 <label>GP/Ward No <span style="color:red;">*</span>:</label>
-<select id="gp" style="width:250px;" required>
+<select id="gp" name="gp" required>
 <option>Loading...</option>
 </select>
 </div>
@@ -79,7 +80,7 @@ Please complete the data entry process in the SmartPDS portal first<br>
 
 <div class="row">
 <label>Total Members <span style="color:red;">*</span>:</label>
-<input type="number" id="totalMembers" min="1" required style="width:90px;">
+<input type="number" id="totalMembers" name="totalMembers" min="1" required>
 </div>
 
 <div class="yellow-bar">Fair Price Shop Detail</div>
@@ -91,49 +92,37 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <div class="row flex">
 <div class="field">
 <label>F.P.S ID <span style="color:red;">*</span>:</label>
-<input type="text" id="fpsCode" maxlength="12" inputmode="numeric"
+<input type="text" id="fpsCode" name="fpsCode" maxlength="12"
 pattern="\\d{12}"
-oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-placeholder="Enter 12 digit FPS ID">
+oninput="this.value=this.value.replace(/[^0-9]/g,'')">
 </div>
 
 <div class="field">
 <label>FPS Name:</label>
-<input type="text" id="fpsName" readonly class="locked" style="width:270px;">
+<input type="text" id="fpsName" name="fpsName" readonly>
 </div>
 </div>
 
 <div class="row flex">
 <div class="field">
 <label>Name of GPSS:</label>
-<input type="text" id="gpss" readonly class="locked" style="width:350px;">
+<input type="text" id="gpss" name="gpss" readonly>
 </div>
 
 <div class="field">
 <label>Area Officer:</label>
-<input type="text" id="areaOfficer" readonly class="locked" style="width:190px;">
+<input type="text" id="areaOfficer" name="areaOfficer" readonly>
 </div>
 </div>
 
 <div class="row">
-<div class="field">
 <label>LAC Name:</label>
-<input type="text" id="lacManual" readonly class="locked">
-</div>
+<input type="text" id="lacManual" name="lacManual" readonly>
 </div>
 
 <div class="button-area">
-<button id="submitBtn" type="submit">
-<span class="btn-text">Submit</span>
-<span class="spinner"></span>
-</button>
-
-<button class="reset-btn" type="reset">Reset</button>
-</div>
-
-<div class="caution-bar">
-<b>Important:</b><br>
-Ensure all information is accurate and complete, as any incorrect, duplicate, or missing data may result in rejection and deduction in the data entry bill.
+<button type="submit">Submit</button>
+<button type="reset">Reset</button>
 </div>
 
 </form>
