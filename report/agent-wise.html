@@ -17,9 +17,10 @@ body {
 
 /* CONTAINER */
 .container {
-    height: 100vh;
-    display: flex;
-    }
+    width: 95%;
+    margin: auto;
+}
+
 
 /* TITLE */
 .title {
@@ -27,21 +28,19 @@ body {
     top: 0;
     text-align: center;
     padding: 8px;
-    margin: 0;
-    z-index: 20;
-}
+   margin: 10px 0 15px;
+    z-index: 20;}
 
 /* TABLE WRAPPER */
 .table-wrapper {
-    flex: 1;
     overflow-y: auto;
+    border: 1px solid #ccc;
 }
 
 /* TABLE */
 table {
-    width: 75%;
-    border-collapse: separate;
-    border-spacing: 0;
+    width: 100%;
+    border-collapse: collapse;
 }
 .table-container {
     max-height: 400px;   /* jitna height chahiye */
@@ -50,16 +49,17 @@ table {
 /* STICKY HEADER */
 thead th {
     position: sticky;
-    top: 1px; /* 👈 title height ke hisab se adjust karo */
+    top: 0;
     background: #4f77b5;
     color: white;
-    z-index: 15;
-    padding: 6px;
+    z-index: 10;
+    padding: 10px;
     border: 1px solid #2f5597;
 }
+
 /* BODY */
 tbody td {
-    padding: 5px;
+    padding: 8px;
     border: 1px solid #8ea9db;
     text-align: center;
 }
