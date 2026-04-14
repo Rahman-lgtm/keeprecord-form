@@ -390,7 +390,7 @@ function showToast(message, isSuccess = true) {
 }
 
 
-// ✅ LOADING (🔥 FIXED)
+// ✅ LOADING BUTTON (same as yours)
 function toggleLoading(btn, show) {
     if (show) {
         btn.classList.add("loading");
@@ -400,3 +400,46 @@ function toggleLoading(btn, show) {
         btn.disabled = false;
     }
 }
+
+async function loadGPDropdown() {
+  const dropdown = document.getElementById("gp");
+
+  // disable dropdown while loading
+  dropdown.disabled = true;
+  dropdown.innerHTML = '<option>Loading...</option>';
+
+  try {
+    const res = await fetch("/api/dropdown");
+
+    if (!res.ok) throw new Error("API error");
+
+    const data = await res.json();
+
+    // clear & default option
+    dropdown.innerHTML = '<option value="">Select GP/Ward No</option>';
+
+    // ✅ use document fragment (faster for 200+ items)
+    const fragment = document.createDocumentFragment();
+
+    data.forEach(item => {
+      if (!item) return; // skip empty
+
+      let option = document.createElement("option");
+      option.value = item.trim();
+      option.textContent = item.trim();
+
+      fragment.appendChild(option);
+    });
+
+    dropdown.appendChild(fragment);
+
+    dropdown.disabled = false; // enable after load
+
+  } catch (err) {
+    console.error(err);
+    dropdown.innerHTML = '<option>Error loading data</option>';
+  }
+}
+
+// ✅ page fully load hone ke baad run (safe)
+window.addEventListener("DOMContentLoaded", loadGPDropdown);
