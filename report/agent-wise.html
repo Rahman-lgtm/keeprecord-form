@@ -15,44 +15,44 @@ body {
     padding: 20px;
 }
 
-/* CONTAINER */
+/* ✅ CONTAINER 60% CENTER */
 .container {
-    width: 95%;
+    width: 60%;
     margin: auto;
 }
 
-
-/* TITLE */
+/* ✅ TITLE FIXED (NOT SCROLL) */
 .title {
     position: sticky;
     top: 0;
+    background: #fff;
     text-align: center;
-    padding: 8px;
-   margin: 10px 0 15px;
-    z-index: 20;}
+    padding: 10px;
+    z-index: 20;
+    border-bottom: 2px solid #ccc;
+}
 
-/* TABLE WRAPPER */
+/* ✅ TABLE WRAPPER SCROLL ONLY */
 .table-wrapper {
+    height: 70vh;           /* full visible area */
     overflow-y: auto;
     border: 1px solid #ccc;
 }
 
-/* TABLE */
+/* ✅ TABLE FIX */
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;   /* 🔥 MOST IMPORTANT FIX */
 }
-.table-container {
-    max-height: 400px;   /* jitna height chahiye */
-    overflow-y: auto;    /* scroll yahi par hoga */
-}
-/* STICKY HEADER */
+
+/* ✅ HEADER STICKY */
 thead th {
     position: sticky;
     top: 0;
     background: #4f77b5;
     color: white;
-    z-index: 10;
+    z-index: 15;
     padding: 10px;
     border: 1px solid #2f5597;
 }
@@ -68,39 +68,36 @@ tbody td {
 tbody tr:nth-child(odd) { background: #d9e1f2; }
 tbody tr:nth-child(even) { background: #fff; }
 
-/* FOOTER */
+/* FOOTER STICKY */
 tfoot td {
     position: sticky;
     bottom: 0;
     background: #eee;
     font-weight: bold;
+    text-align: center;
     z-index: 10;
 }
 
 /* ALIGN */
-td:nth-child(2) {
-    text-align: center;
+td:nth-child(3) {
+    text-align: left;
 }
-td:nth-child(3) {text-align: left;
-}
-/* ✅ ONLY COLUMN WIDTHS (as you wanted) */
-th:nth-child(1), td:nth-child(1) { width: 3%; text-align: center;}
-th:nth-child(2), td:nth-child(2) { width: 7%; text-align: center; }
-th:nth-child(3), td:nth-child(3) { width: 22%; text-align: left;}
-th:nth-child(4), td:nth-child(4) { width: 7%; text-align: center;}
-th:nth-child(5), td:nth-child(5) { width: 7%; text-align: center; }
-th:nth-child(6), td:nth-child(6) { width: 7%; text-align: center;}
-th:nth-child(7), td:nth-child(7) { width: 7%; font-weight: 600; text-align: center; }
-th:nth-child(8), td:nth-child(8) { width: 7%; text-align: center; }
 
-/* LOADING */
-.loading {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    color: #27ae60;
-    font-size: 14px;
-    font-weight: 500;
+/* ✅ COLUMN WIDTHS (NOW WORK PROPERLY) */
+th:nth-child(1), td:nth-child(1) { width: 5%; }
+th:nth-child(2), td:nth-child(2) { width: 10%; }
+th:nth-child(3), td:nth-child(3) { width: 30%; } /* BIG */
+th:nth-child(4), td:nth-child(4) { width: 10%; }
+th:nth-child(5), td:nth-child(5) { width: 8%; }  /* SMALL */
+th:nth-child(6), td:nth-child(6) { width: 12%; }
+th:nth-child(7), td:nth-child(7) { width: 12%; }
+th:nth-child(8), td:nth-child(8) { width: 13%; }
+
+/* TEXT CONTROL */
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* BUTTON */
