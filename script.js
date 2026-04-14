@@ -1,3 +1,55 @@
+const app = document.getElementById("app");
+
+app.innerHTML = `
+<div class="page-wrapper">
+<div class="top-title">
+This form is only for maintaining the DEO work record<br>
+It is not a SmartPDS portal data entry page
+</div>
+
+<div class="title">
+Please complete the data entry process in the SmartPDS portal first<br>
+<span class="subtitle">After generating the application number, enter it here and submit it</span>
+</div>
+
+<div class="container">
+
+<div class="row">
+<label>Application Type <span style="color:red;">*</span>:</label>
+<select id="appType" style="width:350px;">
+<option value="">Select</option>
+<option value="NEW">NEW RC Application</option>
+<option value="ADD">Existing RC Application</option>
+</select>
+</div>
+
+<div class="row">
+<label>Name of Inspector <span style="color:red;">*</span>:</label>
+<select id="inspector" style="width:350px;">
+<option value="">Select</option>
+<option>Abhijit Bora</option>
+<option>Durga Bodo</option>
+<option>Mausam Zinnat</option>
+<option>Mausumi Bora</option>
+<option>Sanjiv Sarma</option>
+<option>Santonu Bordoloi</option>
+</select>
+</div>
+
+<div class="row">
+<label>GP/Ward No <span style="color:red;">*</span>:</label>
+<select id="gp" style="width:250px;">
+<option>Loading...</option>
+</select>
+</div>
+
+<div class="button-area">
+<button id="submitBtn">Submit</button>
+</div>
+
+</div>
+</div>
+`;
 const API_URL = "/api/data";
 const FPS_API = "/api/fps";
 
