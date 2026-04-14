@@ -103,7 +103,31 @@ td, th {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.loading {
+    position: fixed;   /* 🔥 screen ke sath fix rahega */
+    top: 10px;
+    right: 20px;
 
+    background: #ffffff;
+    color: #27ae60;
+
+    padding: 6px 12px;
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 999;
+}
+    .loading {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
 /* BUTTON */
 .download-btn {
     display: block;
