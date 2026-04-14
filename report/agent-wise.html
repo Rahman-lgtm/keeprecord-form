@@ -17,27 +17,32 @@ body {
 
 /* CONTAINER */
 .container {
-    width: 75%;
-    margin: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* TITLE */
 .title {
-    text-align: center;
-    margin: 10px 0 15px;
+    position: sticky;
+    top: 0;
+    background: #d9d9d9;
+    padding: 12px;
+    margin: 0;
+    z-index: 20;
 }
 
 /* TABLE WRAPPER */
 .table-wrapper {
+    flex: 1;
     overflow-y: auto;
-    border: 1px solid #ccc;
 }
 
 /* TABLE */
 table {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;   /* 🔥 MOST IMPORTANT */
+    border-collapse: separate;
+    border-spacing: 0;
 }
 .table-container {
     max-height: 400px;   /* jitna height chahiye */
@@ -46,11 +51,11 @@ table {
 /* STICKY HEADER */
 thead th {
     position: sticky;
-    top: 0;
+    top: 55px; /* 👈 title height ke hisab se adjust karo */
     background: #4f77b5;
     color: white;
-    z-index: 10;
-    padding: 15px;
+    z-index: 15;
+    padding: 12px;
     border: 1px solid #2f5597;
 }
 /* BODY */
@@ -66,10 +71,11 @@ tbody tr:nth-child(even) { background: #fff; }
 
 /* FOOTER */
 tfoot td {
-    background: #d9e1f2;
+    position: sticky;
+    bottom: 0;
+    background: #eee;
     font-weight: bold;
-    border: 1px solid #2f5597;
-    text-align: center;
+    z-index: 10;
 }
 
 /* ALIGN */
