@@ -35,6 +35,26 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <option>Santonu Bordoloi</option>
 </select>
 </div>
+</div>
+<div class="row flex">
+<div class="field">
+<label>Name of DEO <span style="color:red;">*</span>:</label>
+<input type="text" id="deo" name="deo" placeholder="Name of Data Entry Operator" required style="width:280px;">
+</div>
+<div class="field">
+<label>Date <span style="color:red;">*</span>:</label>
+<input type="date" id="date" name="date" required style="width:150px;">
+</div>
+</div>
+<div class="row">
+<label>Mobile Number <span style="color:red;">*</span>:</label>
+<input type="tel" id="mobile" name="mobile" maxlength="10" placeholder="10 digit mobile no" required style="width:200px;">
+</div>
+<div class="row flex">
+<div class="field">
+<label>Name of HOF<span style="color:red;">*</span>:</label>
+<input type="text" id="hof" name="hof" placeholder="Head of the Family" required style="width:250px;">
+</div>
 
 <div class="row">
 <label>GP/Ward No <span style="color:red;">*</span>:</label>
@@ -42,13 +62,57 @@ Please complete the data entry process in the SmartPDS portal first<br>
 <option>Loading...</option>
 </select>
 </div>
-
+<div class="row">
+<label>Total Members <span style="color:red;">*</span>:</label>
+<input type="number" id="totalMembers" name="totalMembers" min="1" required style="width:90px;">
+</div>
+<div class="yellow-bar">Fair Price Shop Detail</div>
+<div class="note">
+<b>N.B.:</b> Enter the FPS ID — the remaining fields will be auto-filled
+</div>
+<div class="row flex">
+<div class="field">
+<label>F.P.S ID <span style="color:red;">*</span>:</label>
+<input type="text" id="fpsCode" name="fpsCode" maxlength="12" inputmode="numeric" pattern="\d{12}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Enter 12 digit FPS ID">
+</div>
+<div class="field">
+<label>FPS Name:</label>
+<input type="text" id="fpsName" name="fpsName" readonly class="locked"required style="width:270px;">
+</div>
+</div>
+<div class="row flex">
+<div class="field">
+<label>Name of GPSS:</label>
+<input type="text" id="gpss" name="gpss" readonly class="locked" required style="width:350px;">
+</div>
+<div class="field">
+<label>Area Officer:</label>
+<input type="text" id="areaOfficer" name="areaOfficer" readonly class="locked" required style="width:190px;">
+</div>
+</div>
+<div class="row">
+<div class="field">
+<label>LAC Name:</label>
+<input type="text" id="lacManual" name="lacManual" readonly class="locked">
+</div>
+</div>
 <div class="button-area">
-<button id="submitBtn">Submit</button>
+<button id="submitBtn" type="submit">
+<span class="btn-text">Submit</span>
+<span class="spinner"></span>
+ <input type="hidden" name="action" value="submit">
+</button>
+<button class="reset-btn" type="button">Reset</button> 
+</div>
+<div class="caution-bar">
+<b>Important:</b><br>
+    Ensure all information is accurate and complete, as any incorrect, duplicate, or missing data may result in rejection and deduction in the data entry bill.
+</div>
+</form>
+</div>
+</div>
 </div>
 
-</div>
-</div>
 `;
 const API_URL = "/api/data";
 const FPS_API = "/api/fps";
