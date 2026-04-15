@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Report Page</title>
-  <style>
-    * {
+<meta charset="UTF-8">
+<title>Report Page</title>
+
+<style>
+* {
     box-sizing: border-box;
 }
 
 body {
     font-family: "Bookman Old Style", serif;
     background: #ffffff;
-    padding: 20px;
     margin: 0;
+    padding: 20px;
 }
 
-/* ✅ CONTAINER 60% CENTER */
+/* CONTAINER */
 .container {
     width: 60%;
     margin: auto;
 }
 
-/* ✅ TITLE FIXED (NOT SCROLL) */
+/* TITLE */
 .title {
     position: sticky;
     top: 0;
     background: #fff;
     text-align: center;
     padding: 10px;
-    margin-top: 0;   /* 🔥 gap remove */
-    z-index: 10;
-    
+    margin: 0;
+    z-index: 20;
 }
 
-/* ✅ TABLE WRAPPER SCROLL ONLY */
+/* TABLE WRAPPER (IMPORTANT FIX) */
 .table-wrapper {
-    height: 60vh;           /* full visible area */
+    height: 60vh;
     overflow-y: auto;
     border: 1px solid #ccc;
-    margin-top: -15px;
 }
 
-/* ✅ TABLE FIX */
+/* TABLE */
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;   /* 🔥 MOST IMPORTANT FIX */
+    table-layout: fixed;
 }
 
-/* ✅ HEADER STICKY */
+/* HEADER */
 thead th {
     position: sticky;
     top: 0;
     background: #4f77b5;
+    color: #fff;
     font-size: 13px;
-    color: white;
-    z-index: 15;
     padding: 10px;
     border: 1px solid #2f5597;
+    z-index: 15;
 }
 
 /* BODY */
@@ -72,13 +71,12 @@ tbody td {
 tbody tr:nth-child(odd) { background: #d9e1f2; }
 tbody tr:nth-child(even) { background: #fff; }
 
-/* FOOTER STICKY */
+/* FOOTER */
 tfoot td {
     position: sticky;
     bottom: 0;
     background: #eee;
     font-weight: bold;
-    text-align: center;
     z-index: 10;
 }
 
@@ -87,14 +85,13 @@ td:nth-child(2) {
     text-align: left;
 }
 
-/* ✅ COLUMN WIDTHS (NOW WORK PROPERLY) */
-th:nth-child(1), td:nth-child(1) { width: 5%; }
-th:nth-child(2), td:nth-child(2) { width: 30%; }
-th:nth-child(3), td:nth-child(3) { width: 10%; } /* BIG */
-th:nth-child(4), td:nth-child(4) { width: 10%; }
-th:nth-child(5), td:nth-child(5) { width: 10%; }  /* SMALL */
-th:nth-child(6), td:nth-child(6) { width: 10%; }
-
+/* COLUMN WIDTH */
+th:nth-child(1), td:nth-child(1) { width: 6%; }
+th:nth-child(2), td:nth-child(2) { width: 34%; }
+th:nth-child(3), td:nth-child(3) { width: 12%; }
+th:nth-child(4), td:nth-child(4) { width: 12%; }
+th:nth-child(5), td:nth-child(5) { width: 12%; }
+th:nth-child(6), td:nth-child(6) { width: 12%; }
 
 /* TEXT CONTROL */
 td, th {
@@ -102,73 +99,89 @@ td, th {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* LOADING */
 .loading {
-    position: fixed;   /* 🔥 screen ke sath fix rahega */
+    position: fixed;
     top: 10px;
-    right: 20px;    
+    right: 20px;
     color: #27ae60;
-    padding: 6px 12px;
-    border-radius: 6px;
     font-size: 13px;
-    font-weight: 600;   
-    z-index: 999;}
-    .loading {
+    font-weight: 600;
     animation: blink 1s infinite;
+    z-index: 999;
 }
 
 @keyframes blink {
     0%,100% { opacity: 1; }
     50% { opacity: 0.4; }
 }
+
 /* BUTTON */
 .btn {
     display: block;
     margin: 20px auto;
     padding: 10px 25px;
     background: #28a745;
-    color: #000;
+    color: #fff;
     border: none;
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
 }
-  </style>
+
+.btn:hover {
+    background: #218838;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+}
+</style>
 </head>
+
 <body>
 
+<div class="loading" id="loading">Loading.......</div>
+
 <div class="container">
-  <div class="loading" id="loading">Loading.......</div>
-<h1 class="title"> Data Entry Report - GP/Ward Wise</h1>
-  <table id="reportTable">
-    <thead>
-      <tr>
-        <th>Sl No</th>
-        <th>GP Name/Ward No</th>
-        <th>New RC count</th>
-        <th>New Units</th>
-        <th>Add Units</th>
-        <th>Total Units</th>
-      </tr>
-    </thead>
+<h1 class="title">Data Entry Report - GP/Ward Wise</h1>
 
-    <tbody id="tableBody">
-      <!-- Data yaha aayega -->
-    </tbody>
+<div class="table-wrapper"> <!-- 🔥 IMPORTANT -->
+<table>
+<thead>
+<tr>
+<th>Sl No</th>
+<th>GP Name/Ward No</th>
+<th>New RC count</th>
+<th>New Units</th>
+<th>Add Units</th>
+<th>Total Units</th>
+</tr>
+</thead>
 
-    <tfoot>
-      <tr class="grand">
-        <td colspan="2">Grand Total</td>
-        <td id="totalRC">0</td>
-        <td id="totalNew">0</td>
-        <td id="totalAdd">0</td>
-        <td id="totalUnits">0</td>
-      </tr>
-    </tfoot>
-  </table>
+<tbody id="tableBody"></tbody>
 
-  <button class="btn" onclick="downloadCSV()">Download</button>
+<tfoot>
+<tr>
+<td colspan="2">Grand Total</td>
+<td id="totalRC">0</td>
+<td id="totalNew">0</td>
+<td id="totalAdd">0</td>
+<td id="totalUnits">0</td>
+</tr>
+</tfoot>
+</table>
 </div>
 
+<button class="btn" onclick="downloadCSV()">Download</button>
+</div>
+
+</body>
+</html>
 <script>
 async function loadData() {
   const loading = document.getElementById("loading");
