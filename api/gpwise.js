@@ -4,9 +4,9 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(`${REPORT_URL}?key=${API_KEY}`);
-    const data = await response.json(); // ✅ JSON lo
+    const data = await response.json(); // ✅ important
 
-    // 👇 agar Google Sheet ka raw data hai to map karo
+    // 👇 format data for table
     const formatted = data.map(row => ({
       gp: row.GP || "",
       rc: Number(row.RC || 0),
@@ -18,6 +18,6 @@ export default async function handler(req, res) {
     return res.status(200).json(formatted);
 
   } catch (err) {
-    return res.status(500).json({ error: "Report fetch failed" });
+    return res.status(500).json({ error: "GP-wise fetch failed" });
   }
 }
