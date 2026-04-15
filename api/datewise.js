@@ -45,9 +45,9 @@ export default async function handler(req, res) {
         result[date].new_units + result[date].add_units;
     });
 
-    // 🔥 sort latest date first
+    // 🔥 sort highet to lowest
     const finalData = Object.values(result).sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
+      (a, b) => b.total_units - a.total_units
     );
 
     return res.status(200).json(finalData);
