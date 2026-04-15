@@ -16,9 +16,9 @@ export default async function handler(req, res) {
       const fpsName = row["FPS Name"] || "Unknown";
 
       const type = (row["Application type (NEW or ADD RC)"] || "").toUpperCase();
-      const members = parseInt(
-        (row["Total Number of included Members"] || "0").toString().trim()
-      ) || 0;
+      const members = Number(
+  String(row["Total Number of included Members"] || 0).replace(/[^0-9]/g, "")
+);
 
       // only NEW
       if (!type.includes("NEW")) return;
@@ -49,9 +49,8 @@ export default async function handler(req, res) {
     // sort by total units
     const finalData = Object.values(result).sort(
       (a, b) =>
-        (b.below_units + b.above_units) -
-        (a.below_units + a.above_units)
-    );
+        (Number(b.below_units) + Number(b.above_units)) -
+(Number(a.below_units) + Number(a.above_units));
 
     return res.status(200).json(finalData);
 
