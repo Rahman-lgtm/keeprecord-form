@@ -12,13 +12,13 @@ export default async function handler(req, res) {
     const result = {};
 
     data.forEach(row => {
-      const inspector = row["Name of Inspector"] || "Unknown";
+      const inspector = row["Inspector Name"] || "Unknown";
       const type = (row["Application type (NEW or ADD RC)"] || "").toUpperCase();
       const members = Number(row["Total Number of included Members"] || 0);
 
       if (!result[inspector]) {
         result[inspector] = {
-          name: inspector,
+          inspector: inspector,   // 👈 important
           rc: 0,
           new_units: 0,
           add_units: 0,
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         };
       }
 
-      // RC count only NEW
+      // NEW
       if (type.includes("NEW")) {
         result[inspector].rc += 1;
         result[inspector].new_units += members;
@@ -42,7 +42,6 @@ export default async function handler(req, res) {
         result[inspector].new_units + result[inspector].add_units;
     });
 
-    // sort highest to lowest
     const finalData = Object.values(result).sort(
       (a, b) => b.total_units - a.total_units
     );
