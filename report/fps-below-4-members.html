@@ -90,8 +90,8 @@ tbody td:nth-child(3) {
 
 /* COLUMN WIDTH */
 th:nth-child(1), td:nth-child(1) { width: 6%; }
-th:nth-child(2), td:nth-child(2) { width: 10%; }
-th:nth-child(3), td:nth-child(3) { width: 18%; }
+th:nth-child(2), td:nth-child(2) { width: 5%; }
+th:nth-child(3), td:nth-child(3) { width: 15%; }
 th:nth-child(4), td:nth-child(4) { width: 10%; }
 th:nth-child(5), td:nth-child(5) { width: 10%; }
 th:nth-child(6), td:nth-child(6) { width: 10%; }
@@ -167,10 +167,10 @@ td, th {
 </tr>
 
 <tr>
-  <th>New RC count</th>
-  <th>New Units</th>
-  <th>New RC count</th>
-  <th>New Units</th>
+  <th>RC</th>
+  <th>Units</th>
+  <th>RC</th>
+  <th>Units</th>
 </tr>
 </thead>
 <tbody id="tableBody"></tbody>
@@ -266,9 +266,9 @@ data.forEach((row, index) => {
 
   // 🔥 totals yaha hi update karo
   totalBelowRC += Number(row.below_rc) || 0;
-  totalBelowUnits += Number(row.below_units) || 0;
-  totalAboveRC += Number(row.above_rc) || 0;
-  totalAboveUnits += Number(row.above_units) || 0;
+totalBelowUnits += Number(row.below_units) || 0;
+totalAboveRC += Number(row.above_rc) || 0;
+totalAboveUnits += Number(row.above_units) || 0;
 });
 
     loading.innerText = "";
