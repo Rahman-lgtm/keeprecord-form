@@ -114,43 +114,62 @@
 
 <script>
 async function loadData() {
+  const loading = document.getElementById("loading");
+  const tbody = document.getElementById("tableBody");
+
   try {
-    const res = await fetch("/api/report"); // tumhara Vercel API
+    loading.innerText = "Loading.......";
+
+    // ✅ correct API endpoint
+    const res = await fetch("/api/gpwise");
+
+    if (!res.ok) {
+      throw new Error("API error");
+    }
+
     const data = await res.json();
 
-    const tbody = document.getElementById("tableBody");
+    // ✅ table clear (reload issue fix)
+    tbody.innerHTML = "";
 
     let totalRC = 0, totalNew = 0, totalAdd = 0, totalUnits = 0;
 
     data.forEach((row, index) => {
       const tr = document.createElement("tr");
 
+      const rc = Number(row.rc) || 0;
+      const newUnits = Number(row.new_units) || 0;
+      const addUnits = Number(row.add_units) || 0;
+      const total = Number(row.total_units) || 0;
+
       tr.innerHTML = `
         <td>${index + 1}</td>
-        <td>${row.gp}</td>
-        <td>${row.rc}</td>
-        <td>${row.new_units}</td>
-        <td>${row.add_units}</td>
-        <td>${row.total_units}</td>
+        <td>${row.gp || "-"}</td>
+        <td>${rc}</td>
+        <td>${newUnits}</td>
+        <td>${addUnits}</td>
+        <td>${total}</td>
       `;
 
       tbody.appendChild(tr);
 
-      totalRC += row.rc;
-      totalNew += row.new_units;
-      totalAdd += row.add_units;
-      totalUnits += row.total_units;
+      totalRC += rc;
+      totalNew += newUnits;
+      totalAdd += addUnits;
+      totalUnits += total;
     });
 
+    // ✅ totals update
     document.getElementById("totalRC").innerText = totalRC;
     document.getElementById("totalNew").innerText = totalNew;
     document.getElementById("totalAdd").innerText = totalAdd;
     document.getElementById("totalUnits").innerText = totalUnits;
 
-    document.getElementById("loading").innerText = "";
+    loading.innerText = "✅ Loaded";
+
   } catch (err) {
     console.error(err);
-    document.getElementById("loading").innerText = "Error loading data";
+    loading.innerText = "❌ Error loading data";
   }
 }
 
@@ -162,7 +181,11 @@ function downloadCSV() {
     let cols = row.querySelectorAll("td, th");
     let rowData = [];
 
-    cols.forEach(col => rowData.push(col.innerText));
+    cols.forEach(col => {
+      let text = col.innerText.replace(/,/g, ""); // ✅ comma issue fix
+      rowData.push(text);
+    });
+
     csv.push(rowData.join(","));
   });
 
@@ -171,11 +194,12 @@ function downloadCSV() {
 
   let a = document.createElement("a");
   a.href = url;
-  a.download = "report.csv";
+  a.download = "gpwise-report.csv";
   a.click();
 }
 
-loadData();
+// ✅ page load pe run karo
+document.addEventListener("DOMContentLoaded", loadData);
 </script>
 
 </body>
