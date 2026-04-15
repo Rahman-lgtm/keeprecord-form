@@ -121,7 +121,7 @@ td, th {
     50% { opacity: 0.4; }
 }
 /* BUTTON */
-.download-btn {
+.btn {
     display: block;
     margin: 20px auto;
     padding: 10px 25px;
@@ -222,7 +222,7 @@ async function loadData() {
     document.getElementById("totalAdd").innerText = totalAdd;
     document.getElementById("totalUnits").innerText = totalUnits;
 
-    loading.innerText = "✅ Loaded";
+    loading.innerText = "";
 
   } catch (err) {
     console.error(err);
