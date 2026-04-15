@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GPSS Wise</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Bookman Old Style", serif;
+    background: #ffffff;
+    margin: 0;
+    padding: 20px;
+}
+
+/* CONTAINER */
+.container {
+    width: 60%;
+    margin: auto;
+}
+
+/* TITLE */
+.title {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    z-index: 20;
+}
+
+/* TABLE WRAPPER (IMPORTANT FIX) */
+.table-wrapper {
+    height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+/* HEADER */
+thead th {
+    position: sticky;
+    top: 0;
+    background: #4f77b5;
+    color: #fff;
+    font-size: 13px;
+    padding: 16px;
+    border: 1px solid #2f5597;
+    z-index: 15;
+}
+
+/* BODY */
+tbody td {
+    padding: 8px;
+    border: 1px solid #8ea9db;
+    text-align: center;
+    font-size: 11px;
+}
+
+/* ZEBRA */
+tbody tr:nth-child(odd) { background: #d9e1f2; }
+tbody tr:nth-child(even) { background: #fff; }
+
+/* FOOTER */
+tfoot td {
+    position: sticky;
+    bottom: 0;
+    background: #eee;
+    font-weight: bold;
+    z-index: 10;
+    text-align: center;
+}
+tfoot td:nth-child(3) {
+    text-align: center !important;
+}
+/* ALIGN */
+tbody td:nth-child(2) {
+    text-align: left;
+}
+
+/* COLUMN WIDTH */
+th:nth-child(1), td:nth-child(1) { width: 4%; }
+th:nth-child(2), td:nth-child(2) { width: 22%; }
+th:nth-child(3), td:nth-child(3) { width: 10%; }
+th:nth-child(4), td:nth-child(4) { width: 10%; }
+th:nth-child(5), td:nth-child(5) { width: 10%; }
+th:nth-child(6), td:nth-child(6) { width: 10%; }
+
+/* TEXT CONTROL */
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* LOADING */
+.loading {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    color: #27ae60;
+    font-size: 13px;
+    font-weight: 600;
+    animation: blink 1s infinite;
+    z-index: 999;
+}
+
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* BUTTON */
+.btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #218838;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">Loading.......</div>
+
+<div class="container">
+<h1 class="title">Data Entry Report - GPSS Wise</h1>
+
+<div class="table-wrapper"> <!-- 🔥 IMPORTANT -->
+<table>
+<thead>
+<tr>
+<th>Sl No</th>
+<th>Name of GPSS/WCCS</th>
+<th>New RC</th>
+<th>New Units</th>
+<th>Add Units</th>
+<th>Total Units</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+<tfoot>
+<tr>
+<td colspan="2">Grand Total</td>
+<td id="totalRC">0</td>
+<td id="totalNew">0</td>
+<td id="totalAdd">0</td>
+<td id="totalUnits">0</td>
+</tr>
+</tfoot>
+</table>
+</div>
+
+<button class="btn" onclick="downloadCSV()">Download</button>
+</div>
+
+</body>
+</html>
+<script>
+async function loadData() {
+  const loading = document.getElementById("loading");
+  const tbody = document.getElementById("tableBody");
+
+  try {
+    loading.innerText = "Loading.......";
+
+    // ✅ correct API endpoint
+    const res = await fetch("/api/gpsswise");
+
+    if (!res.ok) {
+      throw new Error("API error");
+    }
+
+    const data = await res.json();
+
+    // ✅ table clear (reload issue fix)
+    tbody.innerHTML = "";
+
+    let totalRC = 0, totalNew = 0, totalAdd = 0, totalUnits = 0;
+
+    data.forEach((row, index) => {
+      const tr = document.createElement("tr");
+
+      const rc = Number(row.rc) || 0;
+      const newUnits = Number(row.new_units) || 0;
+      const addUnits = Number(row.add_units) || 0;
+      const total = Number(row.total_units) || 0;
+
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${row.gpss || "-"}</td>
+        <td>${rc}</td>
+        <td>${newUnits}</td>
+        <td>${addUnits}</td>
+        <td>${total}</td>
+      `;
+
+      tbody.appendChild(tr);
+
+      totalRC += rc;
+      totalNew += newUnits;
+      totalAdd += addUnits;
+      totalUnits += total;
+    });
+
+    // ✅ totals update
+    document.getElementById("totalRC").innerText = totalRC;
+    document.getElementById("totalNew").innerText = totalNew;
+    document.getElementById("totalAdd").innerText = totalAdd;
+    document.getElementById("totalUnits").innerText = totalUnits;
+
+    loading.innerText = "";
+
+  } catch (err) {
+    console.error(err);
+    loading.innerText = "❌ Error loading data";
+  }
+}
+
+function downloadCSV() {
+  let csv = [];
+  let rows = document.querySelectorAll("table tr");
+
+  rows.forEach(row => {
+    let cols = row.querySelectorAll("td, th");
+    let rowData = [];
+
+    cols.forEach(col => {
+      let text = col.innerText.replace(/,/g, ""); // ✅ comma issue fix
+      rowData.push(text);
+    });
+
+    csv.push(rowData.join(","));
+  });
+
+  let blob = new Blob([csv.join("\n")], { type: "text/csv" });
+  let url = window.URL.createObjectURL(blob);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "gpwise-report.csv";
+  a.click();
+}
+
+// ✅ page load pe run karo
+document.addEventListener("DOMContentLoaded", loadData);
+</script>
+
+</body>
+</html>
