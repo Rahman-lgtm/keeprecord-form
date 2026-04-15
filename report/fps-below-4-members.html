@@ -18,7 +18,7 @@ body {
 
 /* CONTAINER */
 .container {
-    width: 60%;
+    width: 80%;
     margin: auto;
 }
 
@@ -94,6 +94,8 @@ th:nth-child(2), td:nth-child(2) { width: 10%; }
 th:nth-child(3), td:nth-child(3) { width: 25%; }
 th:nth-child(4), td:nth-child(4) { width: 10%; }
 th:nth-child(5), td:nth-child(5) { width: 10%; }
+th:nth-child(6), td:nth-child(6) { width: 10%; }
+th:nth-child(7), td:nth-child(7) { width: 10%; }
 
 
 /* TEXT CONTROL */
@@ -156,22 +158,33 @@ td, th {
 <table>
 <thead>
 <tr>
-<th>Sl No</th>
-<th>FPS ID</th>
-<th>Name of FPS</th>
-<th>New RC</th>
-<th>Units</th>
+  <th rowspan="2">Sl No</th>
+  <th rowspan="2">FPS ID</th>
+  <th rowspan="2">Name of FPS</th>
+
+  <th colspan="2">Below 4 members Family</th>
+  <th colspan="2">Above 4 members Family</th>
+</tr>
+
+<tr>
+  <th>New RC count</th>
+  <th>New Units</th>
+  <th>New RC count</th>
+  <th>New Units</th>
 </tr>
 </thead>
-
 <tbody id="tableBody"></tbody>
 
 <tfoot>
-  <tr>
-    <td colspan="3">Grand Total</td>
-    <td id="totalRC">0</td>
-    <td id="totalUnits">0</td>
-  </tr>
+<tr>
+  <td colspan="3">Grand Total</td>
+
+  <td id="totalBelowRC">0</td>
+  <td id="totalBelowUnits">0</td>
+
+  <td id="totalAboveRC">0</td>
+  <td id="totalAboveUnits">0</td>
+</tr>
 </tfoot>
 </table>
 </div>
@@ -210,12 +223,16 @@ async function loadData() {
       const units = Number(row.new_units) || 0;
 
       tr.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${row.fps_id || "-"}</td>
-        <td>${row.fps_name || "-"}</td>
-        <td>${rc}</td>
-        <td>${units}</td>
-      `;
+  <td>${index + 1}</td>
+  <td>${row.fps_id || "-"}</td>
+  <td>${row.fps_name || "-"}</td>
+
+  <td>${row.below_rc}</td>
+  <td>${row.below_units}</td>
+
+  <td>${row.above_rc}</td>
+  <td>${row.above_units}</td>
+`;
 
       tbody.appendChild(tr);
 
@@ -224,8 +241,21 @@ async function loadData() {
     });
 
     // ✅ totals
-    document.getElementById("totalRC").innerText = totalRC;
-    document.getElementById("totalUnits").innerText = totalUnits;
+    let totalBelowRC = 0;
+let totalBelowUnits = 0;
+let totalAboveRC = 0;
+let totalAboveUnits = 0;
+
+totalBelowRC += row.below_rc;
+totalBelowUnits += row.below_units;
+
+totalAboveRC += row.above_rc;
+totalAboveUnits += row.above_units;
+
+document.getElementById("totalBelowRC").innerText = totalBelowRC;
+document.getElementById("totalBelowUnits").innerText = totalBelowUnits;
+document.getElementById("totalAboveRC").innerText = totalAboveRC;
+document.getElementById("totalAboveUnits").innerText = totalAboveUnits;
 
     loading.innerText = "";
 
