@@ -16,7 +16,8 @@ export default async function handler(req, res) {
       const fpsName = row["FPS Name"] || "Unknown";
 
       const type = (row["Application type (NEW or ADD RC)"] || "").toUpperCase();
-      const members = Number(row["Total Number of included Members"] || 0);
+      const raw = row["Total Number of included Members"];
+const members = raw ? parseInt(raw.toString().replace(/\D/g, "")) || 0 : 0;
 
       // 🔥 FINAL CONDITION
       if (!(type.includes("NEW") && members < 4)) return;
