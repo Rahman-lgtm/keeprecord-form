@@ -4,20 +4,40 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(`${REPORT_URL}?key=${API_KEY}`);
-    const data = await response.json(); // ✅ important
+    const data = await response.json();
 
-    // 👇 format data for table
-    const formatted = data.map(row => ({
-      gp: row.GP || "",
-      rc: Number(row.RC || 0),
-      new_units: Number(row.NEW || 0),
-      add_units: Number(row.ADD || 0),
-      total_units: Number(row.TOTAL || 0)
-    }));
+    // 👇 group by GP
+    const result = {};
 
-    return res.status(200).json(formatted);
+    data.forEach(row => {
+      const gp = row["Name of the G.P/ Ward No of Nagaon MB."] || "Unknown";
+      const type = row["Application type (NEW or ADD RC)"] || "";
+      const members = Number(row["Total Number of included Members"] || 0);
+
+      if (!result[gp]) {
+        result[gp] = {
+          gp,
+          rc: 0,
+          new_units: 0,
+          add_units: 0,
+          total_units: 0
+        };
+      }
+
+      result[gp].rc += 1;
+
+      if (type.toUpperCase().includes("NEW")) {
+        result[gp].new_units += members;
+      } else {
+        result[gp].add_units += members;
+      }
+
+      result[gp].total_units += members;
+    });
+
+    return res.status(200).json(Object.values(result));
 
   } catch (err) {
-    return res.status(500).json({ error: "GP-wise fetch failed" });
+    return res.status(500).json({ error: "GP-wise processing failed" });
   }
 }
