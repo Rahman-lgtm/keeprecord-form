@@ -246,16 +246,30 @@ let totalBelowUnits = 0;
 let totalAboveRC = 0;
 let totalAboveUnits = 0;
 
-totalBelowRC += row.below_rc;
-totalBelowUnits += row.below_units;
+data.forEach((row, index) => {
 
-totalAboveRC += row.above_rc;
-totalAboveUnits += row.above_units;
+  const tr = document.createElement("tr");
 
-document.getElementById("totalBelowRC").innerText = totalBelowRC;
-document.getElementById("totalBelowUnits").innerText = totalBelowUnits;
-document.getElementById("totalAboveRC").innerText = totalAboveRC;
-document.getElementById("totalAboveUnits").innerText = totalAboveUnits;
+  tr.innerHTML = `
+    <td>${index + 1}</td>
+    <td>${row.fps_id || "-"}</td>
+    <td>${row.fps_name || "-"}</td>
+
+    <td>${row.below_rc}</td>
+    <td>${row.below_units}</td>
+
+    <td>${row.above_rc}</td>
+    <td>${row.above_units}</td>
+  `;
+
+  tbody.appendChild(tr);
+
+  // 🔥 totals yaha hi update karo
+  totalBelowRC += Number(row.below_rc) || 0;
+  totalBelowUnits += Number(row.below_units) || 0;
+  totalAboveRC += Number(row.above_rc) || 0;
+  totalAboveUnits += Number(row.above_units) || 0;
+});
 
     loading.innerText = "";
 
