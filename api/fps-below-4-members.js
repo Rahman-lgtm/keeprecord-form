@@ -16,36 +16,46 @@ export default async function handler(req, res) {
       const fpsName = row["FPS Name"] || "Unknown";
 
       const type = (row["Application type (NEW or ADD RC)"] || "").toUpperCase();
-      const raw = row["Total Number of included Members"];
-const members = raw ? parseInt(raw.toString().replace(/\D/g, "")) || 0 : 0;
+      const members = parseInt(
+        (row["Total Number of included Members"] || "0").toString().trim()
+      ) || 0;
 
-      // 🔥 FINAL CONDITION
-      if (!(type.includes("NEW") && members < 4)) return;
+      // only NEW
+      if (!type.includes("NEW")) return;
 
       if (!result[fpsId]) {
         result[fpsId] = {
           fps_id: fpsId,
           fps_name: fpsName,
-          rc: 0,
-          new_units: 0
+
+          below_rc: 0,
+          below_units: 0,
+
+          above_rc: 0,
+          above_units: 0
         };
       }
 
-      // ✅ 1 application = 1 RC
-      result[fpsId].rc += 1;
-
-      // ✅ members sum
-      result[fpsId].new_units += members;
+      // 🔥 split logic
+      if (members < 4) {
+        result[fpsId].below_rc += 1;
+        result[fpsId].below_units += members;
+      } else {
+        result[fpsId].above_rc += 1;
+        result[fpsId].above_units += members;
+      }
     });
 
-    // 🔥 sort highest to lowest
+    // sort by total units
     const finalData = Object.values(result).sort(
-      (a, b) => b.new_units - a.new_units
+      (a, b) =>
+        (b.below_units + b.above_units) -
+        (a.below_units + a.above_units)
     );
 
     return res.status(200).json(finalData);
 
   } catch (err) {
-    return res.status(500).json({ error: "FPS filter failed" });
+    return res.status(500).json({ error: "FPS split failed" });
   }
 }
