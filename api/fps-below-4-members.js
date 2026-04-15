@@ -18,8 +18,8 @@ export default async function handler(req, res) {
       const type = (row["Application type (NEW or ADD RC)"] || "").toUpperCase();
       const members = Number(row["Total Number of included Members"] || 0);
 
-      // ✅ ONLY NEW + members <= 4
-      if (!(type.includes("NEW") && members <= 4)) return;
+      // 🔥 FINAL CONDITION
+      if (!(type.includes("NEW") && members < 4)) return;
 
       if (!result[fpsId]) {
         result[fpsId] = {
@@ -30,11 +30,14 @@ export default async function handler(req, res) {
         };
       }
 
+      // ✅ 1 application = 1 RC
       result[fpsId].rc += 1;
+
+      // ✅ members sum
       result[fpsId].new_units += members;
     });
 
-    // 🔥 sort highest → lowest (units ke basis pe)
+    // 🔥 sort highest to lowest
     const finalData = Object.values(result).sort(
       (a, b) => b.new_units - a.new_units
     );
@@ -42,6 +45,6 @@ export default async function handler(req, res) {
     return res.status(200).json(finalData);
 
   } catch (err) {
-    return res.status(500).json({ error: "FPS-wise failed" });
+    return res.status(500).json({ error: "FPS filter failed" });
   }
 }
