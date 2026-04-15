@@ -42,7 +42,7 @@ body {
 
 /* TABLE */
 table {
-    width: 100%;
+    width: 60%;
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -94,7 +94,7 @@ th:nth-child(2), td:nth-child(2) { width: 22%; }
 th:nth-child(3), td:nth-child(3) { width: 10%; }
 th:nth-child(4), td:nth-child(4) { width: 10%; }
 th:nth-child(5), td:nth-child(5) { width: 10%; }
-th:nth-child(6), td:nth-child(6) { width: 10%; }
+
 
 /* TEXT CONTROL */
 td, th {
@@ -171,8 +171,6 @@ td, th {
 <td colspan="2">Grand Total</td>
 <td id="totalRC">0</td>
 <td id="totalNew">0</td>
-<td id="totalAdd">0</td>
-<td id="totalUnits">0</td>
 </tr>
 </tfoot>
 </table>
@@ -191,7 +189,7 @@ async function loadData() {
   try {
     loading.innerText = "Loading.......";
 
-    const res = await fetch("/api/fpswise");
+    const res = await fetch("/api/fps-below-4-members");
 
     if (!res.ok) {
       throw new Error("API error");
