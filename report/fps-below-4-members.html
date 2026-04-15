@@ -204,72 +204,48 @@ async function loadData() {
 
     const res = await fetch("/api/fps-below-4-members");
 
-    if (!res.ok) {
-      throw new Error("API error");
-    }
+    if (!res.ok) throw new Error("API error");
 
     const data = await res.json();
 
     // clear table
     tbody.innerHTML = "";
 
-    let totalRC = 0;
-    let totalUnits = 0;
+    // totals
+    let totalBelowRC = 0;
+    let totalBelowUnits = 0;
+    let totalAboveRC = 0;
+    let totalAboveUnits = 0;
 
     data.forEach((row, index) => {
       const tr = document.createElement("tr");
 
-      const rc = Number(row.rc) || 0;
-      const units = Number(row.new_units) || 0;
-
       tr.innerHTML = `
-  <td>${index + 1}</td>
-  <td>${row.fps_id || "-"}</td>
-  <td>${row.fps_name || "-"}</td>
+        <td>${index + 1}</td>
+        <td>${row.fps_id || "-"}</td>
+        <td>${row.fps_name || "-"}</td>
 
-  <td>${row.below_rc}</td>
-  <td>${row.below_units}</td>
+        <td>${row.below_rc || 0}</td>
+        <td>${row.below_units || 0}</td>
 
-  <td>${row.above_rc}</td>
-  <td>${row.above_units}</td>
-`;
+        <td>${row.above_rc || 0}</td>
+        <td>${row.above_units || 0}</td>
+      `;
 
       tbody.appendChild(tr);
 
-      totalRC += rc;
-      totalUnits += units;
+      // totals calculation
+      totalBelowRC += Number(row.below_rc) || 0;
+      totalBelowUnits += Number(row.below_units) || 0;
+      totalAboveRC += Number(row.above_rc) || 0;
+      totalAboveUnits += Number(row.above_units) || 0;
     });
 
-    // ✅ totals
-    let totalBelowRC = 0;
-let totalBelowUnits = 0;
-let totalAboveRC = 0;
-let totalAboveUnits = 0;
-
-data.forEach((row, index) => {
-
-  const tr = document.createElement("tr");
-
-  tr.innerHTML = `
-    <td>${index + 1}</td>
-    <td>${row.fps_id || "-"}</td>
-    <td>${row.fps_name || "-"}</td>
-
-    <td>${row.below_rc}</td>
-    <td>${row.below_units}</td>
-
-    <td>${row.above_rc}</td>
-    <td>${row.above_units}</td>
-  `;
-
-  tbody.appendChild(tr);
-
-  // 🔥 totals yaha hi update karo
-  totalBelowRC += Number(row.below_rc) || 0;
-totalBelowUnits += Number(row.below_units) || 0;
-totalAboveRC += Number(row.above_rc) || 0;
-totalAboveUnits += Number(row.above_units) || 0;
-});
+    // update footer totals
+    document.getElementById("totalBelowRC").innerText = totalBelowRC;
+    document.getElementById("totalBelowUnits").innerText = totalBelowUnits;
+    document.getElementById("totalAboveRC").innerText = totalAboveRC;
+    document.getElementById("totalAboveUnits").innerText = totalAboveUnits;
 
     loading.innerText = "";
 
@@ -279,12 +255,14 @@ totalAboveUnits += Number(row.above_units) || 0;
   }
 }
 
+
+// CSV download
 function downloadCSV() {
   let csv = [];
   let rows = document.querySelectorAll("table tr");
 
   rows.forEach(row => {
-    let cols = row.querySelectorAll("td, th");
+    let cols = row.querySelectorAll("th, td");
     let rowData = [];
 
     cols.forEach(col => {
@@ -304,9 +282,8 @@ function downloadCSV() {
   a.click();
 }
 
-// run
+// auto load
 document.addEventListener("DOMContentLoaded", loadData);
 </script>
-
 </body>
 </html>
