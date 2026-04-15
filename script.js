@@ -103,11 +103,11 @@ Please complete the data entry process in the SmartPDS portal first<br>
 </div>
 <div class="button-area">
 <button id="submitBtn" type="submit">
-<span class="btn-text">Submit</span>
+<span class="btn-text">Save</span>
 <span class="spinner"></span>
  <input type="hidden" name="action" value="submit">
 </button>
-<button class="reset-btn" type="button">Reset</button> 
+<button class="reset-btn" type="button">Clear</button> 
 </div>
 <div class="caution-bar">
 <b>Important:</b><br>
