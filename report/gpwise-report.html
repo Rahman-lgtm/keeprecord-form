@@ -4,77 +4,134 @@
   <meta charset="UTF-8">
   <title>Report Page</title>
   <style>
-    body {
-      background: #e5e5e5;
-      font-family: Arial, sans-serif;
-    }
+    * {
+    box-sizing: border-box;
+}
 
-    .container {
-      width: 90%;
-      margin: 40px auto;
-      background: #ddd;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-      position: relative;
-    }
+body {
+    font-family: "Bookman Old Style", serif;
+    background: #ffffff;
+    padding: 20px;
+    margin: 0;
+}
 
+/* ✅ CONTAINER 60% CENTER */
+.container {
+    width: 60%;
+    margin: auto;
+}
+
+/* ✅ TITLE FIXED (NOT SCROLL) */
+.title {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-top: 0;   /* 🔥 gap remove */
+    z-index: 10;
+    
+}
+
+/* ✅ TABLE WRAPPER SCROLL ONLY */
+.table-wrapper {
+    height: 80vh;           /* full visible area */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-top: -15px;
+}
+
+/* ✅ TABLE FIX */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;   /* 🔥 MOST IMPORTANT FIX */
+}
+
+/* ✅ HEADER STICKY */
+thead th {
+    position: sticky;
+    top: 0;
+    background: #4f77b5;
+    font-size: 13px;
+    color: white;
+    z-index: 15;
+    padding: 10px;
+    border: 1px solid #2f5597;
+}
+
+/* BODY */
+tbody td {
+    padding: 8px;
+    border: 1px solid #8ea9db;
+    text-align: center;
+    font-size: 11px;
+}
+
+/* ZEBRA */
+tbody tr:nth-child(odd) { background: #d9e1f2; }
+tbody tr:nth-child(even) { background: #fff; }
+
+/* FOOTER STICKY */
+tfoot td {
+    position: sticky;
+    bottom: 0;
+    background: #eee;
+    font-weight: bold;
+    text-align: center;
+    z-index: 10;
+}
+
+/* ALIGN */
+td:nth-child(3) {
+    text-align: left;
+}
+
+/* ✅ COLUMN WIDTHS (NOW WORK PROPERLY) */
+th:nth-child(1), td:nth-child(1) { width: 5%; }
+th:nth-child(2), td:nth-child(2) { width: 10%; }
+th:nth-child(3), td:nth-child(3) { width: 30%; } /* BIG */
+th:nth-child(4), td:nth-child(4) { width: 10%; }
+th:nth-child(5), td:nth-child(5) { width: 10%; }  /* SMALL */
+th:nth-child(6), td:nth-child(6) { width: 10%; }
+
+
+/* TEXT CONTROL */
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.loading {
+    position: fixed;   /* 🔥 screen ke sath fix rahega */
+    top: 10px;
+    right: 20px;    
+    color: #27ae60;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;   
+    z-index: 999;}
     .loading {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      color: green;
-      font-size: 14px;
-    }
+    animation: blink 1s infinite;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th {
-      background: #4a73b8;
-      color: white;
-      padding: 10px;
-      border: 1px solid #2c4c8a;
-      text-align: center;
-    }
-
-    td {
-      padding: 8px;
-      border: 1px solid #8aa4d0;
-      text-align: center;
-    }
-
-    tr:nth-child(even) {
-      background: #cfd8e6;
-    }
-
-    tr:nth-child(odd) {
-      background: #e8eef8;
-    }
-
-    .grand {
-      font-weight: bold;
-      background: #b7c4dc;
-    }
-
-    .btn {
-      display: block;
-      margin: 20px auto;
-      background: green;
-      color: white;
-      padding: 10px 25px;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: darkgreen;
-    }
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+/* BUTTON */
+.download-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    background: #28a745;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
   </style>
 </head>
 <body>
