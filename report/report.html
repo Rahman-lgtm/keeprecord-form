@@ -2,175 +2,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Report Dashboard</title>
 
 <style>
-body {
-    font-family: "Bookman Old Style", serif;
-    background: #dcdcdc;
-    margin: 0;
+body{
+font-family:"Bookman Old Style",serif;
+background:#dcdcdc;
+margin:0;
 }
 
-/* MAIN CONTAINER */
-.container {
-    max-width: 1100px;
-    margin: 20px auto;
-    background: #cfcfcf;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 8px 8px 20px rgba(0,0,0,0.25),
-                -5px -5px 15px rgba(255,255,255,0.5);
+.container{
+max-width:1100px;
+margin:20px auto;
+background:#cfcfcf;
+padding:25px;
+border-radius:15px;
+box-shadow:8px 8px 20px rgba(0,0,0,0.25),-5px -5px 15px rgba(255,255,255,0.5);
 }
 
-/* SECTION TITLE */
-.section-title {
-    background: #e3a373;
-    text-align: center;
-    padding: 10px;
-    font-size: 28px;
-    font-weight: bold;
-    border-radius: 10px;
-
-    margin: 25px 0 15px 0; /* 🔥 TOP & BOTTOM GAP FIX */
-
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-}
-.section-title + .grid {
-    margin-bottom: 20px;
+.section-title{
+background:#e3a373;
+text-align:center;
+padding:10px;
+font-size:28px;
+font-weight:bold;
+border-radius:10px;
+margin:25px 0 15px;
+box-shadow:inset 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr)); /* 🔥 FIX */
-    gap: 15px;
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
 }
 
-/* ================= CARD ================= */
-.card {
-    background: #e6d7b3;
-    padding: 12px 15px;
-    border-radius: 12px;
-    position: relative;
-    min-height: 70px;
-
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.2),
-                -3px -3px 8px rgba(255,255,255,0.5);
-
-    transition: background 0.3s ease;
+.card{
+background:#e6d7b3;
+padding:12px 15px;
+border-radius:12px;
+position:relative;
+min-height:70px;
+box-shadow:4px 4px 10px rgba(0,0,0,0.2),-3px -3px 8px rgba(255,255,255,0.5);
+transition:0.3s;
 }
 
-/* HOVER */
-.card:hover {
-    background: #e3a373;
+.card:hover{
+background:#e3a373;
+color:white;
 }
 
-/* TITLE */
-.card h3 {
-    margin: 0;
-    font-size: 18px;
-    padding-right: 80px;
+
+.card:hover a{
+color:white;
 }
 
-/* VIEW DETAILS */
-.view {
-    position: absolute;
-    bottom: 8px;
-    right: 12px;
-    font-size: 13px;
-    color: blue;
-    text-decoration: underline;
+
+.card:hover .label{
+color:white;
 }
 
-/* ================= LAC CARD ================= */
-.lac-card {
-    background: #e6d7b3;
-    padding: 12px 15px;
-    border-radius: 12px;
-    position: relative;
-    min-height: 100px;
-
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.2),
-                -3px -3px 8px rgba(255,255,255,0.5);
-
-    transition: background 0.3s ease;
-}
-.card, .lac-card {
-    margin-bottom: 5px; /* 🔥 extra breathing space */
-}
-/* HOVER */
-.lac-card:hover {
-    background: #e3a373;
+.card h3{
+margin:0;
+font-size:18px;
+padding-right:80px;
 }
 
-/* TITLE TOP LEFT */
-.lac-card h4 {
-    position: absolute;
-    top: 8px;
-    left: 12px;
-    margin: 0;
-    font-size: 16px;
+.view{
+position:absolute;
+bottom:8px;
+right:12px;
+font-size:13px;
+color:blue;
+text-decoration:underline;
 }
 
-/* LEFT - RIGHT LAYOUT */
-.lac-row {
-    display: flex;
-    justify-content: space-between; /* 🔥 LEFT & RIGHT */
-    margin-top: 35px;
-    padding: 0 10px;
+.lac-card{
+background:#e6d7b3;
+padding:12px 15px;
+border-radius:12px;
+position:relative;
+min-height:110px;
+box-shadow:4px 4px 10px rgba(0,0,0,0.2),-3px -3px 8px rgba(255,255,255,0.5);
+transition:0.3s;
 }
 
-/* LEFT SIDE */
-.left-box {
-    position: absolute;
-    bottom: 8px;
-    left: 15px;        
-    text-align: center;
+.lac-card:hover{
+background:#e3a373;
+color:white;
 }
 
-/* RIGHT side */
-.right-box {
-    position: absolute;
-    right: 15px;
-    bottom: 8px;
-    text-align: center;
+
+.lac-card:hover .label{
+color:white;
 }
 
-/* Number */
-.num {
-    font-size: 22px;
-    margin: 0;
-    font-weight: bold;
+
+.lac-card:hover a{
+color:white;
+}
+.lac-card h4{
+position:absolute;
+top:8px;
+left:12px;
+margin:0;
+font-size:16px;
 }
 
-/* Label */
-.label {
-    font-size: 14px;
-    color: blue;
-    text-decoration: underline;
-}
-/* TOTAL CARD */
-.total {
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 35px;
-}
-.divider {
-    width: 100%;
-    height: 6px; /* 🔥 mota line */
-    background: #e3a373; /* same theme color */
-    border-radius: 5px;
-    margin: 25px 0; /* upar niche gap */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+.left-box{
+position:absolute;
+bottom:10px;
+left:15px;
+text-align:left;
 }
 
-/* RESPONSIVE */
-@media(max-width: 900px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.right-box{
+position:absolute;
+bottom:10px;
+right:15px;
+text-align:right;
+}
+
+.num{
+font-size:22px;
+font-weight:bold;
+margin:0;
+}
+
+.label{
+font-size:14px;
+color:blue;
+text-decoration:underline;
+}
+
+.total{
+font-size:28px;
+font-weight:bold;
+text-align:center;
+margin-top:35px;
+}
+
+.divider{
+width:100%;
+height:6px;
+background:#e3a373;
+border-radius:5px;
+margin:25px 0;
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+@media(max-width:900px){
+.grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -179,233 +162,119 @@ body {
 
 <div class="container">
 
-    <div class="section-title">Data Entry Dashboard</div>
+<div class="section-title">Data Entry Dashboard</div>
 
-    <div class="grid">
-        <div class="card">
-    <h3>Agent-wise</h3>
-    <a href="agent-wise.html" class="view">View details</a>
-</div>
+<div class="grid">
 
-<div class="card">
-    <h3>GP-Wise</h3>
-    <a href="gpwise-report.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>Inspector-wise</h3>
-    <a href="inspector.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>Operator-wise</h3>
-    <a href="operator.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>Date-wise</h3>
-    <a href="date.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>New RC</h3>
-    <a href="newrc.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>Existing RC</h3>
-    <a href="existingrc.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>GPSS-wise</h3>
-    <a href="gpss.html" class="view">View details</a>
-</div>
-<div class="card">
-    <h3>Family Size-wise</h3>
-    <a href="fps-below-4-members.html" class="view">View details</a>
-</div>
-<div class="card">
-    <h3>All Summary for LAC</h3>
-    <a href="lac.html" class="view">View details</a>
-</div>
-
-<div class="card">
-    <h3>Approval Done</h3>
-    <a href="above4.html" class="view">View details</a>
-</div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="grid">
-
-        <!-- LAC CARD -->
-        <div class="lac-card">
-            <h4>Nagaon-Batadraba</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New</div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lac-card">
-            <h4>Barhampur</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New </div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lac-card">
-            <h4>Samaguri</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New</div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lac-card">
-            <h4>Raha (SC)</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New</div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lac-card">
-            <h4>Rupahihat</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New</div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lac-card">
-            <h4>Kaliabor</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New</div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lac-card">
-            <h4>Dhing</h4>
-            <div class="lac-row">
-                <div class="left-box">
-                    <div class="num">00</div>
-                    <div class="label">New</div>
-                </div>
-                <div class="right-box">
-                    <div class="num">00</div>
-                    <div class="label">ADD</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TOTAL -->
-        <div class="lac-card">
-            <h4>Total Unit</h4>
-            <div class="total">00</div>
-        </div>
-
-    </div>
+<div class="card"><h3>Agent-wise</h3><a href="agent-wise.html" class="view">View details</a></div>
+<div class="card"><h3>GP-Wise</h3><a href="gpwise-report.html" class="view">View details</a></div>
+<div class="card"><h3>Inspector-wise</h3><a href="inspector.html" class="view">View details</a></div>
+<div class="card"><h3>Operator-wise</h3><a href="operator.html" class="view">View details</a></div>
+<div class="card"><h3>Date-wise</h3><a href="date.html" class="view">View details</a></div>
+<div class="card"><h3>New RC</h3><a href="newrc.html" class="view">View details</a></div>
+<div class="card"><h3>Existing RC</h3><a href="existingrc.html" class="view">View details</a></div>
+<div class="card"><h3>GPSS-wise</h3><a href="gpss.html" class="view">View details</a></div>
+<div class="card"><h3>Family Size-wise</h3><a href="fps-below-4-members.html" class="view">View details</a></div>
+<div class="card"><h3>All Summary for LAC</h3><a href="lac.html" class="view">View details</a></div>
+<div class="card"><h3>Approval Done</h3><a href="above4.html" class="view">View details</a></div>
 
 </div>
+
+<div class="divider"></div>
+
+<div class="grid">
+
+<div class="lac-card">
+<h4>Nagaon-Batadraba</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Barhampur</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Samaguri</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Raha (SC)</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Rupahihat</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Kaliabor</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Dhing</h4>
+<div class="left-box"><div class="num">00</div><div class="label">New</div></div>
+<div class="right-box"><div class="num">00</div><div class="label">ADD</div></div>
+</div>
+
+<div class="lac-card">
+<h4>Total Unit</h4>
+<div class="total">00</div>
+</div>
+
+</div>
+
+</div>
+
 <script>
 fetch("/api/report")
-.then(res => res.json())
-.then(data => {
+.then(res=>res.json())
+.then(data=>{
+let lacData={},totalUnit=0;
 
-    let lacData = {};
-    let totalUnit = 0;
+data.forEach(row=>{
+let type=row["Application type (NEW or ADD RC)"];
+let lac=row["Name of LAC"];
+let members=parseInt(row["Total Number of included Members"])||0;
 
-    data.forEach(row => {
+if(!lac)return;
 
-        let type = row["Application type (NEW or ADD RC)"];
-        let lac = row["Name of LAC"];
-        let members = parseInt(row["Total Number of included Members"]) || 0;
+type=type?type.toUpperCase().trim():"";
+lac=lac.trim();
 
-        if (!lac) return;
+if(!lacData[lac])lacData[lac]={ADD:0,NEW:0};
 
-        // normalize
-        type = type ? type.toString().toUpperCase().trim() : "";
-        lac = lac.toString().trim();
-
-        if (!lacData[lac]) {
-            lacData[lac] = { ADD: 0, NEW: 0 };
-        }
-
-        if (type.includes("ADD")) {
-            lacData[lac].ADD += members;
-            totalUnit += members;
-        }
-
-        if (type.includes("NEW")) {
-            lacData[lac].NEW += members;
-            totalUnit += members;
-        }
-    });
-
-    // UI update
-    document.querySelectorAll(".lac-card").forEach(card => {
-
-        let name = card.querySelector("h4").innerText.trim();
-
-        let newBox = card.querySelector(".left-box .num");
-        let addBox = card.querySelector(".right-box .num");
-
-        if (newBox) newBox.innerText = "0";
-        if (addBox) addBox.innerText = "0";
-
-        if (lacData[name]) {
-            if (newBox) newBox.innerText = lacData[name].NEW;
-            if (addBox) addBox.innerText = lacData[name].ADD;
-        }
-    });
-
-    document.querySelector(".total").innerText = totalUnit;
-
-})
-.catch(err => {
-    console.error("Error fetching data:", err);
+if(type.includes("ADD")){lacData[lac].ADD+=members;totalUnit+=members;}
+if(type.includes("NEW")){lacData[lac].NEW+=members;totalUnit+=members;}
 });
+
+document.querySelectorAll(".lac-card").forEach(card=>{
+let name=card.querySelector("h4").innerText.trim();
+let newBox=card.querySelector(".left-box .num");
+let addBox=card.querySelector(".right-box .num");
+
+if(newBox)newBox.innerText="0";
+if(addBox)addBox.innerText="0";
+
+if(lacData[name]){
+if(newBox)newBox.innerText=lacData[name].NEW;
+if(addBox)addBox.innerText=lacData[name].ADD;
+}
+});
+
+document.querySelector(".total").innerText=totalUnit;
+})
+.catch(err=>console.error(err));
 </script>
+
 </body>
 </html>
