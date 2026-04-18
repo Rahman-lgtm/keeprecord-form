@@ -10,6 +10,7 @@ const result={};
 
 data.forEach(row=>{
 
+// ✅ APPROVED FIX
 const approved=String(
 row["Approved ( YES/NO)"]||
 row["Approved"]||
@@ -18,16 +19,24 @@ row["Approved"]||
 
 if(!approved.includes("YES"))return;
 
-const fpsId=row["F.P.S Code 13050050......."]||"";
-const fpsName=row["FPS Name"]||"";
-const lac=row["Name of LAC"]||"Unknown";
+// ✅ SAFE FIELDS
+const fpsId=(row["F.P.S Code 13050050......."]||"").toString().trim();
+const fpsName=(row["FPS Name"]||"").toString().trim();
+const lac=(row["Name of LAC"]||"Unknown").toString().trim();
 
 const type=String(
 row["Application type (NEW or ADD RC)"]||""
 ).toUpperCase();
 
-const members=parseInt(row["Total Number of included Members"])||0;
+// ✅ MEMBERS FIX (multi-key safe)
+const members=Number(
+row["Total Number of included Members"]||
+row["Total Members"]||
+row["Members"]||
+0
+);
 
+// key
 const key=fpsId+"_"+lac;
 
 if(!result[key]){
@@ -44,25 +53,22 @@ totalUnits:0
 };
 }
 
-// NEW
 if(type.includes("NEW")){
 result[key].newCount+=1;
 result[key].newUnits+=members;
 }
 
-// ADD
 if(type.includes("ADD")){
 result[key].addCount+=1;
 result[key].addUnits+=members;
 }
 
-// TOTAL
 result[key].totalRC=result[key].newCount+result[key].addCount;
 result[key].totalUnits=result[key].newUnits+result[key].addUnits;
 
 });
 
-// 🔥 GROUP + SORT
+// 🔥 SORT LAC + highest units
 const grouped={};
 
 Object.values(result).forEach(item=>{
@@ -70,12 +76,10 @@ if(!grouped[item.lac])grouped[item.lac]=[];
 grouped[item.lac].push(item);
 });
 
-// 🔥 sort inside each LAC (highest units first)
 Object.keys(grouped).forEach(lac=>{
 grouped[lac].sort((a,b)=>b.totalUnits-a.totalUnits);
 });
 
-// 🔥 final array
 const finalData=[];
 Object.keys(grouped).sort().forEach(lac=>{
 finalData.push(...grouped[lac]);
