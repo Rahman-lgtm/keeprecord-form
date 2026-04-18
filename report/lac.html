@@ -5,92 +5,87 @@
 <title>Approval Done Report</title>
 
 <style>
-*{box-sizing:border-box;}
+* {
+    box-sizing: border-box;
+}
 
-body{
-font-family:"Bookman Old Style",serif;
-background:#ffffff;
-margin:0;
-padding:20px;
+body {
+    font-family: "Bookman Old Style", serif;
+    background: #ffffff;
+    margin: 0;
+    padding: 20px;
 }
 
 /* CONTAINER */
-.container{
-width:65%;
-margin:auto;
+.container {
+    width: 60%;
+    margin: auto;
 }
 
 /* TITLE */
-.title{
-position:sticky;
-top:0;
-background:#fff;
-text-align:center;
-padding:10px;
-z-index:20;
+.title {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    z-index: 20;
 }
 
-/* 🔥 WRAPPER FIX */
-.table-wrapper{
-height:80vh;
-overflow-y:auto;
-border:1px solid #ccc;
+/* TABLE WRAPPER (IMPORTANT FIX) */
+.table-wrapper {
+    height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
 }
 
 /* TABLE */
-table{
-width:100%;
-border-collapse:collapse;
-table-layout:fixed;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
 /* HEADER */
-thead th{
-position:sticky;
-background:#4f77b5;
-color:#fff;
-font-size:13px;
-padding:10px;
-border:1px solid #2f5597;
-}
-
-/* FIRST ROW */
-thead tr:nth-child(1) th{
-top:0;
-z-index:10;
-}
-
-/* SECOND ROW */
-thead tr:nth-child(2) th{
-top:40px;
-z-index:9;
+thead th {
+    position: sticky;
+    top: 0;
+    background: #4f77b5;
+    color: #fff;
+    font-size: 13px;
+    padding: 16px;
+    border: 1px solid #2f5597;
+    z-index: 15;
 }
 
 /* BODY */
-tbody td{
-padding:8px;
-border:1px solid #8ea9db;
-text-align:center;
-font-size:11px;
+tbody td {
+    padding: 8px;
+    border: 1px solid #8ea9db;
+    text-align: center;
+    font-size: 11px;
 }
 
 /* ZEBRA */
-tbody tr:nth-child(odd){background:#d9e1f2;}
-tbody tr:nth-child(even){background:#fff;}
+tbody tr:nth-child(odd) { background: #d9e1f2; }
+tbody tr:nth-child(even) { background: #fff; }
 
 /* FOOTER */
-tfoot td{
-position:sticky;
-bottom:0;
-background:#eee;
-font-weight:bold;
-text-align:center;
-z-index:5;
+tfoot td {
+    position: sticky;
+    bottom: 0;
+    background: #eee;
+    font-weight: bold;
+    z-index: 10;
+    text-align: center;
 }
-
+tfoot td:nth-child(3) {
+    text-align: center !important;
+}
 /* ALIGN */
-tbody td:nth-child(3){
-text-align:left;
+tbody td:nth-child(2) {
+    text-align: left;
 }
 
 /* COLUMN WIDTH */
@@ -106,49 +101,54 @@ th:nth-child(7),td:nth-child(7){width:110px;}  /* ADD RC count */
 th:nth-child(8),td:nth-child(8){width:110px;}  /* ADD Units */
 
 th:nth-child(9),td:nth-child(9){width:100px;}  /* Total NEW RC */
-th:nth-child(10),td:nth-child(10){width:130px;} /* Total Units */
+th:nth-child(10),td:nth-child(10){width:130px;}
 
 /* TEXT CONTROL */
-td,th{
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis;
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* LOADING */
+.loading {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    color: #27ae60;
+    font-size: 13px;
+    font-weight: 600;
+    animation: blink 1s infinite;
+    z-index: 999;
+}
+
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 /* BUTTON */
-.btn{
-display:block;
-margin:20px auto;
-padding:10px 25px;
-background:#28a745;
-color:#fff;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
+.btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.btn:hover{background:#218838;}
-
-/* LOADING */
-.loading{
-position:fixed;
-top:10px;
-right:20px;
-color:#27ae60;
-font-size:13px;
-font-weight:600;
-animation:blink 1s infinite;
-}
-
-@keyframes blink{
-0%,100%{opacity:1;}
-50%{opacity:0.4;}
+.btn:hover {
+    background: #218838;
 }
 
 /* MOBILE */
-@media(max-width:768px){
-.container{width:95%;}
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
 }
 </style>
 </head>
