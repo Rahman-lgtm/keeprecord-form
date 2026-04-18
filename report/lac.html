@@ -47,17 +47,12 @@ table {
     table-layout: fixed;
 }
 
-/* HEADER */
-thead th {
-    position: sticky;
-    top: 0;
-    background: #4f77b5;
-    color: #fff;
-    font-size: 13px;
-    padding: 16px;
-    border: 1px solid #2f5597;
-    z-index: 15;
-}
+/* HEADER */ 
+thead th{ position:sticky; background:#4f77b5; color:#fff; font-size:13px; padding:10px; border:1px solid #2f5597; } 
+    /* FIRST ROW */ 
+thead tr:nth-child(1) th{ top:0; z-index:10; } 
+    /* SECOND ROW */ 
+thead tr:nth-child(2) th{ top:40px; z-index:9; }
 
 /* BODY */
 tbody td {
@@ -80,28 +75,28 @@ tfoot td {
     z-index: 10;
     text-align: center;
 }
-tfoot td:nth-child(3) {
+tfoot td:nth-child(2) {
     text-align: center !important;
 }
 /* ALIGN */
-tbody td:nth-child(2) {
+tbody td:nth-child(3) {
     text-align: left;
 }
 
 /* COLUMN WIDTH */
-th:nth-child(1),td:nth-child(1){width:50px;}   /* Sl No */
-th:nth-child(2),td:nth-child(2){width:120px;}  /* FPS ID */
-th:nth-child(3),td:nth-child(3){width:200px;}  /* Name of FPS */
-th:nth-child(4),td:nth-child(4){width:140px;}  /* LAC */
+th:nth-child(1),td:nth-child(1){width:50%;}   /* Sl No */
+th:nth-child(2),td:nth-child(2){width:80%;}  /* FPS ID */
+th:nth-child(3),td:nth-child(3){width:180%;}  /* Name of FPS */
+th:nth-child(4),td:nth-child(4){width:60%;}  /* LAC */
 
-th:nth-child(5),td:nth-child(5){width:100px;}  /* New RC count */
-th:nth-child(6),td:nth-child(6){width:110px;}  /* New Units */
+th:nth-child(5),td:nth-child(5){width:60%;}  /* New RC count */
+th:nth-child(6),td:nth-child(6){width:160%;}  /* New Units */
 
-th:nth-child(7),td:nth-child(7){width:110px;}  /* ADD RC count */
-th:nth-child(8),td:nth-child(8){width:110px;}  /* ADD Units */
+th:nth-child(7),td:nth-child(7){width:60%;}  /* ADD RC count */
+th:nth-child(8),td:nth-child(8){width:60%;}  /* ADD Units */
 
-th:nth-child(9),td:nth-child(9){width:100px;}  /* Total NEW RC */
-th:nth-child(10),td:nth-child(10){width:130px;}
+th:nth-child(9),td:nth-child(9){width:60%;}  /* Total NEW RC */
+th:nth-child(10),td:nth-child(10){width:60%;}
 
 /* TEXT CONTROL */
 td, th {
