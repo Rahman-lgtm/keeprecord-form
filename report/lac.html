@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Approval Done Report</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#dcdcdc;
+margin:0;
+padding:20px;
+}
+
+h2{
+text-align:center;
+margin-bottom:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#d9d9d9;
+}
+
+th{
+background:#4b74b8;
+color:#fff;
+padding:8px;
+border:1px solid #000;
+}
+
+td{
+padding:6px;
+border:1px solid #7d9bd3;
+text-align:center;
+}
+
+tbody tr:nth-child(even){
+background:#cfd8e6;
+}
+
+tfoot td{
+font-weight:bold;
+background:#eee;
+}
+
+button{
+display:block;
+margin:15px auto;
+padding:8px 20px;
+background:#0aa84f;
+color:#fff;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#088f42;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Approval Done - Report</h2>
+
+<table id="reportTable">
+<thead>
+<tr>
+<th rowspan="2">Sl No</th>
+<th rowspan="2">FPS ID</th>
+<th rowspan="2">Name of FPS</th>
+<th rowspan="2">LAC</th>
+<th colspan="2">NEW RC</th>
+<th colspan="2">Existing RC</th>
+</tr>
+<tr>
+<th>New RC count</th>
+<th>New Units</th>
+<th>ADD RC count</th>
+<th>ADD Units</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+<tfoot>
+<tr>
+<td colspan="4">Grand Total</td>
+<td id="tNewCount">0</td>
+<td id="tNewUnits">0</td>
+<td id="tAddCount">0</td>
+<td id="tAddUnits">0</td>
+</tr>
+</tfoot>
+</table>
+
+<button onclick="downloadExcel()">Download</button>
+
+<script>
+fetch("/api/approval-report")
+.then(res=>res.json())
+.then(data=>{
+
+const tbody=document.querySelector("#reportTable tbody");
+
+let tNewCount=0,tNewUnits=0,tAddCount=0,tAddUnits=0;
+
+data.forEach((row,i)=>{
+
+tNewCount+=row.newCount;
+tNewUnits+=row.newUnits;
+tAddCount+=row.addCount;
+tAddUnits+=row.addUnits;
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+<td>${i+1}</td>
+<td>${row.fpsId||""}</td>
+<td>${row.fpsName||""}</td>
+<td>${row.lac||""}</td>
+<td>${row.newCount||0}</td>
+<td>${row.newUnits||0}</td>
+<td>${row.addCount||0}</td>
+<td>${row.addUnits||0}</td>
+`;
+
+tbody.appendChild(tr);
+
+});
+
+document.getElementById("tNewCount").innerText=tNewCount;
+document.getElementById("tNewUnits").innerText=tNewUnits;
+document.getElementById("tAddCount").innerText=tAddCount;
+document.getElementById("tAddUnits").innerText=tAddUnits;
+
+})
+.catch(err=>{
+console.error(err);
+alert("Data load failed");
+});
+
+
+// ✅ SIMPLE EXCEL DOWNLOAD
+function downloadExcel(){
+let table=document.getElementById("reportTable").outerHTML;
+let dataType='application/vnd.ms-excel';
+let blob=new Blob([table],{type:dataType});
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+a.href=url;
+a.download="Approval_Report.xls";
+a.click();
+
+URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
