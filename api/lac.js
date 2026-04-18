@@ -10,48 +10,59 @@ const result={};
 
 data.forEach(row=>{
 
-const approved=(row["Approved ( YES/NO)"]||"").toUpperCase().trim();
-if(approved!=="YES")return; // 🔥 ONLY APPROVED
+// 🔥 SAFE COLUMN ACCESS
+const approved=String(
+row["Approved ( YES/NO)"]||
+row["Approved"]||
+""
+).toUpperCase().trim();
 
-const gp=row["Name of the G.P/ Ward No of Nagaon MB."]||"Unknown";
-const type=(row["Application type (NEW or ADD RC)"]||"").toUpperCase();
-const members=Number(row["Total Number of included Members"]||0);
+// ❗ only approved
+if(!approved.includes("YES"))return;
 
-if(!result[gp]){
-result[gp]={
-gp,
-rc:0,
-new_units:0,
-add_units:0,
-total_units:0
+const fpsId=row["F.P.S Code 13050050......."]||"";
+const fpsName=row["FPS Name"]||"";
+const lac=row["Name of LAC"]||"";
+
+const type=String(
+row["Application type (NEW or ADD RC)"]||""
+).toUpperCase();
+
+const members=parseInt(row["Total Number of included Members"])||0;
+
+// unique key (FPS + LAC)
+const key=fpsId+"_"+lac;
+
+if(!result[key]){
+result[key]={
+fpsId,
+fpsName,
+lac,
+newCount:0,
+newUnits:0,
+addCount:0,
+addUnits:0
 };
 }
 
-// ✅ RC count only NEW
+// NEW
 if(type.includes("NEW")){
-result[gp].rc+=1;
-result[gp].new_units+=members;
+result[key].newCount+=1;
+result[key].newUnits+=members;
 }
 
-// ✅ ADD units
+// ADD
 if(type.includes("ADD")){
-result[gp].add_units+=members;
+result[key].addCount+=1;
+result[key].addUnits+=members;
 }
-
-// ✅ TOTAL
-result[gp].total_units=result[gp].new_units+result[gp].add_units;
 
 });
 
-// 🔥 sort highest → lowest
-const finalData=Object.values(result).sort(
-(a,b)=>b.total_units-a.total_units
-);
-
-return res.status(200).json(finalData);
+return res.status(200).json(Object.values(result));
 
 }catch(err){
 console.error(err);
-return res.status(500).json({error:"GP-wise processing failed"});
+return res.status(500).json({error:"LAC report failed"});
 }
 }
