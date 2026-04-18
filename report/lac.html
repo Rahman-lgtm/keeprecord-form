@@ -5,37 +5,164 @@
 <title>Approval Done Report</title>
 
 <style>
-body{font-family:Arial;background:#dcdcdc;margin:0;padding:20px;}
-h2{text-align:center;}
+*{box-sizing:border-box;}
 
-table{width:100%;border-collapse:collapse;background:#e0e0e0;}
+body{
+font-family:"Bookman Old Style",serif;
+background:#ffffff;
+margin:0;
+padding:20px;
+}
 
-th{background:#4b74b8;color:#fff;padding:8px;border:1px solid #000;}
+/* CONTAINER */
+.container{
+width:65%;
+margin:auto;
+}
 
-td{padding:6px;border:1px solid #7d9bd3;text-align:center;}
+/* TITLE */
+.title{
+position:sticky;
+top:0;
+background:#fff;
+text-align:center;
+padding:10px;
+z-index:20;
+}
 
-tbody tr:nth-child(even){background:#cfd8e6;}
+/* 🔥 WRAPPER FIX */
+.table-wrapper{
+height:80vh;
+overflow-y:auto;
+border:1px solid #ccc;
+}
 
-tfoot td{font-weight:bold;background:#eee;}
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+table-layout:fixed;
+}
 
-button{
-margin:15px auto;
+/* HEADER */
+thead th{
+position:sticky;
+background:#4f77b5;
+color:#fff;
+font-size:13px;
+padding:10px;
+border:1px solid #2f5597;
+}
+
+/* FIRST ROW */
+thead tr:nth-child(1) th{
+top:0;
+z-index:10;
+}
+
+/* SECOND ROW */
+thead tr:nth-child(2) th{
+top:40px;
+z-index:9;
+}
+
+/* BODY */
+tbody td{
+padding:8px;
+border:1px solid #8ea9db;
+text-align:center;
+font-size:11px;
+}
+
+/* ZEBRA */
+tbody tr:nth-child(odd){background:#d9e1f2;}
+tbody tr:nth-child(even){background:#fff;}
+
+/* FOOTER */
+tfoot td{
+position:sticky;
+bottom:0;
+background:#eee;
+font-weight:bold;
+text-align:center;
+z-index:5;
+}
+
+/* ALIGN */
+tbody td:nth-child(3){
+text-align:left;
+}
+
+/* COLUMN WIDTH */
+th:nth-child(1),td:nth-child(1){width:50px;}   /* Sl No */
+th:nth-child(2),td:nth-child(2){width:120px;}  /* FPS ID */
+th:nth-child(3),td:nth-child(3){width:200px;}  /* Name of FPS */
+th:nth-child(4),td:nth-child(4){width:140px;}  /* LAC */
+
+th:nth-child(5),td:nth-child(5){width:100px;}  /* New RC count */
+th:nth-child(6),td:nth-child(6){width:110px;}  /* New Units */
+
+th:nth-child(7),td:nth-child(7){width:110px;}  /* ADD RC count */
+th:nth-child(8),td:nth-child(8){width:110px;}  /* ADD Units */
+
+th:nth-child(9),td:nth-child(9){width:100px;}  /* Total NEW RC */
+th:nth-child(10),td:nth-child(10){width:130px;} /* Total Units */
+
+/* TEXT CONTROL */
+td,th{
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+/* BUTTON */
+.btn{
 display:block;
-padding:8px 20px;
-background:green;
+margin:20px auto;
+padding:10px 25px;
+background:#28a745;
 color:#fff;
 border:none;
-border-radius:5px;
+border-radius:6px;
+font-weight:bold;
 cursor:pointer;
+}
+
+.btn:hover{background:#218838;}
+
+/* LOADING */
+.loading{
+position:fixed;
+top:10px;
+right:20px;
+color:#27ae60;
+font-size:13px;
+font-weight:600;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%,100%{opacity:1;}
+50%{opacity:0.4;}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.container{width:95%;}
 }
 </style>
 </head>
 
 <body>
 
-<h2>Approval Done - Report</h2>
+<div class="container">
+
+<h2 class="title">Approval Done - Report</h2>
+
+<div class="table-wrapper">
 
 <table id="reportTable">
+
 <thead>
 <tr>
 <th rowspan="2">Sl No</th>
@@ -69,9 +196,17 @@ cursor:pointer;
 <td id="tUnits"></td>
 </tr>
 </tfoot>
+
 </table>
 
-<button onclick="downloadExcel()">Download</button>
+</div>
+
+<button class="btn" onclick="downloadExcel()">Download</button>
+
+</div>
+
+</body>
+</html>
 
 <script>
 fetch("/api/lac")
