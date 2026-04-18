@@ -209,6 +209,8 @@ animation:blink 1s infinite;
 </html>
 
 <script>
+const loading=document.getElementById("loading");
+
 fetch("/api/lac")
 .then(res=>res.json())
 .then(data=>{
@@ -221,30 +223,29 @@ tbody.innerHTML="";
 
 data.forEach((row,i)=>{
 
-tNewCount+=row.newCount;
-tNewUnits+=row.newUnits;
-tAddCount+=row.addCount;
-tAddUnits+=row.addUnits;
-tRC+=row.totalRC;
-tUnits+=row.totalUnits;
+tNewCount+=row.newCount||0;
+tNewUnits+=row.newUnits||0;
+tAddCount+=row.addCount||0;
+tAddUnits+=row.addUnits||0;
+tRC+=row.totalRC||0;
+tUnits+=row.totalUnits||0;
 
 const tr=document.createElement("tr");
 
 tr.innerHTML=`
 <td>${i+1}</td>
-<td>${row.fpsId}</td>
-<td>${row.fpsName}</td>
-<td>${row.lac}</td>
-<td>${row.newCount}</td>
-<td>${row.newUnits}</td>
-<td>${row.addCount}</td>
-<td>${row.addUnits}</td>
-<td>${row.totalRC}</td>
-<td>${row.totalUnits}</td>
+<td>${row.fpsId||""}</td>
+<td>${row.fpsName||""}</td>
+<td>${row.lac||""}</td>
+<td>${row.newCount||0}</td>
+<td>${row.newUnits||0}</td>
+<td>${row.addCount||0}</td>
+<td>${row.addUnits||0}</td>
+<td>${row.totalRC||0}</td>
+<td>${row.totalUnits||0}</td>
 `;
 
 tbody.appendChild(tr);
-
 });
 
 // totals
@@ -255,17 +256,17 @@ document.getElementById("tAddUnits").innerText=tAddUnits;
 document.getElementById("tRC").innerText=tRC;
 document.getElementById("tUnits").innerText=tUnits;
 
-});
+// 🔥 LOADING HIDE
+loading.style.display="none";
 
-// download
-function downloadExcel(){
-let table=document.getElementById("reportTable").outerHTML;
-let blob=new Blob([table],{type:"application/vnd.ms-excel"});
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="LAC_Report.xls";
-a.click();
-}
+})
+.catch(err=>{
+console.error(err);
+alert("Data load failed");
+
+// ❌ error me bhi hide karo
+loading.style.display="none";
+});
 </script>
 
 </body>
