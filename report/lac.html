@@ -1,63 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Approval Done Report</title>
 
 <style>
-body{
-font-family:Arial,sans-serif;
-background:#dcdcdc;
-margin:0;
-padding:20px;
-}
+body{font-family:Arial;background:#dcdcdc;margin:0;padding:20px;}
+h2{text-align:center;}
 
-h2{
-text-align:center;
-margin-bottom:15px;
-}
+table{width:100%;border-collapse:collapse;background:#e0e0e0;}
 
-table{
-width:100%;
-border-collapse:collapse;
-background:#d9d9d9;
-}
+th{background:#4b74b8;color:#fff;padding:8px;border:1px solid #000;}
 
-th{
-background:#4b74b8;
-color:#fff;
-padding:8px;
-border:1px solid #000;
-}
+td{padding:6px;border:1px solid #7d9bd3;text-align:center;}
 
-td{
-padding:6px;
-border:1px solid #7d9bd3;
-text-align:center;
-}
+tbody tr:nth-child(even){background:#cfd8e6;}
 
-tbody tr:nth-child(even){
-background:#cfd8e6;
-}
-
-tfoot td{
-font-weight:bold;
-background:#eee;
-}
+tfoot td{font-weight:bold;background:#eee;}
 
 button{
-display:block;
 margin:15px auto;
+display:block;
 padding:8px 20px;
-background:#0aa84f;
+background:green;
 color:#fff;
 border:none;
 border-radius:5px;
 cursor:pointer;
-}
-
-button:hover{
-background:#088f42;
 }
 </style>
 </head>
@@ -75,12 +44,15 @@ background:#088f42;
 <th rowspan="2">LAC</th>
 <th colspan="2">NEW RC</th>
 <th colspan="2">Existing RC</th>
+<th colspan="2">Total</th>
 </tr>
 <tr>
 <th>New RC count</th>
 <th>New Units</th>
 <th>ADD RC count</th>
 <th>ADD Units</th>
+<th>NEW RC</th>
+<th>Units (NEW+ADD)</th>
 </tr>
 </thead>
 
@@ -89,10 +61,12 @@ background:#088f42;
 <tfoot>
 <tr>
 <td colspan="4">Grand Total</td>
-<td id="tNewCount">0</td>
-<td id="tNewUnits">0</td>
-<td id="tAddCount">0</td>
-<td id="tAddUnits">0</td>
+<td id="tNewCount"></td>
+<td id="tNewUnits"></td>
+<td id="tAddCount"></td>
+<td id="tAddUnits"></td>
+<td id="tRC"></td>
+<td id="tUnits"></td>
 </tr>
 </tfoot>
 </table>
@@ -106,7 +80,9 @@ fetch("/api/lac")
 
 const tbody=document.querySelector("#reportTable tbody");
 
-let tNewCount=0,tNewUnits=0,tAddCount=0,tAddUnits=0;
+let tNewCount=0,tNewUnits=0,tAddCount=0,tAddUnits=0,tRC=0,tUnits=0;
+
+tbody.innerHTML="";
 
 data.forEach((row,i)=>{
 
@@ -114,49 +90,46 @@ tNewCount+=row.newCount;
 tNewUnits+=row.newUnits;
 tAddCount+=row.addCount;
 tAddUnits+=row.addUnits;
+tRC+=row.totalRC;
+tUnits+=row.totalUnits;
 
 const tr=document.createElement("tr");
 
 tr.innerHTML=`
 <td>${i+1}</td>
-<td>${row.fpsId||""}</td>
-<td>${row.fpsName||""}</td>
-<td>${row.lac||""}</td>
-<td>${row.newCount||0}</td>
-<td>${row.newUnits||0}</td>
-<td>${row.addCount||0}</td>
-<td>${row.addUnits||0}</td>
+<td>${row.fpsId}</td>
+<td>${row.fpsName}</td>
+<td>${row.lac}</td>
+<td>${row.newCount}</td>
+<td>${row.newUnits}</td>
+<td>${row.addCount}</td>
+<td>${row.addUnits}</td>
+<td>${row.totalRC}</td>
+<td>${row.totalUnits}</td>
 `;
 
 tbody.appendChild(tr);
 
 });
 
+// totals
 document.getElementById("tNewCount").innerText=tNewCount;
 document.getElementById("tNewUnits").innerText=tNewUnits;
 document.getElementById("tAddCount").innerText=tAddCount;
 document.getElementById("tAddUnits").innerText=tAddUnits;
+document.getElementById("tRC").innerText=tRC;
+document.getElementById("tUnits").innerText=tUnits;
 
-})
-.catch(err=>{
-console.error(err);
-alert("Data load failed");
 });
 
-
-// ✅ SIMPLE EXCEL DOWNLOAD
+// download
 function downloadExcel(){
 let table=document.getElementById("reportTable").outerHTML;
-let dataType='application/vnd.ms-excel';
-let blob=new Blob([table],{type:dataType});
-let url=URL.createObjectURL(blob);
-
+let blob=new Blob([table],{type:"application/vnd.ms-excel"});
 let a=document.createElement("a");
-a.href=url;
-a.download="Approval_Report.xls";
+a.href=URL.createObjectURL(blob);
+a.download="LAC_Report.xls";
 a.click();
-
-URL.revokeObjectURL(url);
 }
 </script>
 
