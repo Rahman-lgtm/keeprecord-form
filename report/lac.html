@@ -3,161 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <title>Approval Done Report</title>
-
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Bookman Old Style", serif;
-    background: #ffffff;
-    margin: 0;
-    padding: 20px;
-}
-
-/* CONTAINER */
-.container {
-    width: 60%;
-    margin: auto;
-}
-
-/* TITLE */
-.title {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    text-align: center;
-    padding: 10px;
-    margin: 0;
-    z-index: 20;
-}
-
-/* TABLE WRAPPER (IMPORTANT FIX) */
-.table-wrapper {
-    height: 80vh;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-
-/* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-/* HEADER */ 
-thead th{ position:sticky; background:#4f77b5; color:#fff; font-size:13px; padding:10px; border:1px solid #2f5597; } 
-    /* FIRST ROW */ 
-thead tr:nth-child(1) th{ top:0; z-index:10; } 
-    /* SECOND ROW */ 
-thead tr:nth-child(2) th{ top:35px; z-index:9; }
-
-/* BODY */
-tbody td {
-    padding: 8px;
-    border: 1px solid #8ea9db;
-    text-align: center;
-    font-size: 11px;
-}
-
-/* ZEBRA */
-tbody tr:nth-child(odd) { background: #d9e1f2; }
-tbody tr:nth-child(even) { background: #fff; }
-
-/* FOOTER */
-tfoot td {
-    position: sticky;
-    bottom: 0;
-    background: #eee;
-    font-weight: bold;
-    z-index: 10;
-    text-align: center;
-}
-tfoot td:nth-child(2) {
-    text-align: center !important;
-}
-/* ALIGN */
-tbody td:nth-child(3) {
-    text-align: left;
-}
-
-/* COLUMN WIDTH */
-th:nth-child(1),td:nth-child(1){width:30%;}   /* Sl No */
-th:nth-child(2),td:nth-child(2){width:60%;}  /* FPS ID */
-th:nth-child(3),td:nth-child(3){width:180%;}  /* Name of FPS */
-th:nth-child(4),td:nth-child(4){width:70%;}  /* LAC */
-
-th:nth-child(5),td:nth-child(5){width:90%;}  /* New RC count */
-th:nth-child(6),td:nth-child(6){width:90%;}  /* New Units */
-
-th:nth-child(7),td:nth-child(7){width:90%;}  /* ADD RC count */
-th:nth-child(8),td:nth-child(8){width:90%;}  /* ADD Units */
-
-th:nth-child(9),td:nth-child(9){width:90%;}  /* Total NEW RC */
+*{box-sizing:border-box;}
+body{font-family:"Bookman Old Style",serif;background:#fff;margin:0;padding:20px;}
+.container{width:60%;margin:auto;}
+.title{position:sticky;top:0;background:#fff;text-align:center;padding:10px;margin:0;z-index:20;}
+.table-wrapper{height:80vh;overflow-y:auto;border:1px solid #ccc;}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+thead th{position:sticky;background:#4f77b5;color:#fff;font-size:13px;padding:10px;border:1px solid #2f5597;}
+thead tr:nth-child(1) th{top:0;z-index:10;}
+thead tr:nth-child(2) th{top:35px;z-index:9;}
+tbody td{padding:8px;border:1px solid #8ea9db;text-align:center;font-size:11px;}
+tbody tr:nth-child(odd){background:#d9e1f2;}
+tbody tr:nth-child(even){background:#fff;}
+tfoot td{position:sticky;bottom:0;background:#eee;font-weight:bold;z-index:10;text-align:center;}
+tfoot td:nth-child(2){text-align:center!important;}
+tbody td:nth-child(3){text-align:left;}
+th:nth-child(1),td:nth-child(1){width:30%;}
+th:nth-child(2),td:nth-child(2){width:60%;}
+th:nth-child(3),td:nth-child(3){width:180%;}
+th:nth-child(4),td:nth-child(4){width:70%;}
+th:nth-child(5),td:nth-child(5){width:90%;}
+th:nth-child(6),td:nth-child(6){width:90%;}
+th:nth-child(7),td:nth-child(7){width:90%;}
+th:nth-child(8),td:nth-child(8){width:90%;}
+th:nth-child(9),td:nth-child(9){width:90%;}
 th:nth-child(10),td:nth-child(10){width:90%;}
-
-/* TEXT CONTROL */
-td, th {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* LOADING */
-.loading {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    color: #27ae60;
-    font-size: 13px;
-    font-weight: 600;
-    animation: blink 1s infinite;
-    z-index: 999;
-}
-
-@keyframes blink {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.4; }
-}
-
-/* BUTTON */
-.btn {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 25px;
-    background: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background: #218838;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-}
+td,th{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.loading{position:fixed;top:10px;right:20px;color:#27ae60;font-size:13px;font-weight:600;animation:blink 1s infinite;z-index:999;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.btn{display:block;margin:20px auto;padding:10px 25px;background:#28a745;color:#fff;border:none;border-radius:6px;font-weight:bold;cursor:pointer;}
+.btn:hover{background:#218838;}
+@media(max-width:768px){.container{width:95%;}}
 </style>
 </head>
-
 <body>
 <div class="loading" id="loading">Loading.......</div>
 <div class="container">
-
 <h2 class="title">Approval Done - Report</h2>
-
 <div class="table-wrapper">
-
 <table id="reportTable">
-
 <thead>
 <tr>
 <th rowspan="2">Sl No</th>
@@ -177,9 +62,7 @@ td, th {
 <th>Units</th>
 </tr>
 </thead>
-
 <tbody></tbody>
-
 <tfoot>
 <tr>
 <td colspan="4">Grand Total</td>
@@ -191,78 +74,15 @@ td, th {
 <td id="tUnits"></td>
 </tr>
 </tfoot>
-
 </table>
-
 </div>
-
 <button class="btn" onclick="downloadExcel()">Download</button>
-
 </div>
-
-</body>
-</html>
-
 <script>
 const loading=document.getElementById("loading");
-
-fetch("/api/lac")
-.then(res=>res.json())
-.then(data=>{
-
-const tbody=document.querySelector("#reportTable tbody");
-
-let tNewCount=0,tNewUnits=0,tAddCount=0,tAddUnits=0,tRC=0,tUnits=0;
-
-tbody.innerHTML="";
-
-data.forEach((row,i)=>{
-
-tNewCount+=row.newCount||0;
-tNewUnits+=row.newUnits||0;
-tAddCount+=row.addCount||0;
-tAddUnits+=row.addUnits||0;
-tRC+=row.totalRC||0;
-tUnits+=row.totalUnits||0;
-
-const tr=document.createElement("tr");
-
-tr.innerHTML=`
-<td>${i+1}</td>
-<td>${row.fpsId||""}</td>
-<td>${row.fpsName||""}</td>
-<td>${row.lac||""}</td>
-<td>${row.newCount||0}</td>
-<td>${row.newUnits||0}</td>
-<td>${row.addCount||0}</td>
-<td>${row.addUnits||0}</td>
-<td>${row.totalRC||0}</td>
-<td>${row.totalUnits||0}</td>
-`;
-
-tbody.appendChild(tr);
-});
-
-// totals
-document.getElementById("tNewCount").innerText=tNewCount;
-document.getElementById("tNewUnits").innerText=tNewUnits;
-document.getElementById("tAddCount").innerText=tAddCount;
-document.getElementById("tAddUnits").innerText=tAddUnits;
-document.getElementById("tRC").innerText=tRC;
-document.getElementById("tUnits").innerText=tUnits;
-
-// 🔥 LOADING HIDE
-loading.style.display="none";
-
-})
-.catch(err=>{
-console.error(err);
-alert("Data load failed");
-
-// ❌ error me bhi hide karo
-loading.style.display="none";
-});
-</script>
-
+fetch("/api/lac").then(res=>res.json()).then(data=>{const tbody=document.querySelector("#reportTable tbody");let tNewCount=0,tNewUnits=0,tAddCount=0,tAddUnits=0,tRC=0,tUnits=0;tbody.innerHTML="";data.forEach((row,i)=>{tNewCount+=row.newCount||0;tNewUnits+=row.newUnits||0;tAddCount+=row.addCount||0;tAddUnits+=row.addUnits||0;tRC+=row.totalRC||0;tUnits+=row.totalUnits||0;
+const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td>${row.fpsId||""}</td><td>${row.fpsName||""}</td><td>${row.lac||""}</td><td>${row.newCount||0}</td><td>${row.newUnits||0}</td><td>${row.addCount||0}</td><td>${row.addUnits||0}</td><td>${row.totalRC||0}</td><td>${row.totalUnits||0}</td>`;tbody.appendChild(tr);});
+document.getElementById("tNewCount").innerText=tNewCount;document.getElementById("tNewUnits").innerText=tNewUnits;document.getElementById("tAddCount").innerText=tAddCount;document.getElementById("tAddUnits").innerText=tAddUnits;document.getElementById("tRC").innerText=tRC;document.getElementById("tUnits").innerText=tUnits;loading.style.display="none";})
+.catch(err=>{console.error(err);alert("Data load failed");loading.style.display="none";});</script>
 </body>
 </html>
