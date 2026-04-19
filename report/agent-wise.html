@@ -3,279 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <title>Agent Wise</title>
-
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Bookman Old Style", serif;
-    background: #ffffff;
-    padding: 20px;
-    margin: 0;
-}
-
-/* ✅ CONTAINER 60% CENTER */
-.container {
-    width: 60%;
-    margin: auto;
-}
-
-/* ✅ TITLE FIXED (NOT SCROLL) */
-.title {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    text-align: center;
-    padding: 10px;
-    margin-top: 0;   /* 🔥 gap remove */
-    z-index: 10;
-    
-}
-
-/* ✅ TABLE WRAPPER SCROLL ONLY */
-.table-wrapper {
-    height: 80vh;           /* full visible area */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    margin-top: -15px;
-}
-
-/* ✅ TABLE FIX */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;   /* 🔥 MOST IMPORTANT FIX */
-}
-
-/* ✅ HEADER STICKY */
-thead th {
-    position: sticky;
-    top: 0;
-    background: #4f77b5;
-    font-size: 13px;
-    color: white;
-    z-index: 15;
-    padding: 10px;
-    border: 1px solid #2f5597;
-}
-
-/* BODY */
-tbody td {
-    padding: 8px;
-    border: 1px solid #8ea9db;
-    text-align: center;
-    font-size: 11px;
-}
-
-/* ZEBRA */
-tbody tr:nth-child(odd) { background: #d9e1f2; }
-tbody tr:nth-child(even) { background: #fff; }
-
-/* FOOTER STICKY */
-tfoot td {
-    position: sticky;
-    bottom: 0;
-    background: #eee;
-    font-weight: bold;
-    text-align: center;
-    z-index: 10;
-}
-
-/* ALIGN */
-tbody td:nth-child(3) {
-    text-align: left;
-}
-
-/* ✅ COLUMN WIDTHS (NOW WORK PROPERLY) */
-th:nth-child(1), td:nth-child(1) { width: 5%; }
-th:nth-child(2), td:nth-child(2) { width: 10%; }
-th:nth-child(3), td:nth-child(3) { width: 30%; } /* BIG */
-th:nth-child(4), td:nth-child(4) { width: 10%; }
-th:nth-child(5), td:nth-child(5) { width: 10%; }  /* SMALL */
-th:nth-child(6), td:nth-child(6) { width: 10%; }
-th:nth-child(7), td:nth-child(7) { width: 10%; }
-th:nth-child(8), td:nth-child(8) { width: 10%; }
-
-/* TEXT CONTROL */
-td, th {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.loading {
-    position: fixed;   /* 🔥 screen ke sath fix rahega */
-    top: 10px;
-    right: 20px;    
-    color: #27ae60;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;   
-    z-index: 999;}
-    .loading {
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.4; }
-}
-/* BUTTON */
-.download-btn {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 25px;
-    background: #28a745;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
+*{box-sizing:border-box;}
+body{font-family:"Bookman Old Style",serif;background:#fff;padding:20px;margin:0;}
+.container{width:60%;margin:auto;}
+.title{position:sticky;top:0;background:#fff;text-align:center;padding:10px;margin-top:0;z-index:10;}
+.table-wrapper{height:80vh;overflow-y:auto;border:1px solid #ccc;margin-top:-15px;}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+thead th{position:sticky;top:0;background:#4f77b5;font-size:13px;color:#fff;z-index:15;padding:10px;border:1px solid #2f5597;}
+tbody td{padding:8px;border:1px solid #8ea9db;text-align:center;font-size:11px;}
+tbody tr:nth-child(odd){background:#d9e1f2;}
+tbody tr:nth-child(even){background:#fff;}
+tfoot td{position:sticky;bottom:0;background:#eee;font-weight:bold;text-align:center;z-index:10;}
+tbody td:nth-child(3){text-align:left;}
+th:nth-child(1),td:nth-child(1){width:5%;}
+th:nth-child(2),td:nth-child(2){width:10%;}
+th:nth-child(3),td:nth-child(3){width:30%;}
+th:nth-child(4),td:nth-child(4){width:10%;}
+th:nth-child(5),td:nth-child(5){width:10%;}
+th:nth-child(6),td:nth-child(6){width:10%;}
+th:nth-child(7),td:nth-child(7){width:10%;}
+th:nth-child(8),td:nth-child(8){width:10%;}
+td,th{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.loading{position:fixed;top:10px;right:20px;color:#27ae60;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;z-index:999;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.download-btn{display:block;margin:20px auto;padding:10px 25px;background:#28a745;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer;}
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
 <div class="loading" id="loadingText">Please wait...</div>
-
 <h1 class="title">Data Entry Report - Agent Wise</h1>
-
 <div class="table-wrapper">
-
 <table id="reportTable">
 <thead>
 <tr>
-<th>Sl No</th>
-<th>FPS ID</th>
-<th>FPS Name</th>
-<th>New RC</th>
-<th>Units</th>
-<th>Add units</th>
-<th>Total Units</th>
-<th>Ratio</th>
-</tr>
+<th>Sl No</th><th>FPS ID</th><th>FPS Name</th><th>New RC</th><th>Units</th><th>Add units</th><th>Total Units</th><th>Ratio</th></tr>
 </thead>
-
 <tbody id="tableBody"></tbody>
-
 <tfoot>
-<tr>
-<td colspan="3">Grand Total</td>
-<td id="tNewCount">0</td>
-<td id="tNewUnits">0</td>
-<td id="tAddUnits">0</td>
-<td id="tTotalUnits">0</td>
-<td>-</td>
+<tr><td colspan="3">Grand Total</td><td id="tNewCount">0</td><td id="tNewUnits">0</td><td id="tAddUnits">0</td><td id="tTotalUnits">0</td><td>-</td>
 </tr>
 </tfoot>
-
 </table>
 </div>
-
 <button class="download-btn" id="downloadBtn">Download</button>
-
 </div>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-
-fetch("/api/report")
-.then(res => res.json())
-.then(data => {
-
-let fpsData = {};
-let index = 1;
-
-data.forEach(row => {
-    let id = row["F.P.S Code 13050050......."];
-    let name = row["FPS Name"];
-    let type = row["Application type (NEW or ADD RC)"];
-    let members = parseInt(row["Total Number of included Members"]) || 0;
-
-    if (!id) return;
-
-    type = type ? type.toUpperCase().trim() : "";
-
-    if (!fpsData[id]) {
-        fpsData[id] = {
-            name,
-            newCount: 0,
-            newUnits: 0,
-            addUnits: 0,
-            totalUnits: 0
-        };
-    }
-
-    if (type.includes("NEW")) {
-        fpsData[id].newCount++;
-        fpsData[id].newUnits += members;
-        fpsData[id].totalUnits += members;
-    }
-
-    if (type.includes("ADD")) {
-        fpsData[id].addUnits += members;
-        fpsData[id].totalUnits += members;
-    }
-});
-
-let tNewCount=0, tNewUnits=0, tAddUnits=0, tTotal=0;
-
-Object.entries(fpsData)
-.sort((a,b)=>b[1].totalUnits-a[1].totalUnits)
-.forEach(([id,val])=>{
-
-let ratio = val.newCount ? (val.totalUnits/val.newCount).toFixed(1) : "-";
-
-tNewCount+=val.newCount;
-tNewUnits+=val.newUnits;
-tAddUnits+=val.addUnits;
-tTotal+=val.totalUnits;
-
-document.getElementById("tableBody").innerHTML += `
-<tr>
-<td>${index++}</td>
-<td>${id}</td>
-<td>${val.name}</td>
-<td>${val.newCount}</td>
-<td>${val.newUnits}</td>
-<td>${val.addUnits}</td>
-<td><b>${val.totalUnits}</b></td>
-<td>${ratio}</td>
-</tr>`;
-});
-
-document.getElementById("tNewCount").innerText=tNewCount;
-document.getElementById("tNewUnits").innerText=tNewUnits;
-document.getElementById("tAddUnits").innerText=tAddUnits;
-document.getElementById("tTotalUnits").innerText=tTotal;
-
-// ✅ FIXED loading hide
-document.getElementById("loadingText").style.display = "none";
-
-})
-.catch(error => {
-    console.error('Error:', error);
-    document.getElementById("loadingText").textContent = "Error loading data";
-    document.getElementById("loadingText").style.color = "#e74c3c";
-});
-
-});
-
-// DOWNLOAD
-document.getElementById("downloadBtn").onclick = function(){
-let table = document.getElementById("reportTable").outerHTML;
-let blob = new Blob([table], {type:"application/vnd.ms-excel"});
-let a = document.createElement("a");
-a.href = URL.createObjectURL(blob);
-a.download = "FPS_Report.xls";
-a.click();
-};
-</script>
-
+document.addEventListener('DOMContentLoaded',function(){
+fetch("/api/report").then(res=>res.json()).then(data=>{let fpsData={},index=1;
+data.forEach(row=>{let id=row["F.P.S Code 13050050......."];let name=row["FPS Name"];let type=row["Application type (NEW or ADD RC)"];let members=parseInt(row["Total Number of included Members"])||0;
+if(!id)return;
+type=type?type.toUpperCase().trim():"";if(!fpsData[id]){fpsData[id]={name,newCount:0,newUnits:0,addUnits:0,totalUnits:0};}
+if(type.includes("NEW")){fpsData[id].newCount++;fpsData[id].newUnits+=members;fpsData[id].totalUnits+=members;}
+if(type.includes("ADD")){fpsData[id].addUnits+=members;fpsData[id].totalUnits+=members;}});
+let tNewCount=0,tNewUnits=0,tAddUnits=0,tTotal=0;
+Object.entries(fpsData).sort((a,b)=>b[1].totalUnits-a[1].totalUnits).forEach(([id,val])=>{
+let ratio=val.newCount?(val.totalUnits/val.newCount).toFixed(1):"-";
+tNewCount+=val.newCount;tNewUnits+=val.newUnits;tAddUnits+=val.addUnits;tTotal+=val.totalUnits;
+document.getElementById("tableBody").innerHTML+=`
+<tr><td>${index++}</td><td>${id}</td><td>${val.name}</td><td>${val.newCount}</td><td>${val.newUnits}</td><td>${val.addUnits}</td><td><b>${val.totalUnits}</b></td><td>${ratio}</td></tr>`;});
+document.getElementById("tNewCount").innerText=tNewCount;document.getElementById("tNewUnits").innerText=tNewUnits;document.getElementById("tAddUnits").innerText=tAddUnits;document.getElementById("tTotalUnits").innerText=tTotal;
+document.getElementById("loadingText").style.display="none";})
+.catch(error=>{console.error('Error:',error);document.getElementById("loadingText").textContent="Error loading data";document.getElementById("loadingText").style.color="#e74c3c";});});
+document.getElementById("downloadBtn").onclick=function(){let table=document.getElementById("reportTable").outerHTML;let blob=new Blob([table],{type:"application/vnd.ms-excel"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);
+a.download="FPS_Report.xls";a.click();};</script>
 </body>
 </html>
